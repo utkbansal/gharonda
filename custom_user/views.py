@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from django.views.generic import FormView
 
-# Create your views here.
+from forms import RegistrationForm
+
+
+class RegistrationView(FormView):
+    form_class = RegistrationForm
+    template_name = 'login.html'
+
+    def form_valid(self, form):
+        form.save()
+
