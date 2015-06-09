@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1> Hi! Welcome to the index page {{ request.user.last_name }}</h1>
+    <h1> Hi! Welcome to the index page {{ request.user.first_name }}</h1>
     <a href="logout/">Logout</a>
 {% endblock %}
