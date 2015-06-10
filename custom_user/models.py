@@ -61,6 +61,9 @@ class User(AbstractBaseUser):
         ordering = ('created_on',)
         db_table = 'users'
 
+    def __unicode__(self):
+        return self.get_full_name()
+
 
 class AccessToken(models.Model):
     access_token = models.CharField(max_length=50, primary_key=True)
@@ -83,17 +86,26 @@ class AccessToken(models.Model):
 
 
 class BrokerProfile(models.Model):
-    license_no = models.IntegerField(unique=True)
+    license_no = models.CharField(max_length=255)
     user = models.OneToOneField(User)
     company = models.ForeignKey('Company')
 
+    def __unicode__(self):
+        return self.user.get_full_name()
+
 
 class ContactNumber(models.Model):
-    contact_no = models.IntegerField()
-    contact_type = models.CharField(max_length=255)
+    contact_no = models.CharField(max_length=255)
+    contact_type = models.CharField(max_length=255, default='Mobile')
     user = models.ForeignKey(User)
+
+    def __unicode__(self):
+        return self.contact_no
 
 
 class Company(models.Model):
     name = models.CharField(max_length=255)
     address = models.TextField()
+
+    def __unicode__(self):
+        return self.name
