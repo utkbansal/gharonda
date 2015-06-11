@@ -20,13 +20,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '__3u-%+$+42b@%6+0hmbh&ncvr)98pf@#w5=osm_)%=6=y44_$'
+SECRET_KEY = '_daf_3u-%+$+42b@%6+0hmbh&ncvr)98pf@#w5=osm_)%=6=y44_$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'custom_user.User'
+
+LOGIN_REDIRECT_URL = '/'
 
 # Application definition
 
@@ -38,6 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'custom_user',
+    'crispy_forms',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,7 +60,7 @@ ROOT_URLCONF = 'gharonda.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,6 +96,8 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
+LOGIN_URL = 'login/'
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -106,6 +112,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
+STATIC_ROOT = os.path.join(os.path.expanduser('~'), 'static')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
 )
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

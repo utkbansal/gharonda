@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <h1> Hi! Welcome to the index page {{ request.user.first_name }}</h1>
+
+    {% elif not request.user.is_authenticated %}
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+        <form method="post">
+            {% crispy user_type_form %}
+            <div id="common-data">
+
+            {% crispy register_form %}
+            {% crispy contact_form %}
+                </div>
+            <div id="broker-only-data">
+            {% crispy broker_profile_form %}
+            {% crispy company_form %}
+                </div>
+        <input type="submit" value="Submit" class="btn btn-primary btn-block ">
+        </form>
+        </div>
+    {% endif %}
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'js/custom.js' %}"></script>
+
+{% endblock %}
+
