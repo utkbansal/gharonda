@@ -1,10 +1,7 @@
 from django.db import models
 
-# Create your models here.
-
 
 class Property(models.Model):
-
     property_type = models.CharField(max_length=255, default='Apartment')
     specifications = models.CharField(max_length=255, default='Basic')
     built_up_area = models.CharField(max_length=6, null=False)
@@ -17,14 +14,22 @@ class Property(models.Model):
     city = models.CharField(max_length=255, null=False)
     state = models.CharField(max_length=255, null=False)
     pin_code = models.CharField(max_length=20, null=False)
+    developer = models.ForeignKey('Developer')
 
     connectivity = models.CharField(max_length=255, default=None)
     neighborhood_quality = models.CharField(max_length=255, default=None)
     comments = models.CharField(max_length=255, default=None)
 
+    def __unicode__(self):
+        return self.property_type
+
 
 class Developer(models.Model):
     name = models.CharField(max_length=255, null=False)
+
+    def __unicode__(self):
+        return self.name
+
 
 class DeveloperProjects(models.Model):
     project_name = models.CharField(max_length=255, null=False)
@@ -35,14 +40,21 @@ class DeveloperProjects(models.Model):
     location = models.CharField(max_length=255, default='')
     other_status = models.CharField(max_length=255, default='')
 
+    def __unicode__(self):
+        return self.project_name
+
 
 class Project(models.Model):
     name = models.CharField(max_length=255, null=False)
     launch_date = models.CharField(max_length=20, null=False)
     possession_date = models.CharField(max_length=20, null=False)
-    #Permit
-    #Contractors
-    #Loans Available
+    # Permit
+    # Contractors
+    # Loans Available
+
+    def __unicode__(self):
+        return self.name
+
 
 class Owner(models.Model):
     name = models.CharField(max_length=255, null=False)
@@ -55,3 +67,6 @@ class Owner(models.Model):
     name_of_seller = models.CharField(max_length=255, default=None)
     contact_number_seller = models.CharField(max_length=30, default=None)
     email_seller = models.CharField(max_length=255, default=None)
+
+    def __unicode__(self):
+        return self.name
