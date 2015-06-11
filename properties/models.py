@@ -4,8 +4,8 @@ from django.db import models
 class Property(models.Model):
     property_type = models.CharField(max_length=255, default='Apartment')
     specifications = models.CharField(max_length=255, default='Basic')
-    built_up_area = models.CharField(max_length=6, null=False)
-    total_area = models.CharField(max_length=6, null=False)
+    built_up_area = models.FloatField(max_length=6, null=False)
+    total_area = models.FloatField(null=False)
     number_of_bedrooms = models.CharField(max_length=3, default=1)
     number_of_bathrooms = models.CharField(max_length=3, default=1)
     number_of_parking_spaces = models.CharField(max_length=2, default=0)
@@ -16,9 +16,9 @@ class Property(models.Model):
     pin_code = models.CharField(max_length=20, null=False)
     developer = models.ForeignKey('Developer')
 
-    connectivity = models.CharField(max_length=255, default=None)
-    neighborhood_quality = models.CharField(max_length=255, default=None)
-    comments = models.CharField(max_length=255, default=None)
+    connectivity = models.CharField(max_length=255, default=None, null=True)
+    neighborhood_quality = models.CharField(max_length=255, default=None, null=True)
+    comments = models.CharField(max_length=255, default=None, null=True)
 
     def __unicode__(self):
         return self.property_type
