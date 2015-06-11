@@ -1,3 +1,4 @@
+from crispy_forms.bootstrap import InlineRadios
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms import ModelForm
@@ -116,5 +117,5 @@ class UserTypeForm(forms.Form):
         }
         # self.fields['type'].attrs = {'onclick':'fieldVisiblityCheck()'}
         self.helper.layout = Layout(
-            'type',
+            InlineRadios('type'),
         )
