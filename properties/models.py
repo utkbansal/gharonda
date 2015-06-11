@@ -39,6 +39,7 @@ class DeveloperProjects(models.Model):
     possession_date_year = models.CharField(max_length=4, default='')
     location = models.CharField(max_length=255, default='')
     other_status = models.CharField(max_length=255, default='')
+    developer = models.ForeignKey('Developer')
 
     def __unicode__(self):
         return self.project_name

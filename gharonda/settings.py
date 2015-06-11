@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'custom_user',
     'crispy_forms',
+    'properties',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -96,7 +97,9 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-LOGIN_URL = 'login/'
+
+# Default Login URL
+LOGIN_URL = '/login/'
 
 TIME_ZONE = 'UTC'
 
