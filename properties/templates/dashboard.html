@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="sidebar-nav-fixed">
+                    <div class="well">
+                        <ul class="nav ">
+                            <li class="nav-header">Please Complete Your
+                                Listing
+                            </li>
+                            <li><a href="{% url 'new' %}">Property Detail</a>
+                            </li>
+                            <li><a href="{% url 'owner' %}">Owner Detail</a>
+                            </li>
+                            <li><a href="{% url 'project' %}">Project Detail</a>
+                            </li>
+                            <li><a href="#">Builder detail</a>
+                            </li>
+                            <li><a href="#">Other Details</a></li>
+                        </ul>
+                    </div>
+                    <!--/.well -->
+                </div>
+                <!--/sidebar-nav-fixed -->
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+                {% block form %}{% endblock form %}
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+{% endblock %}

@@ -6,6 +6,7 @@
 {% block content %}
     {% if request.user.is_authenticated %}
         <h1> Hi! Welcome to the index page {{ request.user.first_name }}</h1>
+        <a href="{% url 'basic' %}">Add Property</a>
 
     {% elif not request.user.is_authenticated %}
         <div class="col-md-4"></div>

@@ -1,9 +1,20 @@
-{% extends 'base.html' %}
+{% extends 'dashboard.html' %}
 
 {% load crispy_forms_tags %}
 
-{% block content %}
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-    {% crispy form %}</div>
+
+{% block form %}
+    {% if messages %}
+        <div id="wrong-data" class="alert alert-error alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+
+            {% for msg in messages %}
+                {{ msg }}
+            {% endfor %}
+
+        </div>
+    {% endif %}
+    <h2>Form Title</h2>
+    <hr>
+    {% crispy form %}
 {% endblock %}

@@ -17,7 +17,8 @@ class Property(models.Model):
     developer = models.ForeignKey('Developer')
 
     connectivity = models.CharField(max_length=255, default=None, null=True)
-    neighborhood_quality = models.CharField(max_length=255, default=None, null=True)
+    neighborhood_quality = models.CharField(max_length=255, default=None,
+                                            null=True)
     comments = models.CharField(max_length=255, default=None, null=True)
 
     def __unicode__(self):
@@ -60,14 +61,20 @@ class Project(models.Model):
 class Owner(models.Model):
     name = models.CharField(max_length=255, null=False)
     occupation = models.CharField(max_length=255, null=False)
-    pan_number = models.CharField(max_length=20, default=None)
-    date_of_purchase = models.CharField(max_length=20, default=None)
-    loan_from = models.CharField(max_length=20, default=None)
+    pan_number = models.CharField(max_length=20, default=None, null=True)
+    date_of_purchase = models.CharField(max_length=20, default=None, null=True)
+    # should be in property
+    loan_from = models.CharField(max_length=20, default=None, null=True)
+    # should be in property
     cost_of_purchase = models.CharField(max_length=20, default=0)
+    # should be in property?
     is_resale = models.BooleanField(default=False)
-    name_of_seller = models.CharField(max_length=255, default=None)
-    contact_number_seller = models.CharField(max_length=30, default=None)
-    email_seller = models.CharField(max_length=255, default=None)
+    name_of_seller = models.CharField(max_length=255, default=None, null=True)
+    contact_number_seller = models.CharField(max_length=30, default=None,
+                                             null=True)
+    email_seller = models.CharField(max_length=255, default=None, null=True)
+
+    co_owner = models.ForeignKey('Owner', null=True, default=None)
 
     def __unicode__(self):
         return self.name
