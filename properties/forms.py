@@ -12,6 +12,7 @@ class ProjectBasicDetailsForm(forms.Form):
     developer_name = forms.CharField()
     address_line_one = forms.CharField()
     address_line_two = forms.CharField(required=False)
+    city = forms.CharField()
     state = forms.CharField()
     pin_code = forms.IntegerField()
     owner_name = forms.CharField()
@@ -24,6 +25,7 @@ class ProjectBasicDetailsForm(forms.Form):
             'developer_name',
             'address_line_one',
             'address_line_two',
+            'city',
             'state',
             'pin_code',
             'owner_name',

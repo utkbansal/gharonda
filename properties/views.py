@@ -50,6 +50,7 @@ class PropertyFormView(views.LoginRequiredMixin, FormView):
             initial['developer'] = self.request.session['data'][
                 'developer_name']
             initial['pin_code'] = self.request.session['data']['pin_code']
+            initial['city'] = self.request.session['data']['city']
 
             form = PropertyForm(initial=initial)
 
