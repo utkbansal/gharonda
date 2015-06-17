@@ -83,7 +83,7 @@ class ProjectBasicDetailsForm(forms.Form):
     address_line_two = forms.CharField(required=False)
     city = forms.CharField()
     state = forms.CharField()
-    pin_code = forms.IntegerField()
+    pin_code = forms.CharField()
     owner_name = forms.CharField()
 
     def __init__(self, *args, **kwargs):
