@@ -46,16 +46,39 @@ class DeveloperProjects(models.Model):
         return self.project_name
 
 
+class Bank(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Project(models.Model):
     name = models.CharField(max_length=255, null=False)
     launch_date = models.CharField(max_length=20, null=False)
     possession_date = models.CharField(max_length=20, null=False)
-    # Permit
     # Contractors
     # Loans Available
+    bank = models.ManyToManyField('Bank')
 
     def __unicode__(self):
         return self.name
+
+
+OWNER_CHOICES = ((True, 'Re-Sale'), (False, 'Direct Builder'))
+
+
+class Permissions(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.name
+
+
+class PropertyPermission(models.Model):
+    project = models.ForeignKey('Project')
+    permission = models.ForeignKey('Permissions')
+    value = models.BooleanField()
 
 
 class Owner(models.Model):
@@ -68,7 +91,7 @@ class Owner(models.Model):
     # should be in property
     cost_of_purchase = models.CharField(max_length=20, default=0)
     # should be in property?
-    is_resale = models.BooleanField(default=False)
+    is_resale = models.BooleanField(default=False, choices=OWNER_CHOICES)
     name_of_seller = models.CharField(max_length=255, default=None, null=True)
     contact_number_seller = models.CharField(max_length=30, default=None,
                                              null=True)

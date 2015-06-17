@@ -1,16 +1,17 @@
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views.generic import FormView, TemplateView
 from braces import views
 from django.http import HttpResponseRedirect
 
 from forms import PropertyForm, OwnerForm, DeveloperProjectForm, \
-    ProjectBasicDetailsForm
+    ProjectBasicDetailsForm, ProjectForm, PermissionForm
 
 
-class TestView(TemplateView):
-    template_name = 'dashboard.html'
+class TestView(FormView):
+    form_class = PermissionForm
+    template_name = 'new-property.html'
 
 
 class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
@@ -67,9 +68,42 @@ class PropertyFormView(views.LoginRequiredMixin, FormView):
 
 class OwnerFormView(FormView):
     form_class = OwnerForm
-    template_name = 'new-property.html'
+    template_name = 'owner.html'
     success_url = reverse_lazy('index')
 
     def form_valid(self, form):
         form.save()
         return HttpResponseRedirect(self.success_url)
+
+
+class ProjectView(TemplateView):
+    # /any/
+    # form_class = ProjectForm
+    template_name = 'test.html'
+
+    def get(self, request, *args, **kwargs):
+        permission_form = PermissionForm()
+        project_form = ProjectForm()
+
+        return render(request, self.template_name,
+                      {'permission_form': permission_form,
+                       'project_form': project_form})
+
+    def post(self, request, *args, **kwargs):
+
+        permission_form = PermissionForm(request.POST)
+        project_form = ProjectForm(request.POST)
+
+        forms = {
+            'permission_form': permission_form,
+            'project_form': project_form,
+        }
+
+        if permission_form.is_valid() and project_form.is_valid():
+            project = project_form.save()
+            print type(project)
+            permission_form.save(project=project)
+            return redirect(reverse_lazy('index'))
+
+
+        return render(request, self.template_name, forms)

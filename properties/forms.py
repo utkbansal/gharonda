@@ -1,10 +1,81 @@
-from crispy_forms.bootstrap import AppendedText
+from crispy_forms.bootstrap import AppendedText, InlineRadios
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, ButtonHolder, Submit
 from django.forms import ModelForm
 from django import forms
 
-from models import Property, Owner, Developer, DeveloperProjects
+from models import Property, Owner, Developer, DeveloperProjects, Project, \
+    PropertyPermission, Bank, Permissions
+
+
+class PermissionForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(PermissionForm, self).__init__(*args, **kwargs)
+
+        permissions = Permissions.objects.all()
+        for permission in permissions:
+            self.fields[permission.name] = forms.CharField()
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+    def save(self, *args, **kwargs):
+        project = kwargs.pop('project')
+        for field in self.fields:
+            permission = Permissions.objects.filter(name=field).first()
+            p = PropertyPermission(
+                project=project,
+                permission=permission,
+                value = self.cleaned_data[field]
+            )
+            p.save()
+        return project
+
+
+class ProjectForm(ModelForm):
+    add_bank = forms.BooleanField(required=False, label='Add a bank')
+    new_bank = forms.CharField(required=False, label='Bank Name')
+
+    class Meta:
+        model = Project
+        fields = [
+            'name',
+            'launch_date',
+            'possession_date',
+            'bank',
+            'add_bank',
+            'new_bank'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(ProjectForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['bank'].required = False
+        self.helper.layout = Layout(
+            'name',
+            'launch_date',
+            'possession_date',
+            'bank',
+            'add_bank',
+            'new_bank',
+            # ButtonHolder(
+            #     Submit('Submit', 'submit', css_class='btn-block')
+            # )
+        )
+
+    def save(self, commit=True):
+        if 'add_bank' in self.cleaned_data.keys():
+            print self.cleaned_data['add_bank']
+            if self.cleaned_data['add_bank'] is True:
+                bank = Bank(name=self.cleaned_data['new_bank'])
+
+                project = super(ProjectForm, self).save()
+                bank.save()
+                project.bank.add(bank)
+                print 'hell yeah'
+                return project
+        return super(ProjectForm, self).save()
 
 
 class ProjectBasicDetailsForm(forms.Form):
@@ -18,7 +89,7 @@ class ProjectBasicDetailsForm(forms.Form):
     owner_name = forms.CharField()
 
     def __init__(self, *args, **kwargs):
-        super(ProjectBasicDetailsForm, self).__init__(*args, **kwargs )
+        super(ProjectBasicDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             'name',
@@ -33,6 +104,7 @@ class ProjectBasicDetailsForm(forms.Form):
                 Submit('Submit', 'submit', css_class='btn-block')
             )
         )
+
 
 MONTHS = (
     ('January', 'January'),
@@ -90,6 +162,9 @@ class DeveloperProjectForm(ModelForm):
         return super(DeveloperProjectForm, self).save()
 
 
+OWNER_CHOICES = ((True, 'Re-Sale'), (False, 'Direct Builder'))
+
+
 class OwnerForm(ModelForm):
     co_owner_name = forms.CharField()
     co_owner_occupation = forms.CharField()
@@ -109,9 +184,16 @@ class OwnerForm(ModelForm):
             'email_seller',
         ]
 
+        widgets = {
+            'is_resale': forms.RadioSelect,
+        }
+
     def __init__(self, *args, **kwargs):
         super(OwnerForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.fields['name_of_seller'].required = False
+        self.fields['contact_number_seller'].required = False
+        self.fields['email_seller'].required = False
         self.helper.layout = Layout(
             'name',
             'occupation',
@@ -121,7 +203,7 @@ class OwnerForm(ModelForm):
             'date_of_purchase',
             'loan_from',
             'cost_of_purchase',
-            'is_resale',
+            InlineRadios('is_resale'),
             'name_of_seller',
             'contact_number_seller',
             'email_seller',
@@ -134,12 +216,22 @@ class OwnerForm(ModelForm):
         co_owner_name = self.cleaned_data['co_owner_name']
         co_owner_occupation = self.cleaned_data['co_owner_occupation']
 
-        co_owner, created = Owner.objects.get_or_create(name=co_owner_name,
-                                                        occupation=co_owner_occupation)
+        co_owner, created = Owner.objects.get_or_create(
+            name=co_owner_name,
+            occupation=co_owner_occupation
+        )
 
         self.instance.co_owner = co_owner
 
         return super(OwnerForm, self).save()
+
+
+BEDROOM_CHOICE = []
+for i in range(1, 11):
+    BEDROOM_CHOICE.append(tuple((i, i)))
+
+BEDROOM_CHOICE = tuple(BEDROOM_CHOICE)
+BATHROOM_CHOICE = BEDROOM_CHOICE
 
 
 class PropertyForm(ModelForm):
@@ -161,11 +253,11 @@ class PropertyForm(ModelForm):
         ]
         widgets = {
             'number_of_bedrooms': forms.Select(
-                choices=((1, 1,), (2, 2), (3, 3)), ),
+                choices=BEDROOM_CHOICE, ),
             'number_of_bathrooms': forms.Select(
-                choices=((1, 1,), (2, 2), (3, 3)), ),
+                choices=BATHROOM_CHOICE),
             'number_of_parking_spaces': forms.Select(
-                choices=((1, 1,), (2, 2), (3, 3)), ),
+                choices=((1, 1,), (2, 2), ('3+', '3+')), ),
             'developer': forms.TextInput(),
         }
 
