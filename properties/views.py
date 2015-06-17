@@ -5,18 +5,22 @@ from django.views.generic import FormView, TemplateView
 from braces import views
 from django.http import HttpResponseRedirect
 
-from forms import PropertyForm, OwnerForm, DeveloperProjectForm, \
-    ProjectBasicDetailsForm, ProjectForm, PermissionForm
+from forms import (PropertyForm,
+                   OwnerForm,
+                   DeveloperProjectForm,
+                   ProjectBasicDetailsForm,
+                   ProjectForm,
+                   PermissionForm)
 
 
-class TestView(FormView):
-    form_class = PermissionForm
-    template_name = 'new-property.html'
+#
+# class TestView(FormView):
+#     form_class = PermissionForm
+#     template_name = 'new-property.html'
 
 
 class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
-    # basic/
-    template_name = 'new-property.html'
+    template_name = 'basic-details.html'
     form_class = ProjectBasicDetailsForm
 
     def form_valid(self, form):
@@ -36,7 +40,6 @@ class DeveloperProjectFormView(views.LoginRequiredMixin, FormView):
 
 
 class PropertyFormView(views.LoginRequiredMixin, FormView):
-    # /new/
     form_class = PropertyForm
     template_name = 'new-property.html'
 
@@ -76,10 +79,8 @@ class OwnerFormView(FormView):
         return HttpResponseRedirect(self.success_url)
 
 
-class ProjectView(TemplateView):
-    # /any/
-    # form_class = ProjectForm
-    template_name = 'test.html'
+class ProjectView(views.LoginRequiredMixin, TemplateView):
+    template_name = 'project.html'
 
     def get(self, request, *args, **kwargs):
         permission_form = PermissionForm()
