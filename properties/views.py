@@ -90,7 +90,6 @@ class ProjectView(TemplateView):
                        'project_form': project_form})
 
     def post(self, request, *args, **kwargs):
-
         permission_form = PermissionForm(request.POST)
         project_form = ProjectForm(request.POST)
 
@@ -104,6 +103,5 @@ class ProjectView(TemplateView):
             print type(project)
             permission_form.save(project=project)
             return redirect(reverse_lazy('index'))
-
 
         return render(request, self.template_name, forms)

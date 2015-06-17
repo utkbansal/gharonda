@@ -5,7 +5,7 @@ from django.forms import ModelForm
 from django import forms
 
 from models import Property, Owner, Developer, DeveloperProjects, Project, \
-    PropertyPermission, Bank, Permissions
+    ProjectPermission, Bank, Permissions
 
 
 class PermissionForm(forms.Form):
@@ -23,10 +23,10 @@ class PermissionForm(forms.Form):
         project = kwargs.pop('project')
         for field in self.fields:
             permission = Permissions.objects.filter(name=field).first()
-            p = PropertyPermission(
+            p = ProjectPermission(
                 project=project,
                 permission=permission,
-                value = self.cleaned_data[field]
+                value=self.cleaned_data[field]
             )
             p.save()
         return project

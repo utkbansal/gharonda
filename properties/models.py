@@ -75,10 +75,10 @@ class Permissions(models.Model):
         return self.name
 
 
-class PropertyPermission(models.Model):
+class ProjectPermission(models.Model):
     project = models.ForeignKey('Project')
     permission = models.ForeignKey('Permissions')
-    value = models.BooleanField()
+    value = models.CharField(max_length=255)
 
 
 class Owner(models.Model):
