@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect, render
 from django.views.generic import FormView, TemplateView
@@ -11,7 +10,6 @@ from forms import (PropertyForm,
                    ProjectBasicDetailsForm,
                    ProjectForm,
                    PermissionForm)
-
 
 #
 # class TestView(FormView):
@@ -61,7 +59,7 @@ class PropertyFormView(views.LoginRequiredMixin, FormView):
             self.request.session.pop('data')
             return self.render_to_response(self.get_context_data(form=form))
 
-        messages.error(request, 'You need to add basic info first')
+        # messages.error(request, 'You need to add basic info first')
         return redirect(reverse_lazy('basic'))
 
     def form_valid(self, form):
@@ -101,7 +99,6 @@ class ProjectView(views.LoginRequiredMixin, TemplateView):
 
         if permission_form.is_valid() and project_form.is_valid():
             project = project_form.save()
-            print type(project)
             permission_form.save(project=project)
             return redirect(reverse_lazy('index'))
 

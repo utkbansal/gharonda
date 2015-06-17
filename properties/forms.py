@@ -66,14 +66,12 @@ class ProjectForm(ModelForm):
 
     def save(self, commit=True):
         if 'add_bank' in self.cleaned_data.keys():
-            print self.cleaned_data['add_bank']
             if self.cleaned_data['add_bank'] is True:
                 bank = Bank(name=self.cleaned_data['new_bank'])
 
                 project = super(ProjectForm, self).save()
                 bank.save()
                 project.bank.add(bank)
-                print 'hell yeah'
                 return project
         return super(ProjectForm, self).save()
 
