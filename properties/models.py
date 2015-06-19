@@ -15,6 +15,7 @@ class Property(models.Model):
     state = models.CharField(max_length=255, null=False)
     pin_code = models.CharField(max_length=20, null=False)
     developer = models.ForeignKey('Developer', null=True, default=None)
+    owner = models.ForeignKey('Owner', null=True, default=None)
 
     connectivity = models.CharField(max_length=255, default=None, null=True)
     neighborhood_quality = models.CharField(max_length=255, default=None,
