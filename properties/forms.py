@@ -1,6 +1,6 @@
 from crispy_forms.bootstrap import AppendedText, InlineRadios
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Field
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Field, Div
 from django.forms import ModelForm
 from django import forms
 
@@ -60,14 +60,21 @@ class ProjectForm(ModelForm):
         self.fields['bank'].required = False
         self.helper.layout = Layout(
             'name',
-            Field('launch_date', css_class='date-field'),
-            Field('possession_date', css_class='date-field'),
+            Div(
+                Field('launch_date', css_class='date-field'),
+                css_class='col-md-6',
+                style='padding-left:0px'
+            ),
+            Div(
+                Field('possession_date',
+                      css_class='date-field',
+                      ),
+                css_class='col-md-6',
+
+                style='padding-right:0px'),
             'bank',
             'add_bank',
             'new_bank',
-            # ButtonHolder(
-            #     Submit('Submit', 'submit', css_class='btn-block')
-            # )
         )
 
     def save(self, commit=True):
@@ -112,7 +119,6 @@ class PropertyBasicDetailsForm(ModelForm):
             'city',
             'state',
             'pin_code',
-            # 'owner_name',
             ButtonHolder(
                 Submit('Submit', 'submit', css_class='btn-block')
             )
@@ -219,21 +225,39 @@ class OwnerForm(ModelForm):
         self.fields['contact_number_seller'].required = False
         self.fields['email_seller'].required = False
         self.helper.layout = Layout(
-            'name',
-            'occupation',
-            'co_owner_name',
-            'co_owner_occupation',
-            'pan_number',
-            Field('date_of_purchase', css_class='date-field'),
-            'loan_from',
-            'cost_of_purchase',
-            InlineRadios('is_resale'),
-            'name_of_seller',
-            'contact_number_seller',
-            'email_seller',
-            ButtonHolder(
-                Submit('owner-details', 'submit', css_class='btn-block',
-                       css_id='submit-owner-details')
+            Div(
+                Div('name',
+                    'occupation',
+                    'loan_from',
+                    'pan_number',
+                    css_class='col-md-6',
+                    style='padding-left:0px'),
+
+                Div('co_owner_name',
+                    'co_owner_occupation',
+                    'cost_of_purchase',
+
+                    Field('date_of_purchase', css_class='date-field'),
+                    css_class='col-md-6',
+                    style='padding-right:0px'),
+                InlineRadios('is_resale'),
+                Div(
+                    'name_of_seller',
+                    css_class='col-md-6',
+                    style='padding-left:0px'
+                ),
+                Div(
+                    'contact_number_seller',
+                    css_class='col-md-6',
+                    style='padding-right:0px'
+                ),
+
+                'email_seller',
+                ButtonHolder(
+                    Submit('owner-details', 'submit', css_class='btn-block',
+                           css_id='submit-owner-details')
+
+                )
             )
         )
 
@@ -306,24 +330,31 @@ class PropertyForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(PropertyForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        # self.helper.form_tag=False
         self.helper.disable_csrf = True
         self.helper.form_id = 'property-details'
         self.fields['address_line_two'].required = False
         self.helper.layout = Layout(
-            'property_type',
-            'developer',
+            Div('property_type', css_class='col-md-6',
+                style='padding-left: 0px'),
+            Div('developer', css_class='col-md-6', style='padding-right:0px'),
             'address_line_one',
             'address_line_two',
-            'city',
-            'state',
-            'pin_code',
-            'number_of_bedrooms',
-            'number_of_bathrooms',
-            'number_of_parking_spaces',
+            Div('city',
+                'pin_code',
+                'number_of_bathrooms',
+                AppendedText('built_up_area', 'sq ft'),
+                css_class='col-md-6',
+                style='padding-left:0px'
+                ),
+            Div('state',
+                'number_of_bedrooms',
+                'number_of_parking_spaces',
+                AppendedText('total_area', 'sq ft'),
+                css_class='col-md-6',
+                style='padding-right:0px'),
+
             'specifications',
-            AppendedText('built_up_area', 'sq ft'),
-            AppendedText('total_area', 'sq ft'),
+
             ButtonHolder(
                 Submit('property-details', 'submit', css_class='btn-block',
                        css_id='submit-property-details')
