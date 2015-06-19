@@ -19,6 +19,10 @@ class PermissionForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_id = 'permission-form'
+        self.helper.add_input(
+            Submit('project-details', 'submit', css_class='btn-block',
+                   css_id='submit-project-details')
+        )
 
     def save(self, *args, **kwargs):
         project = kwargs.pop('project')
@@ -80,6 +84,8 @@ class ProjectForm(ModelForm):
 
 class PropertyBasicDetailsForm(ModelForm):
     developer_name = forms.CharField()
+    project_name = forms.CharField()
+    owner_name = forms.CharField()
 
     class Meta:
         model = Property
@@ -98,6 +104,8 @@ class PropertyBasicDetailsForm(ModelForm):
         self.fields['address_line_two'].required = False
         self.helper.layout = Layout(
             # 'name',
+            'owner_name',
+            'project_name',
             'developer_name',
             'address_line_one',
             'address_line_two',

@@ -23,14 +23,7 @@
     <h2>Project Details</h2>
     <form method="post" id="project-details">
         {% crispy project_form %}
-        <h4>Add permission</h4>
         {% crispy permission_form %}
-        <div class="buttonHolder">
-            <input type="submit" name="project-details"
-                   value="submit"
-                   class="btn btn-primary btn-block"
-                   id="submit-project-details">
-        </div>
     </form>
 
 
@@ -46,12 +39,22 @@
     <script src="{% static 'js/ajax.js' %}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 
+
+    <script src="{% static 'js/add-bank.js' %}"
+            type="application/javascript"></script>
+
+    <script src="{% static 'js/resale.js' %}"
+            type="application/javascript"></script>
+
     <script type="text/javascript">
+    function all(){
         $('#id_bank').select2();
         $(".date-field").datepicker({
             changeMonth: true,
             changeYear: true
         });
-
+        resaleCheck();
+        addBankCheck();}
+    all();
     </script>
 {% endblock %}

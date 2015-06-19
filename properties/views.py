@@ -1,19 +1,18 @@
 from crispy_forms.utils import render_crispy_form
 # from django.core.serializers import json
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView, TemplateView
 from braces import views
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-import json
+from django.http import HttpResponseRedirect, JsonResponse
 
 from forms import (PropertyForm,
                    OwnerForm,
-                   DeveloperProjectForm,
                    PropertyBasicDetailsForm,
                    ProjectForm,
                    PermissionForm,
-                   OtherDetailsForm)
+                   OtherDetailsForm, DeveloperProjectForm)
 from properties.models import Property
 
 
@@ -24,13 +23,16 @@ class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
     def form_valid(self, form):
         print self.request.POST
         property = form.save()
-        print (type(property))
-        print property.id
+        # self.request.session
         return HttpResponseRedirect('/properties/dashboard/' + str(property.id))
 
 
 class DashboardView(views.LoginRequiredMixin, TemplateView):
     template_name = 'mega.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(DashboardView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, property_id, *args, **kwargs):
         print property_id
@@ -54,37 +56,41 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
         return render(request, self.template_name, forms)
 
     def post(self, request, property_id, *args, **kwargs):
-        if request.is_ajax:
+        if request.is_ajax():
 
             property = Property.objects.get(id=property_id)
             property_form = PropertyForm(request.POST, instance=property)
             owner_form = OwnerForm(request.POST)
-            developer_project_form = DeveloperProjectForm(request.POST)
-            project_basic_details_form = PropertyBasicDetailsForm(request.POST)
             project_form = ProjectForm(request.POST)
             permission_form = PermissionForm(request.POST)
-            other_details_form = OtherDetailsForm(request.POST, instance=property)
+            other_details_form = OtherDetailsForm(request.POST,
+                                                  instance=property)
             print request.POST
             if 'property-details' in request.POST:
                 if property_form.is_valid():
 
                     property_form.save()
-                    return JsonResponse({'success': 'true'})
+                    form_html = render_crispy_form(property_form)
+                    # data = {'success': 'test'}
+                    # return  HttpResponse(json.dumps(data), content_type='application/json')
+                    return JsonResponse({'success': 'true',
+                                         'form_html': form_html})
                 else:
                     form_html = render_crispy_form(property_form)
-                    return JsonResponse({'success':'false',
-                                         'form_html':form_html})
+                    return JsonResponse({'success': 'false',
+                                         'form_html': form_html,
+                                         'errors': property_form.errors})
 
             if 'owner-details' in request.POST:
                 if owner_form.is_valid():
                     print request.POST
                     print 'owner form valid'
                     owner_form.save()
-                    return JsonResponse({'success':'true' })
+                    return JsonResponse({'success': 'true'})
                 else:
                     form_html = render_crispy_form(owner_form)
-                    return JsonResponse({'success':'false',
-                                         'form_html':form_html})
+                    return JsonResponse({'success': 'false',
+                                         'form_html': form_html})
 
             if 'project-details' in request.POST:
                 if project_form.is_valid() and permission_form.is_valid():
@@ -95,93 +101,28 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                 else:
                     project_form_html = render_crispy_form(project_form)
                     permission_form_html = render_crispy_form(permission_form)
-                    form_html = project_form_html+permission_form_html
-                    return JsonResponse({'success':'false',
-                                         'form_html':form_html})
+                    form_html = project_form_html + permission_form_html
+                    return JsonResponse({'success': 'false',
+                                         'form_html': form_html})
 
             if 'other-details' in request.POST:
                 if other_details_form.is_valid():
                     print 'other details form submitted'
                     other_details_form.save()
-                    return JsonResponse({'success': 'true'})
+                    form_html = render_crispy_form(other_details_form)
+                    return JsonResponse({'success': 'true',
+                                         'form_html': form_html})
                 else:
                     form_html = render_crispy_form(other_details_form)
-                    return JsonResponse({'success':'true',
-                                         'form_html':form_html})
+                    return JsonResponse({'success': 'true',
+                                         'form_html': form_html})
 
-# class DeveloperProjectFormView(views.LoginRequiredMixin, FormView):
-#     form_class = DeveloperProjectForm
-#     template_name = 'new-property.html'
-#     success_url = 'success'
-#
-#     def form_valid(self, form):
-#         form.save()
-#         return HttpResponseRedirect(self.success_url)
-#
-#
-# class OwnerFormView(FormView):
-#     form_class = OwnerForm
-#     template_name = 'owner.html'
-#     success_url = reverse_lazy('index')
-#
-#     def form_valid(self, form):
-#         form.save()
-#         return HttpResponseRedirect(self.success_url)
-#
-#
-# class PropertyFormView(views.LoginRequiredMixin, FormView):
-#     form_class = PropertyForm
-#     template_name = 'new-property.html'
-#
-#     def get(self, request, *args, **kwargs):
-#         if 'data' in request.session:
-#             initial = super(PropertyFormView, self).get_initial()
-#             initial['address_line_one'] = self.request.session['data'][
-#                 'address_line_one']
-#             initial['address_line_two'] = self.request.session['data'][
-#                 'address_line_two']
-#             initial['state'] = self.request.session['data']['state']
-#             initial['developer'] = self.request.session['data'][
-#                 'developer_name']
-#             initial['pin_code'] = self.request.session['data']['pin_code']
-#             initial['city'] = self.request.session['data']['city']
-#
-#             form = PropertyForm(initial=initial)
-#
-#             self.request.session.pop('data')
-#             return self.render_to_response(self.get_context_data(form=form))
-#
-#         # messages.error(request, 'You need to add basic info first')
-#         return redirect(reverse_lazy('basic'))
-#
-#     def form_valid(self, form):
-#         form.save()
-#         return HttpResponseRedirect('success')
-#
-#
-# class ProjectView(views.LoginRequiredMixin, TemplateView):
-#     template_name = 'project.html'
-#
-#     def get(self, request, *args, **kwargs):
-#         permission_form = PermissionForm()
-#         project_form = ProjectForm()
-#
-#         return render(request, self.template_name,
-#                       {'permission_form': permission_form,
-#                        'project_form': project_form})
-#
-#     def post(self, request, *args, **kwargs):
-#         permission_form = PermissionForm(request.POST)
-#         project_form = ProjectForm(request.POST)
-#
-#         forms = {
-#             'permission_form': permission_form,
-#             'project_form': project_form,
-#         }
-#
-#         if permission_form.is_valid() and project_form.is_valid():
-#             project = project_form.save()
-#             permission_form.save(project=project)
-#             return redirect(reverse_lazy('index'))
-#
-#         return render(request, self.template_name, forms)
+
+class DeveloperProjectFormView(views.LoginRequiredMixin, FormView):
+    form_class = DeveloperProjectForm
+    template_name = 'new-property.html'
+    success_url = 'success'
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect(self.success_url)
