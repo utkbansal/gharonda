@@ -251,12 +251,27 @@ BEDROOM_CHOICE = tuple(BEDROOM_CHOICE)
 BATHROOM_CHOICE = BEDROOM_CHOICE
 
 
+PROPERTY_TYPE_CHOICE =(
+    ('Apartment', 'Apartment'),
+    ('Town Home','Town Home'),
+    ('Single Family House','Single Family House'),
+    ('Land','Land'),
+)
+
+SPECIFICATION_CHOICE = (
+    ('Basic','Basic'),
+    ('Premium','Premium'),
+    ('Luxury', 'Luxury'),
+)
+
 class PropertyForm(ModelForm):
     developer = forms.CharField(label='Builder Name')
 
     class Meta:
         model = Property
         fields = [
+            'property_type',
+            'specifications',
             'built_up_area',
             'total_area',
             'number_of_bedrooms',
@@ -276,6 +291,8 @@ class PropertyForm(ModelForm):
             'number_of_parking_spaces': forms.Select(
                 choices=((1, 1,), (2, 2), ('3+', '3+')), ),
             'developer': forms.TextInput(),
+            'property_type': forms.Select(choices=PROPERTY_TYPE_CHOICE),
+            'specifications':forms.Select(choices=SPECIFICATION_CHOICE)
         }
 
     def __init__(self, *args, **kwargs):
@@ -286,17 +303,19 @@ class PropertyForm(ModelForm):
         self.helper.form_id = 'property-details'
         self.fields['address_line_two'].required = False
         self.helper.layout = Layout(
-            AppendedText('built_up_area', 'sq ft'),
-            AppendedText('total_area', 'sq ft'),
-            'number_of_bedrooms',
-            'number_of_bathrooms',
-            'number_of_parking_spaces',
+            'property_type',
+            'developer',
             'address_line_one',
             'address_line_two',
             'city',
             'state',
             'pin_code',
-            'developer',
+            'number_of_bedrooms',
+            'number_of_bathrooms',
+            'number_of_parking_spaces',
+            'specifications',
+            AppendedText('built_up_area', 'sq ft'),
+            AppendedText('total_area', 'sq ft'),
             ButtonHolder(
                 Submit('property-details', 'submit', css_class='btn-block',
                        css_id='submit-property-details')
