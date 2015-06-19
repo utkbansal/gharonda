@@ -5,11 +5,13 @@
 {% block css %}
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css"
           rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 {% endblock %}
 
 {% block form %}
     <h2>Property Details</h2>
-        {% crispy property_form %}
+    {% crispy property_form %}
 
 
     <h2>Owner Details</h2>
@@ -40,11 +42,16 @@
 {% endblock %}
 
 {% block js %}
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="{% static 'js/ajax.js' %}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 
     <script type="text/javascript">
         $('#id_bank').select2();
+        $(".date-field").datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
 
     </script>
 {% endblock %}

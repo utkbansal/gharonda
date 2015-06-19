@@ -1,6 +1,6 @@
 from crispy_forms.bootstrap import AppendedText, InlineRadios
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Field
 from django.forms import ModelForm
 from django import forms
 
@@ -56,8 +56,8 @@ class ProjectForm(ModelForm):
         self.fields['bank'].required = False
         self.helper.layout = Layout(
             'name',
-            'launch_date',
-            'possession_date',
+            Field('launch_date', css_class='date-field'),
+            Field('possession_date', css_class='date-field'),
             'bank',
             'add_bank',
             'new_bank',
@@ -216,7 +216,7 @@ class OwnerForm(ModelForm):
             'co_owner_name',
             'co_owner_occupation',
             'pan_number',
-            'date_of_purchase',
+            Field('date_of_purchase', css_class='date-field'),
             'loan_from',
             'cost_of_purchase',
             InlineRadios('is_resale'),
@@ -250,19 +250,19 @@ for i in range(1, 11):
 BEDROOM_CHOICE = tuple(BEDROOM_CHOICE)
 BATHROOM_CHOICE = BEDROOM_CHOICE
 
-
-PROPERTY_TYPE_CHOICE =(
+PROPERTY_TYPE_CHOICE = (
     ('Apartment', 'Apartment'),
-    ('Town Home','Town Home'),
-    ('Single Family House','Single Family House'),
-    ('Land','Land'),
+    ('Town Home', 'Town Home'),
+    ('Single Family House', 'Single Family House'),
+    ('Land', 'Land'),
 )
 
 SPECIFICATION_CHOICE = (
-    ('Basic','Basic'),
-    ('Premium','Premium'),
+    ('Basic', 'Basic'),
+    ('Premium', 'Premium'),
     ('Luxury', 'Luxury'),
 )
+
 
 class PropertyForm(ModelForm):
     developer = forms.CharField(label='Builder Name')
@@ -292,7 +292,7 @@ class PropertyForm(ModelForm):
                 choices=((1, 1,), (2, 2), ('3+', '3+')), ),
             'developer': forms.TextInput(),
             'property_type': forms.Select(choices=PROPERTY_TYPE_CHOICE),
-            'specifications':forms.Select(choices=SPECIFICATION_CHOICE)
+            'specifications': forms.Select(choices=SPECIFICATION_CHOICE)
         }
 
     def __init__(self, *args, **kwargs):
