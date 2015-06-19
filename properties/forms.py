@@ -52,7 +52,7 @@ class ProjectForm(ModelForm):
         super(ProjectForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.helper.form_id='project-form'
+        self.helper.form_id = 'project-form'
         self.fields['bank'].required = False
         self.helper.layout = Layout(
             'name',
@@ -78,12 +78,11 @@ class ProjectForm(ModelForm):
         return super(ProjectForm, self).save()
 
 
-
 class PropertyBasicDetailsForm(ModelForm):
     developer_name = forms.CharField()
 
     class Meta:
-        model= Property
+        model = Property
         fields = [
             'address_line_one',
             'address_line_two',
@@ -95,8 +94,8 @@ class PropertyBasicDetailsForm(ModelForm):
         super(PropertyBasicDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         # self.helper.form_tag =False
-        self.helper.form_id='project-basic-details-form'
-        self.fields['address_line_two'].required=False
+        self.helper.form_id = 'project-basic-details-form'
+        self.fields['address_line_two'].required = False
         self.helper.layout = Layout(
             # 'name',
             'developer_name',
@@ -116,7 +115,8 @@ class PropertyBasicDetailsForm(ModelForm):
         dev, created = Developer.objects.get_or_create(name=developer_name)
         print dev
         self.instance.developer = dev
-        return super(PropertyBasicDetailsForm,self).save()
+        return super(PropertyBasicDetailsForm, self).save()
+
 
 MONTHS = (
     ('January', 'January'),
@@ -154,8 +154,8 @@ class DeveloperProjectForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(DeveloperProjectForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag=False
-        self.helper.form_id='developer-project-form'
+        self.helper.form_tag = False
+        self.helper.form_id = 'developer-project-form'
         self.helper.layout = Layout(
             'project_name',
             'launch_date_month',
@@ -205,7 +205,7 @@ class OwnerForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(OwnerForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag=False
+        self.helper.form_tag = False
         self.helper.form_id = 'owner-form'
         self.fields['name_of_seller'].required = False
         self.fields['contact_number_seller'].required = False
@@ -252,7 +252,7 @@ BATHROOM_CHOICE = BEDROOM_CHOICE
 
 
 class PropertyForm(ModelForm):
-    developer = forms.CharField()
+    developer = forms.CharField(label='Builder Name')
 
     class Meta:
         model = Property
@@ -282,8 +282,8 @@ class PropertyForm(ModelForm):
         super(PropertyForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         # self.helper.form_tag=False
-        # self.helper.disable_csrf=True
-        self.helper.form_id='property-details'
+        self.helper.disable_csrf = True
+        self.helper.form_id = 'property-details'
         self.fields['address_line_two'].required = False
         self.helper.layout = Layout(
             AppendedText('built_up_area', 'sq ft'),
@@ -298,7 +298,8 @@ class PropertyForm(ModelForm):
             'pin_code',
             'developer',
             ButtonHolder(
-                Submit('property-details', 'submit', css_class='btn-block', css_id='submit-property-details')
+                Submit('property-details', 'submit', css_class='btn-block',
+                       css_id='submit-property-details')
             )
         )
 
@@ -320,7 +321,7 @@ class OtherDetailsForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(OtherDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag=False
+        self.helper.form_tag = False
         self.fields['connectivity'].required = False
         self.fields['neighborhood_quality'].required = False
         self.fields['comments'].required = False
@@ -334,5 +335,3 @@ class OtherDetailsForm(ModelForm):
                        css_id='submit-other-details')
             )
         )
-
-
