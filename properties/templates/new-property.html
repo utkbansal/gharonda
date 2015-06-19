@@ -1,4 +1,5 @@
 {% extends 'dashboard.html' %}
+{% load staticfiles %}
 
 {% load crispy_forms_tags %}
 
@@ -17,4 +18,4 @@
     <h2>Form Title</h2>
     <hr>
     {% crispy form %}
-{% endblock %}
+    <script src="{% static 'js/ajax.js'  %}"></script>{% endblock %}

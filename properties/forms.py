@@ -18,6 +18,7 @@ class PermissionForm(forms.Form):
 
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.form_id = 'permission-form'
 
     def save(self, *args, **kwargs):
         project = kwargs.pop('project')
@@ -51,6 +52,7 @@ class ProjectForm(ModelForm):
         super(ProjectForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.form_id='project-form'
         self.fields['bank'].required = False
         self.helper.layout = Layout(
             'name',
@@ -76,33 +78,45 @@ class ProjectForm(ModelForm):
         return super(ProjectForm, self).save()
 
 
-class ProjectBasicDetailsForm(forms.Form):
-    name = forms.CharField()
+
+class PropertyBasicDetailsForm(ModelForm):
     developer_name = forms.CharField()
-    address_line_one = forms.CharField()
-    address_line_two = forms.CharField(required=False)
-    city = forms.CharField()
-    state = forms.CharField()
-    pin_code = forms.CharField()
-    owner_name = forms.CharField()
+
+    class Meta:
+        model= Property
+        fields = [
+            'address_line_one',
+            'address_line_two',
+            'city',
+            'state',
+            'pin_code']
 
     def __init__(self, *args, **kwargs):
-        super(ProjectBasicDetailsForm, self).__init__(*args, **kwargs)
+        super(PropertyBasicDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        # self.helper.form_tag =False
+        self.helper.form_id='project-basic-details-form'
+        self.fields['address_line_two'].required=False
         self.helper.layout = Layout(
-            'name',
+            # 'name',
             'developer_name',
             'address_line_one',
             'address_line_two',
             'city',
             'state',
             'pin_code',
-            'owner_name',
+            # 'owner_name',
             ButtonHolder(
                 Submit('Submit', 'submit', css_class='btn-block')
             )
         )
 
+    def save(self, commit=True):
+        developer_name = self.cleaned_data['developer_name']
+        dev, created = Developer.objects.get_or_create(name=developer_name)
+        print dev
+        self.instance.developer = dev
+        return super(PropertyBasicDetailsForm,self).save()
 
 MONTHS = (
     ('January', 'January'),
@@ -140,6 +154,8 @@ class DeveloperProjectForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(DeveloperProjectForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_tag=False
+        self.helper.form_id='developer-project-form'
         self.helper.layout = Layout(
             'project_name',
             'launch_date_month',
@@ -189,6 +205,8 @@ class OwnerForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(OwnerForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_tag=False
+        self.helper.form_id = 'owner-form'
         self.fields['name_of_seller'].required = False
         self.fields['contact_number_seller'].required = False
         self.fields['email_seller'].required = False
@@ -206,7 +224,8 @@ class OwnerForm(ModelForm):
             'contact_number_seller',
             'email_seller',
             ButtonHolder(
-                Submit('Submit', 'submit', css_class='btn-block')
+                Submit('owner-details', 'submit', css_class='btn-block',
+                       css_id='submit-owner-details')
             )
         )
 
@@ -262,7 +281,10 @@ class PropertyForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(PropertyForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.fields['address_line_two'].required = False,
+        # self.helper.form_tag=False
+        # self.helper.disable_csrf=True
+        self.helper.form_id='property-details'
+        self.fields['address_line_two'].required = False
         self.helper.layout = Layout(
             AppendedText('built_up_area', 'sq ft'),
             AppendedText('total_area', 'sq ft'),
@@ -276,7 +298,7 @@ class PropertyForm(ModelForm):
             'pin_code',
             'developer',
             ButtonHolder(
-                Submit('Submit', 'submit', css_class='btn-block')
+                Submit('property-details', 'submit', css_class='btn-block', css_id='submit-property-details')
             )
         )
 
@@ -286,3 +308,31 @@ class PropertyForm(ModelForm):
         self.instance.developer = developer
 
         return super(PropertyForm, self).save()
+
+
+class OtherDetailsForm(ModelForm):
+    class Meta:
+        model = Property
+        fields = ['connectivity',
+                  'neighborhood_quality',
+                  'comments']
+
+    def __init__(self, *args, **kwargs):
+        super(OtherDetailsForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag=False
+        self.fields['connectivity'].required = False
+        self.fields['neighborhood_quality'].required = False
+        self.fields['comments'].required = False
+
+        self.helper.layout = Layout(
+            'connectivity',
+            'neighborhood_quality',
+            'comments',
+            ButtonHolder(
+                Submit('other-details', 'submit', css_class='btn-block',
+                       css_id='submit-other-details')
+            )
+        )
+
+

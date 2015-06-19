@@ -4,17 +4,17 @@ from django.db import models
 class Property(models.Model):
     property_type = models.CharField(max_length=255, default='Apartment')
     specifications = models.CharField(max_length=255, default='Basic')
-    built_up_area = models.FloatField(max_length=6, null=False)
-    total_area = models.FloatField(null=False)
+    built_up_area = models.FloatField(max_length=6, null=False, default=0)
+    total_area = models.FloatField(null=False, default=0)
     number_of_bedrooms = models.CharField(max_length=3, default=1)
     number_of_bathrooms = models.CharField(max_length=3, default=1)
     number_of_parking_spaces = models.CharField(max_length=2, default=0)
     address_line_one = models.CharField(max_length=255, null=False)
-    address_line_two = models.CharField(max_length=255, default=None)
+    address_line_two = models.CharField(max_length=255,null=True, default=None)
     city = models.CharField(max_length=255, null=False)
     state = models.CharField(max_length=255, null=False)
     pin_code = models.CharField(max_length=20, null=False)
-    developer = models.ForeignKey('Developer')
+    developer = models.ForeignKey('Developer', null=True, default=None)
 
     connectivity = models.CharField(max_length=255, default=None, null=True)
     neighborhood_quality = models.CharField(max_length=255, default=None,
@@ -23,6 +23,9 @@ class Property(models.Model):
 
     def __unicode__(self):
         return self.property_type
+
+    class Meta:
+        verbose_name_plural='Properties'
 
 
 class Developer(models.Model):
