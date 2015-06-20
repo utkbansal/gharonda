@@ -21,6 +21,7 @@ class Property(models.Model):
     neighborhood_quality = models.CharField(max_length=255, default=None,
                                             null=True)
     comments = models.CharField(max_length=255, default=None, null=True)
+    created_by = models.ForeignKey('custom_user.User')
 
     def __unicode__(self):
         return self.property_type
