@@ -11,3 +11,20 @@ body {
 #broker-only-data {
     display: None;
 }
+
+h4{
+    text-align: center;
+}
+
+#add-property-button{
+    margin-bottom: 15%;
+    margin-top: 15%;
+}
+
+table{
+    margin-top: 5%;
+}
+
+.table tbody>tr>td{
+    vertical-align: middle;
+}
