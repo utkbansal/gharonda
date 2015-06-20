@@ -26,6 +26,8 @@
         {% crispy permission_form %}
     </form>
 
+    <h2>Builder Detail</h2>
+    {% crispy builder_form %}
 
     <h2>Other Details</h2>
     <form method="post" id="other-details">
@@ -47,14 +49,15 @@
             type="application/javascript"></script>
 
     <script type="text/javascript">
-    function all(){
-        $('#id_bank').select2();
-        $(".date-field").datepicker({
-            changeMonth: true,
-            changeYear: true
-        });
-        resaleCheck();
-        addBankCheck();}
-    all();
+        function all() {
+            $('#id_bank').select2();
+            $(".date-field").datepicker({
+                changeMonth: true,
+                changeYear: true
+            });
+            resaleCheck();
+            addBankCheck();
+        }
+        all();
     </script>
 {% endblock %}

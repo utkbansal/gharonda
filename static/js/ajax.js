@@ -69,6 +69,27 @@ function projectAjax() {
 
 $('#submit-project-details').click(projectAjax);
 
+function builderAjax() {
+    var builderDetailsForm = $('#builder-details');
+    var post = $(this).attr("name") + "=" + $(this).val();
+    var form_data = $(builderDetailsForm).serialize() + "&" + post;
+    console.log(form_data);
+
+    $.ajax({
+        data: form_data,
+        type: 'POST',
+        url: $(this).attr('action'),
+        success: function (data) {
+            console.log(data);
+            $('#builder-details').replaceWith(data['form_html']);
+            $('#submit-builder-details').click(builderAjax);
+            all();
+        }
+    });
+    return false;
+}
+
+$('#submit-builder-details').click(builderAjax);
 
 function otherAjax() {
     var otherDetailsForm = $('#other-details');

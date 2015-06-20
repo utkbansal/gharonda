@@ -168,17 +168,25 @@ class DeveloperProjectForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(DeveloperProjectForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_tag = False
-        self.helper.form_id = 'developer-project-form'
+        self.helper.form_id = 'builder-details'
         self.helper.layout = Layout(
             'project_name',
-            'launch_date_month',
-            'launch_date_year',
-            'possession_date_month',
-            'possession_date_year',
+            Div(
+                'launch_date_month',
+                'possession_date_month',
+                css_class='col-md-6',
+                style='padding-left:0px'
+            ),
+            Div(
+                Field('launch_date_year', css_class='year'),
+                Field('possession_date_year', css_class='year'),
+                css_class='col-md-6',
+                style='padding-right:0px'
+            ),
             'developer',
             ButtonHolder(
-                Submit('Submit', 'submit', css_class='btn-block')
+                Submit('builder-details', 'submit', css_class='btn-block',
+                       css_id='submit-builder-details')
             )
         )
 

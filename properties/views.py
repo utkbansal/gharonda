@@ -43,18 +43,21 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
         project_form = ProjectForm()
         permission_form = PermissionForm()
         other_details_form = OtherDetailsForm(instance=p)
+        builder_form = DeveloperProjectForm()
 
         forms = {
             'property_form': property_form,
             'owner_form': owner_form,
             'project_form': project_form,
             'permission_form': permission_form,
-            'other_details_form': other_details_form
+            'other_details_form': other_details_form,
+            'builder_form': builder_form,
         }
 
         return render(request, self.template_name, forms)
 
     def post(self, request, property_id, *args, **kwargs):
+        print request.POST
         if request.is_ajax():
 
             property = Property.objects.get(id=property_id)
@@ -64,7 +67,9 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
             permission_form = PermissionForm(request.POST)
             other_details_form = OtherDetailsForm(request.POST,
                                                   instance=property)
+            builder_form = DeveloperProjectForm(request.POST)
             print request.POST
+
             if 'property-details' in request.POST:
                 if property_form.is_valid():
 
@@ -104,6 +109,18 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                     return JsonResponse({'success': 'false',
                                          'form_html': form_html})
 
+            if 'builder-details' in request.POST:
+                if builder_form.is_valid():
+                    print 'builder detials form'
+                    builder_form.save()
+                    form_html = render_crispy_form(builder_form)
+                    return JsonResponse({'success': 'true',
+                                         'form_html': form_html})
+                else:
+                    form_html = render_crispy_form(builder_form)
+                    return JsonResponse({'success': 'false',
+                                         'form_html': form_html})
+
             if 'other-details' in request.POST:
                 if other_details_form.is_valid():
                     print 'other details form submitted'
@@ -115,13 +132,3 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                     form_html = render_crispy_form(other_details_form)
                     return JsonResponse({'success': 'true',
                                          'form_html': form_html})
-
-
-class DeveloperProjectFormView(views.LoginRequiredMixin, FormView):
-    form_class = DeveloperProjectForm
-    template_name = 'new-property.html'
-    success_url = 'success'
-
-    def form_valid(self, form):
-        form.save()
-        return HttpResponseRedirect(self.success_url)
