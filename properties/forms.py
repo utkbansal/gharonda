@@ -104,6 +104,7 @@ class PropertyBasicDetailsForm(ModelForm):
             'pin_code']
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         super(PropertyBasicDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         # self.helper.form_tag =False
@@ -127,8 +128,9 @@ class PropertyBasicDetailsForm(ModelForm):
     def save(self, commit=True):
         developer_name = self.cleaned_data['developer_name']
         dev, created = Developer.objects.get_or_create(name=developer_name)
-        print dev
         self.instance.developer = dev
+
+        self.instance.created_by = self.request.user
         return super(PropertyBasicDetailsForm, self).save()
 
 
