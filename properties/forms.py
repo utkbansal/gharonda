@@ -60,7 +60,10 @@ class ProjectForm(ModelForm):
             'possession_date',
             'bank',
             'add_bank',
-            'new_bank'
+            'new_bank',
+            'contractor_name_1',
+            'contractor_name_2',
+            'contractor_name_3',
         ]
 
     def __init__(self, *args, **kwargs):
@@ -69,6 +72,9 @@ class ProjectForm(ModelForm):
         self.helper.form_tag = False
         self.helper.form_id = 'project-form'
         self.fields['bank'].required = False
+        self.fields['contractor_name_1'].required = False
+        self.fields['contractor_name_2'].required = False
+        self.fields['contractor_name_3'].required = False
         self.helper.layout = Layout(
             'name',
             Div(
@@ -86,7 +92,10 @@ class ProjectForm(ModelForm):
             'bank',
             'add_bank',
             'new_bank',
-        )
+            'contractor_name_1',
+            'contractor_name_2',
+            'contractor_name_3',
+        )   
 
     def save(self, commit=True):
         if 'add_bank' in self.cleaned_data.keys():
