@@ -35,7 +35,7 @@ function ownerAjax() {
         url: $(this).attr('action'),
         success: function (data) {
             console.log(data);
-            $('#owner-details').replaceWith(data['form_html']);
+            $('#owner-details').html(data['form_html']);
             $('#submit-owner-details').click(propertyAjax);
             all();
         }
@@ -58,7 +58,7 @@ function projectAjax() {
         url: $(this).attr('action'),
         success: function (data) {
             console.log(data);
-            $('#project-details').replaceWith(data['form_html']);
+            $('#project-details').html(data['form_html']);
             $('#submit-project-details').click(projectAjax);
 
             all();
@@ -81,7 +81,7 @@ function builderAjax() {
         url: $(this).attr('action'),
         success: function (data) {
             console.log(data);
-            $('#builder-details').replaceWith(data['form_html']);
+            $('#builder-details').html(data['form_html']);
             $('#submit-builder-details').click(builderAjax);
             all();
         }
@@ -103,7 +103,7 @@ function otherAjax() {
         url: $(this).attr('action'),
         success: function (data) {
             console.log(data);
-            $('#other-details').replaceWith(data['form_html']);
+            $('#other-details').html(data['form_html']);
             $('#submit-other-details').click(otherAjax);
             all();
         }
