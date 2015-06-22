@@ -4,8 +4,13 @@ from crispy_forms.layout import Layout, ButtonHolder, Submit, Field, Div
 from django.forms import ModelForm
 from django import forms
 
-from models import Property, Owner, Developer, DeveloperProjects, Project, \
-    ProjectPermission, Bank, Permissions
+from models import (Property,
+                    Owner,
+                    Developer,
+                    DeveloperProjects,
+                    Project, ProjectPermission,
+                    Bank,
+                    Permissions)
 
 
 class PermissionForm(forms.Form):
@@ -14,7 +19,13 @@ class PermissionForm(forms.Form):
 
         permissions = Permissions.objects.all()
         for permission in permissions:
-            self.fields[permission.name] = forms.CharField()
+            self.fields[permission.name] = forms.CharField(
+                widget=forms.Select(choices=(
+                    ('Approved', 'Approved'),
+                    ('In Process', 'In Process'),
+                    ('Not Applied', 'Not Applied'),
+                    ('Denied', 'Denied'),
+                )))
 
         self.helper = FormHelper()
         self.helper.form_tag = False
