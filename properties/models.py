@@ -60,6 +60,9 @@ class Project(models.Model):
     name = models.CharField(max_length=255, null=False)
     launch_date = models.CharField(max_length=20, null=False)
     possession_date = models.CharField(max_length=20, null=False)
+    contractor_name_1 = models.CharField(max_length=255,null=True, default=None)
+    contractor_name_2 = models.CharField(max_length=255,null=True, default=None)
+    contractor_name_3 = models.CharField(max_length=255,null=True, default=None)
     # Contractors
     # Loans Available
     bank = models.ManyToManyField('Bank')
