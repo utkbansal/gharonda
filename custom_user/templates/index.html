@@ -10,14 +10,6 @@
         <div>
             <div class="col-md-3"></div>
             <div class="col-md-6">
-                <a href="{% url 'basic' %}">
-                    <button type="button" class="btn btn-primary btn-block"
-                            id="add-property-button">
-                        <span class="glyphicon glyphicon-plus"></span>
-                        Add Property
-                    </button>
-                </a>
-
                 <h3>Your Properties</h3>
                 <table class="table table-striped">
                     <thead>
@@ -41,16 +33,25 @@
                             <td>{{ property.city }}</td>
                             <td>
                                 <a href="/properties/dashboard/{{ property.id }}">
-                                <button class="btn btn-primary" id="edit-button">
+                                    <button class="btn btn-primary"
+                                            id="edit-button">
                                     <span class="glyphicon glyphicon-pencil"
                                           style="vertical-align:middle"></span>
-                                    Edit
-                                </button></a>
+                                        Edit
+                                    </button>
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
+                <a href="{% url 'basic' %}">
+                    <button type="button" class="btn btn-success btn-block"
+                            id="add-property-button">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        Add Property
+                    </button>
+                </a>
             </div>
             <div class="col-md-3"></div>
         </div>
