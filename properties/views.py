@@ -1,4 +1,5 @@
 from crispy_forms.utils import render_crispy_form
+from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -11,8 +12,10 @@ from forms import (PropertyForm,
                    PropertyBasicDetailsForm,
                    ProjectForm,
                    PermissionForm,
-                   OtherDetailsForm, DeveloperProjectForm)
-from properties.models import Property
+                   OtherDetailsForm,
+                   DeveloperForm,
+                   DeveloperProjectHelper, DeveloperProjectForm)
+from properties.models import Property, Developer, DeveloperProject
 
 
 class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
@@ -38,6 +41,10 @@ class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
         return HttpResponseRedirect('/properties/dashboard/' + str(property.id))
 
 
+DeveloperProjectFormset = inlineformset_factory(Developer, DeveloperProject,
+                                                extra=1,
+                                                form=DeveloperProjectForm, can_delete=False)
+
 class DashboardView(views.LoginRequiredMixin, TemplateView):
     template_name = 'mega.html'
 
@@ -54,7 +61,13 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
         project_form = ProjectForm()
         permission_form = PermissionForm()
         other_details_form = OtherDetailsForm(instance=p)
-        builder_form = DeveloperProjectForm()
+        builder_form = DeveloperForm(
+            instance=Property.objects.get(id=property_id).developer
+        )
+        builder_project_formset = DeveloperProjectFormset(
+            instance = Property.objects.get(id=property_id).developer
+        )
+        helper = DeveloperProjectHelper()
 
         forms = {
             'property_form': property_form,
@@ -63,11 +76,14 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
             'permission_form': permission_form,
             'other_details_form': other_details_form,
             'builder_form': builder_form,
+            'builder_project_formset': builder_project_formset,
+            'helper': helper
         }
 
         return render(request, self.template_name, forms)
 
     def post(self, request, property_id, *args, **kwargs):
+        print request.POST
         if request.is_ajax():
 
             property = Property.objects.get(id=property_id)
@@ -77,7 +93,15 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
             permission_form = PermissionForm(request.POST)
             other_details_form = OtherDetailsForm(request.POST,
                                                   instance=property)
-            builder_form = DeveloperProjectForm(request.POST)
+            builder_form = DeveloperForm(
+                request.POST,
+                instance=Property.objects.get(id=property_id).developer
+            )
+            builder_project_formset = DeveloperProjectFormset(
+                request.POST,
+                instance = Property.objects.get(id=property_id).developer
+            )
+            helper = DeveloperProjectHelper()
 
             if 'property-details' in request.POST:
                 if property_form.is_valid():
@@ -114,9 +138,13 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                                          'form_html': form_html})
 
             if 'builder-details' in request.POST:
-                if builder_form.is_valid():
+                if builder_form.is_valid() and builder_project_formset.is_valid():
                     builder_form.save()
-                    form_html = render_crispy_form(builder_form)
+                    builder_project_formset.save()
+                    builder_form_html = render_crispy_form(builder_form)
+                    builder_project_formset_html = render_crispy_form(
+                        builder_project_formset, helper)
+                    form_html = builder_form_html + builder_project_formset_html
                     return JsonResponse({'success': 'true',
                                          'form_html': form_html})
                 else:
@@ -134,3 +162,21 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                     form_html = render_crispy_form(other_details_form)
                     return JsonResponse({'success': 'true',
                                          'form_html': form_html})
+
+            if 'add-project' in request.POST:
+                print 'here'
+                developer = Developer.objects.all().first()
+                builder_form = DeveloperForm(initial = {'number_of_projects':request.POST['number_of_projects']})
+                builder_form_html = render_crispy_form(builder_form)
+                print request.POST['developerproject_set-TOTAL_FORMS']
+                post_data = request.POST.copy()
+                post_data['developerproject_set-TOTAL_FORMS'] = int(request.POST['developerproject_set-TOTAL_FORMS'])+1
+                print post_data['developerproject_set-TOTAL_FORMS']
+                builder_project_formset = DeveloperProjectFormset(post_data, instance=developer)
+                helper = DeveloperProjectHelper()
+                builder_project_formset_html = render_crispy_form(builder_project_formset, helper)
+                form_html= builder_form_html+builder_project_formset_html
+                print 'here2'
+
+                return JsonResponse({'success':'true',
+                                     'form_html':form_html})

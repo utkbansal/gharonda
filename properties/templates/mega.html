@@ -27,7 +27,15 @@
     </form>
 
     <h2>Builder Detail</h2>
-    {% crispy builder_form %}
+    <form method="post" id="builder-details">
+        {% crispy builder_form %}
+        {% crispy builder_project_formset helper %}
+    </form>
+
+    <div id="empty_form" style="display:none">
+        {% crispy builder_project_formset %}
+
+    </div>
 
     <h2>Other Details</h2>
     <form method="post" id="other-details">
@@ -74,4 +82,5 @@
 
         all();
     </script>
+
 {% endblock %}

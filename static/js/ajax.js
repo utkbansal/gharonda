@@ -112,3 +112,28 @@ function otherAjax() {
 }
 
 $('#submit-other-details').click(otherAjax);
+
+
+
+$('#add_project').click(addFormset);
+
+function addFormset() {
+    var builderDetailsForm = $('#builder-details');
+    var post = $(this).attr("name") + "=" + $(this).val();
+    var form_data = $(builderDetailsForm).serialize() + "&" + post;
+    console.log(form_data);
+
+    $.ajax({
+        data: form_data,
+        type: 'POST',
+        url: $(this).attr('action'),
+        success: function (data) {
+            console.log(data);
+            $('#builder-details').html(data['form_html']);
+            $('#submit-builder-details').click(addFormset);
+            $('#add_project').click(addFormset);
+            all();
+        }
+    });
+    return false;
+}

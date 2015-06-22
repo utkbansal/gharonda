@@ -8,7 +8,7 @@ from django import forms
 from models import (Property,
                     Owner,
                     Developer,
-                    DeveloperProjects,
+                    DeveloperProject,
                     Project, ProjectPermission,
                     Bank,
                     Permissions)
@@ -30,6 +30,7 @@ class PermissionForm(forms.Form):
 
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.disable_csrf = True
         self.helper.form_id = 'permission-form'
         self.helper.add_input(
             Submit('project-details', 'submit', css_class='btn-block',
@@ -72,6 +73,7 @@ class ProjectForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_id = 'project-form'
+        self.helper.disable_csrf = True
         self.fields['bank'].required = False
         self.fields['contractor_name_1'].required = False
         self.fields['contractor_name_2'].required = False
@@ -128,11 +130,9 @@ class PropertyBasicDetailsForm(ModelForm):
         self.request = kwargs.pop('request', None)
         super(PropertyBasicDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        # self.helper.form_tag =False
         self.helper.form_id = 'project-basic-details-form'
         self.fields['address_line_two'].required = False
         self.helper.layout = Layout(
-            # 'name',
             'owner_name',
             'project_name',
             'developer_name',
@@ -175,17 +175,17 @@ class DeveloperProjectForm(ModelForm):
     developer = forms.CharField()
 
     class Meta:
-        model = DeveloperProjects
+        model = DeveloperProject
         fields = [
             'project_name',
             'launch_date',
             'possession_date',
-            'number_of_projects',
         ]
 
     def __init__(self, *args, **kwargs):
         super(DeveloperProjectForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.disable_csrf = True
         self.helper.form_id = 'builder-details'
         self.helper.layout = Layout(
             'project_name',
@@ -200,12 +200,6 @@ class DeveloperProjectForm(ModelForm):
                 style='padding-right:0px'
             ),
             'developer',
-            'number_of_projects',
-
-            ButtonHolder(
-                Submit('builder-details', 'submit', css_class='btn-block',
-                       css_id='submit-builder-details')
-            )
         )
 
     def save(self, commit=True):
@@ -214,6 +208,44 @@ class DeveloperProjectForm(ModelForm):
         self.instance.developer = developer
 
         return super(DeveloperProjectForm, self).save()
+
+
+class DeveloperForm(ModelForm):
+    class Meta:
+        model = Developer
+        fields = ['number_of_projects']
+
+    def __init__(self, *args, **kwargs):
+        super(DeveloperForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.disable_csrf = True
+        self.helper.form_tag = False
+
+class DeveloperProjectHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(DeveloperProjectHelper, self).__init__(*args, **kwargs)
+        self.form_tag = False
+        self.add_input(
+            Submit("add-project", "Add Project", css_class='btn-block',
+                   css_id='add_project'))
+        self.add_input(Submit("builder-details", "Save", css_class='btn-block',
+                              css_id='submit-builder-details'))
+        self.disable_csrf = True
+        self.layout = Layout(
+            'project_name',
+            Div(
+                Field('launch_date', css_class='month-year'),
+                css_class='col-md-6',
+                style='padding-left:0px'
+            ),
+            Div(
+                Field('possession_date', css_class='month-year'),
+                css_class='col-md-6',
+                style='padding-right:0px'
+            ),
+            'developer',
+
+        )
 
 
 OWNER_CHOICES = ((True, 'Re-Sale'), (False, 'Direct Builder'))
@@ -249,6 +281,7 @@ class OwnerForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_id = 'owner-form'
+        self.helper.disable_csrf = True
         self.fields['name_of_seller'].required = False
         self.fields['contact_number_seller'].required = False
         self.fields['email_seller'].required = False
@@ -427,6 +460,7 @@ class OtherDetailsForm(ModelForm):
         super(OtherDetailsForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.disable_csrf = True
         self.fields['connectivity'].required = False
         self.fields['neighborhood_quality'].required = False
         self.fields['comments'].required = False

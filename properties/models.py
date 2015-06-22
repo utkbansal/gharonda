@@ -32,18 +32,18 @@ class Property(models.Model):
 
 class Developer(models.Model):
     name = models.CharField(max_length=255, null=False)
+    number_of_projects = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
 
 
-class DeveloperProjects(models.Model):
+class DeveloperProject(models.Model):
     project_name = models.CharField(max_length=255, null=False)
     launch_date = models.CharField(max_length=20, default='')
     possession_date = models.CharField(max_length=20, default='')
     location = models.CharField(max_length=255, default='')
     other_status = models.CharField(max_length=255, default='')
-    number_of_projects = models.IntegerField(default=0)
     developer = models.ForeignKey('Developer')
 
     def __unicode__(self):
