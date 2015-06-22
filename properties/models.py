@@ -10,7 +10,7 @@ class Property(models.Model):
     number_of_bathrooms = models.CharField(max_length=3, default=1)
     number_of_parking_spaces = models.CharField(max_length=2, default=0)
     address_line_one = models.CharField(max_length=255, null=False)
-    address_line_two = models.CharField(max_length=255,null=True, default=None)
+    address_line_two = models.CharField(max_length=255, null=True, default=None)
     city = models.CharField(max_length=255, null=False)
     state = models.CharField(max_length=255, null=False)
     pin_code = models.CharField(max_length=20, null=False)
@@ -27,7 +27,7 @@ class Property(models.Model):
         return self.property_type
 
     class Meta:
-        verbose_name_plural='Properties'
+        verbose_name_plural = 'Properties'
 
 
 class Developer(models.Model):
@@ -43,6 +43,7 @@ class DeveloperProjects(models.Model):
     possession_date = models.CharField(max_length=20, default='')
     location = models.CharField(max_length=255, default='')
     other_status = models.CharField(max_length=255, default='')
+    number_of_projects = models.IntegerField(default=0)
     developer = models.ForeignKey('Developer')
 
     def __unicode__(self):
@@ -60,9 +61,12 @@ class Project(models.Model):
     name = models.CharField(max_length=255, null=False)
     launch_date = models.CharField(max_length=20, null=False)
     possession_date = models.CharField(max_length=20, null=False)
-    contractor_name_1 = models.CharField(max_length=255,null=True, default=None)
-    contractor_name_2 = models.CharField(max_length=255,null=True, default=None)
-    contractor_name_3 = models.CharField(max_length=255,null=True, default=None)
+    contractor_name_1 = models.CharField(max_length=255, null=True,
+                                         default=None)
+    contractor_name_2 = models.CharField(max_length=255, null=True,
+                                         default=None)
+    contractor_name_3 = models.CharField(max_length=255, null=True,
+                                         default=None)
     # Contractors
     # Loans Available
     bank = models.ManyToManyField('Bank')

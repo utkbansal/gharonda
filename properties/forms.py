@@ -95,7 +95,7 @@ class ProjectForm(ModelForm):
             'contractor_name_1',
             'contractor_name_2',
             'contractor_name_3',
-        )   
+        )
 
     def save(self, commit=True):
         if 'add_bank' in self.cleaned_data.keys():
@@ -179,6 +179,7 @@ class DeveloperProjectForm(ModelForm):
             'project_name',
             'launch_date',
             'possession_date',
+            'number_of_projects',
         ]
 
     def __init__(self, *args, **kwargs):
@@ -198,6 +199,8 @@ class DeveloperProjectForm(ModelForm):
                 style='padding-right:0px'
             ),
             'developer',
+            'number_of_projects',
+
             ButtonHolder(
                 Submit('builder-details', 'submit', css_class='btn-block',
                        css_id='submit-builder-details')
