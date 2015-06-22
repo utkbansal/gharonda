@@ -99,7 +99,9 @@ class Owner(models.Model):
     # should be in property
     loan_from = models.CharField(max_length=20, default=None, null=True)
     # should be in property
-    cost_of_purchase = models.CharField(max_length=20, default=0)
+    main_cost_of_purchase = models.CharField(max_length=20, default=0)
+    other_cost_1 = models.IntegerField(default=0)
+    other_cost_2 = models.IntegerField(default=0)
     # should be in property?
     is_resale = models.BooleanField(default=False, choices=OWNER_CHOICES)
     name_of_seller = models.CharField(max_length=255, default=None, null=True)

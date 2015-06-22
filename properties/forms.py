@@ -1,6 +1,7 @@
 from crispy_forms.bootstrap import AppendedText, InlineRadios
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Field, Div
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Field, Div, \
+    Fieldset
 from django.forms import ModelForm
 from django import forms
 
@@ -230,11 +231,13 @@ class OwnerForm(ModelForm):
             'pan_number',
             'date_of_purchase',
             'loan_from',
-            'cost_of_purchase',
+            'main_cost_of_purchase',
             'is_resale',
             'name_of_seller',
             'contact_number_seller',
             'email_seller',
+            'other_cost_1',
+            'other_cost_2',
         ]
 
         widgets = {
@@ -258,13 +261,32 @@ class OwnerForm(ModelForm):
                     css_class='col-md-6',
                     style='padding-left:0px'),
 
-                Div('co_owner_name',
+                Div(
+                    'co_owner_name',
                     'co_owner_occupation',
-                    'cost_of_purchase',
+                    'main_cost_of_purchase',
 
                     Field('date_of_purchase', css_class='date-field'),
                     css_class='col-md-6',
-                    style='padding-right:0px'),
+                    style='padding-right:0px'
+                ),
+                Div(
+                    Fieldset(
+                        'Other Costs',
+                        Div(
+                            'other_cost_1',
+                            css_class='col-md-6',
+                            style='padding-left:0px'
+                        ),
+                        Div(
+                            'other_cost_2',
+                            css_class='col-md-6',
+                            style='padding-left:0px'
+                        ),
+                    ),
+                    css_class='col-md-12',
+                    style='padding:0px',
+                ),
                 InlineRadios('is_resale'),
                 Div(
                     'name_of_seller',
