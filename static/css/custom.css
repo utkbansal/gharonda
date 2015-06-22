@@ -11,3 +11,7 @@ body {
 #broker-only-data {
     display: None;
 }
+
+.ui-datepicker-calendar {
+    display: none;
+}

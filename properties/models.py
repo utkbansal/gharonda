@@ -39,10 +39,8 @@ class Developer(models.Model):
 
 class DeveloperProjects(models.Model):
     project_name = models.CharField(max_length=255, null=False)
-    launch_date_month = models.CharField(max_length=20, default='')
-    launch_date_year = models.CharField(max_length=4, default='')
-    possession_date_month = models.CharField(max_length=20, default='')
-    possession_date_year = models.CharField(max_length=4, default='')
+    launch_date = models.CharField(max_length=20, default='')
+    possession_date = models.CharField(max_length=20, default='')
     location = models.CharField(max_length=255, default='')
     other_status = models.CharField(max_length=255, default='')
     developer = models.ForeignKey('Developer')

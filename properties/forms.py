@@ -157,15 +157,9 @@ class DeveloperProjectForm(ModelForm):
         model = DeveloperProjects
         fields = [
             'project_name',
-            'launch_date_month',
-            'launch_date_year',
-            'possession_date_month',
-            'possession_date_year',
+            'launch_date',
+            'possession_date',
         ]
-        widgets = {
-            'launch_date_month': forms.Select(choices=MONTHS),
-            'possession_date_month': forms.Select(choices=MONTHS),
-        }
 
     def __init__(self, *args, **kwargs):
         super(DeveloperProjectForm, self).__init__(*args, **kwargs)
@@ -174,14 +168,12 @@ class DeveloperProjectForm(ModelForm):
         self.helper.layout = Layout(
             'project_name',
             Div(
-                'launch_date_month',
-                'possession_date_month',
+                Field('launch_date', css_class='month-year'),
                 css_class='col-md-6',
                 style='padding-left:0px'
             ),
             Div(
-                Field('launch_date_year', css_class='year'),
-                Field('possession_date_year', css_class='year'),
+                Field('possession_date', css_class='month-year'),
                 css_class='col-md-6',
                 style='padding-right:0px'
             ),
