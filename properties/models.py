@@ -1,3 +1,4 @@
+from ajaximage.fields import AjaxImageField
 from django.db import models
 
 
@@ -22,6 +23,8 @@ class Property(models.Model):
                                             null=True)
     comments = models.CharField(max_length=255, default=None, null=True)
     created_by = models.ForeignKey('custom_user.User')
+
+    project = models.ForeignKey('Project')
 
     def __unicode__(self):
         return self.property_type
@@ -113,3 +116,12 @@ class Owner(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Tower(models.Model):
+    name = models.CharField(max_length=255)
+    floors_completed = models.IntegerField(default=0)
+    finishing_status = models.CharField(max_length=255)
+    other_status = models.CharField(max_length=255)
+    image = AjaxImageField(upload_to='pics')
+    project = models.ForeignKey('Project')

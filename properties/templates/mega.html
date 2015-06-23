@@ -24,12 +24,14 @@
     <form method="post" id="project-details">
         {% crispy project_form %}
         {% crispy permission_form %}
+        {{ tower_form.media }}
+        {% crispy tower_form tower_helper %}
     </form>
 
     <h2>Builder Detail</h2>
     <form method="post" id="builder-details">
         {% crispy builder_form %}
-        {% crispy builder_project_formset helper %}
+        {% crispy builder_project_formset developer_project_helper %}
     </form>
 
     <div id="empty_form" style="display:none">

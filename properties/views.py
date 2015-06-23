@@ -14,8 +14,12 @@ from forms import (PropertyForm,
                    PermissionForm,
                    OtherDetailsForm,
                    DeveloperForm,
-                   DeveloperProjectHelper, DeveloperProjectForm)
-from properties.models import Property, Developer, DeveloperProject
+                   DeveloperProjectHelper,
+                   DeveloperProjectForm,
+                   TowerHelper,
+                   TowerForm)
+from properties.models import Property, Developer, DeveloperProject, Project, \
+    Tower
 
 
 class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
@@ -43,7 +47,15 @@ class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
 
 DeveloperProjectFormset = inlineformset_factory(Developer, DeveloperProject,
                                                 extra=1,
-                                                form=DeveloperProjectForm, can_delete=False)
+                                                form=DeveloperProjectForm,
+                                                can_delete=False)
+
+TowerFormset = inlineformset_factory(Project, Tower,
+                                     form=TowerForm,
+                                     extra=1,
+                                     can_delete=False,
+                                     )
+
 
 class DashboardView(views.LoginRequiredMixin, TemplateView):
     template_name = 'mega.html'
@@ -58,16 +70,21 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                                      initial={'developer': p.developer.name})
         owner_form = OwnerForm()
         # project_form and permission_form are art of a the same form
-        project_form = ProjectForm()
+        project = p.project
+        project_form = ProjectForm(instance=project)
+        permission = project.projectpermission_set
+        # permission_form = PermissionForm(instance=permission)
         permission_form = PermissionForm()
         other_details_form = OtherDetailsForm(instance=p)
         builder_form = DeveloperForm(
             instance=Property.objects.get(id=property_id).developer
         )
         builder_project_formset = DeveloperProjectFormset(
-            instance = Property.objects.get(id=property_id).developer
+            instance=Property.objects.get(id=property_id).developer
         )
-        helper = DeveloperProjectHelper()
+        developer_project_helper = DeveloperProjectHelper()
+        tower_form = TowerFormset(instance=p.project)
+        tower_helper = TowerHelper()
 
         forms = {
             'property_form': property_form,
@@ -77,15 +94,15 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
             'other_details_form': other_details_form,
             'builder_form': builder_form,
             'builder_project_formset': builder_project_formset,
-            'helper': helper
+            'developer_project_helper': developer_project_helper,
+            'tower_form': tower_form,
+            'tower_helper': tower_helper,
         }
 
         return render(request, self.template_name, forms)
 
     def post(self, request, property_id, *args, **kwargs):
-        print request.POST
         if request.is_ajax():
-
             property = Property.objects.get(id=property_id)
             property_form = PropertyForm(request.POST, instance=property)
             owner_form = OwnerForm(request.POST)
@@ -99,9 +116,13 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
             )
             builder_project_formset = DeveloperProjectFormset(
                 request.POST,
-                instance = Property.objects.get(id=property_id).developer
+                instance=Property.objects.get(id=property_id).developer
             )
-            helper = DeveloperProjectHelper()
+            developer_project_helper = DeveloperProjectHelper()
+            tower_form = TowerFormset(request.POST,
+                                      files=request.FILES,
+                                      instance=property.project)
+            tower_helper = TowerHelper()
 
             if 'property-details' in request.POST:
                 if property_form.is_valid():
@@ -126,16 +147,43 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                                          'form_html': form_html})
 
             if 'project-details' in request.POST:
-                if project_form.is_valid() and permission_form.is_valid():
+                if project_form.is_valid() and permission_form.is_valid() and tower_form.is_valid():
                     project = project_form.save()
                     permission_form.save(project=project)
+                    tower_form.save()
                     return JsonResponse({'success': 'true'})
                 else:
                     project_form_html = render_crispy_form(project_form)
                     permission_form_html = render_crispy_form(permission_form)
-                    form_html = project_form_html + permission_form_html
+                    tower_form_html = render_crispy_form(tower_form,
+                                                         tower_helper)
+                    form_html = (project_form_html +
+                                 permission_form_html +
+                                 tower_form_html)
                     return JsonResponse({'success': 'false',
                                          'form_html': form_html})
+
+            if 'add-tower' in request.POST:
+                post_data = request.POST.copy()
+                post_data['tower_set-TOTAL_FORMS'] = int(
+                    request.POST['tower_set-TOTAL_FORMS']) + 1
+                project_form = ProjectForm(initial=request.POST)
+                permission_form = PermissionForm(initial=request.POST)
+
+                project = Property.objects.get(id=property_id).project
+                tower_form = TowerFormset(post_data, instance=project)
+
+                tower_helper = TowerHelper()
+                project_form_html = render_crispy_form(project_form)
+                permission_form_html = render_crispy_form(permission_form)
+                tower_form_html = render_crispy_form(tower_form, tower_helper)
+
+                form_html = (project_form_html +
+                             permission_form_html +
+                             tower_form_html)
+
+                return JsonResponse({'succcess': 'true',
+                                     'form_html': form_html})
 
             if 'builder-details' in request.POST:
                 if builder_form.is_valid() and builder_project_formset.is_valid():
@@ -143,7 +191,7 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                     builder_project_formset.save()
                     builder_form_html = render_crispy_form(builder_form)
                     builder_project_formset_html = render_crispy_form(
-                        builder_project_formset, helper)
+                        builder_project_formset, developer_project_helper)
                     form_html = builder_form_html + builder_project_formset_html
                     return JsonResponse({'success': 'true',
                                          'form_html': form_html})
@@ -151,6 +199,30 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                     form_html = render_crispy_form(builder_form)
                     return JsonResponse({'success': 'false',
                                          'form_html': form_html})
+
+            if 'add-project' in request.POST:
+                developer = Developer.objects.all().first()
+                builder_form = DeveloperForm(
+                    initial={
+                        'number_of_projects': request.POST['number_of_projects']
+                    }
+                )
+                builder_form_html = render_crispy_form(builder_form)
+                post_data = request.POST.copy()
+                post_data['developerproject_set-TOTAL_FORMS'] = int(
+                    request.POST['developerproject_set-TOTAL_FORMS']) + 1
+                builder_project_formset = DeveloperProjectFormset(
+                    post_data,
+                    instance=developer
+                )
+
+                developer_project_helper = DeveloperProjectHelper()
+                builder_project_formset_html = render_crispy_form(
+                    builder_project_formset, developer_project_helper)
+                form_html = builder_form_html + builder_project_formset_html
+
+                return JsonResponse({'success': 'true',
+                                     'form_html': form_html})
 
             if 'other-details' in request.POST:
                 if other_details_form.is_valid():
@@ -162,21 +234,3 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                     form_html = render_crispy_form(other_details_form)
                     return JsonResponse({'success': 'true',
                                          'form_html': form_html})
-
-            if 'add-project' in request.POST:
-                print 'here'
-                developer = Developer.objects.all().first()
-                builder_form = DeveloperForm(initial = {'number_of_projects':request.POST['number_of_projects']})
-                builder_form_html = render_crispy_form(builder_form)
-                print request.POST['developerproject_set-TOTAL_FORMS']
-                post_data = request.POST.copy()
-                post_data['developerproject_set-TOTAL_FORMS'] = int(request.POST['developerproject_set-TOTAL_FORMS'])+1
-                print post_data['developerproject_set-TOTAL_FORMS']
-                builder_project_formset = DeveloperProjectFormset(post_data, instance=developer)
-                helper = DeveloperProjectHelper()
-                builder_project_formset_html = render_crispy_form(builder_project_formset, helper)
-                form_html= builder_form_html+builder_project_formset_html
-                print 'here2'
-
-                return JsonResponse({'success':'true',
-                                     'form_html':form_html})

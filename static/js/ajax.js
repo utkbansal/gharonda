@@ -115,7 +115,7 @@ $('#submit-other-details').click(otherAjax);
 
 
 
-$('#add_project').click(addFormset);
+$('#add-project').click(addFormset);
 
 function addFormset() {
     var builderDetailsForm = $('#builder-details');
@@ -131,7 +131,30 @@ function addFormset() {
             console.log(data);
             $('#builder-details').html(data['form_html']);
             $('#submit-builder-details').click(addFormset);
-            $('#add_project').click(addFormset);
+            $('#add-project').click(addFormset);
+            all();
+        }
+    });
+    return false;
+}
+
+$('#add-tower').click(addTower);
+
+function addTower() {
+    var projectDetailsForm = $('#project-details');
+    var post = $(this).attr("name") + "=" + $(this).val();
+    var form_data = $(projectDetailsForm).serialize() + "&" + post;
+    console.log(form_data);
+
+    $.ajax({
+        data: form_data,
+        type: 'POST',
+        url: $(this).attr('action'),
+        success: function (data) {
+            console.log(data);
+            $('#project-details').html(data['form_html']);
+            $('#submit-builder-details').click(builderAjax);
+            $('#add-tower').click(addTower);
             all();
         }
     });
