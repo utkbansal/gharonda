@@ -84,7 +84,7 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
             instance=Property.objects.get(id=property_id).developer
         )
         developer_project_helper = DeveloperProjectHelper()
-        tower_form = TowerFormset(instance=p.project)
+        tower_form = TowerFormset(instance=project)
         tower_helper = TowerHelper()
 
         forms = {
@@ -107,7 +107,7 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
             property = Property.objects.get(id=property_id)
             property_form = PropertyForm(request.POST, instance=property)
             owner_form = OwnerForm(request.POST)
-            project_form = ProjectForm(request.POST)
+            project_form = ProjectForm(request.POST, instance=property.project)
             permission_form = PermissionForm(request.POST)
             other_details_form = OtherDetailsForm(request.POST,
                                                   instance=property)
@@ -149,7 +149,7 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
 
             if 'project-details' in request.POST:
                 if project_form.is_valid() and permission_form.is_valid() and tower_form.is_valid():
-                    project = project_form.save()
+                    project = project_form.save(property_id)
                     permission_form.save(project=project)
                     tower_form.save()
                     return JsonResponse({'success': 'true'})

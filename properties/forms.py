@@ -349,7 +349,8 @@ class ProjectForm(ModelForm):
             'contractor_name_3',
         )
 
-    def save(self, commit=True):
+    def save(self,property_id, commit=True):
+        property = Property.objects.get(id=property_id)
         if 'add_bank' in self.cleaned_data.keys():
             if self.cleaned_data['add_bank'] is True:
                 bank = Bank(name=self.cleaned_data['new_bank'])
@@ -357,8 +358,16 @@ class ProjectForm(ModelForm):
                 project = super(ProjectForm, self).save()
                 bank.save()
                 project.bank.add(bank)
+
+                property.project = project
+                property.save()
                 return project
-        return super(ProjectForm, self).save()
+
+
+        project = super(ProjectForm, self).save()
+        property.project = project
+        property.save()
+        return  project
 
 
 class PropertyBasicDetailsForm(ModelForm):

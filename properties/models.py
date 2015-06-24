@@ -70,8 +70,6 @@ class Project(models.Model):
                                          default=None)
     contractor_name_3 = models.CharField(max_length=255, null=True,
                                          default=None)
-    # Contractors
-    # Loans Available
     bank = models.ManyToManyField('Bank')
 
     def __unicode__(self):
