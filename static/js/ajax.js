@@ -1,3 +1,6 @@
+hideAllForms();
+$('#property-details-form').show(500);
+
 function propertyAjax() {
     var propertyDetailsForm = $('#property-details');
     var post = $(this).attr("name") + "=" + $(this).val();
