@@ -5,8 +5,8 @@
 {% block css %}
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css"
           rel="stylesheet"/>
-    <link rel="stylesheet"
-          href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="{% static 'css/bootstrap-datepicker3.standalone.min.css' %}"
+          rel="stylesheet">
     <link href="{% static 'ajaximage/css/bootstrap-progress.min.css' %}"
           rel="stylesheet">
     <link href="{% static 'ajaximage/css/styles.css' %}" rel="stylesheet">
@@ -56,7 +56,7 @@
 {% endblock %}
 
 {% block js %}
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
     <script type="text/javascript"
             src={% static 'ajaximage/js/ajaximage.js' %}></script>
     <script src="{% static 'js/form-toggle.js' %}"></script>
@@ -75,20 +75,18 @@
         function all() {
             $('#id_bank').select2();
             $(".date-field").datepicker({
-                changeMonth: true,
-                changeYear: true
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                clearBtn: true,
+                autoclose: true,
+                todayHighlight: true
             });
             $('.month-year').datepicker({
-                yearRange: "1900:+0",
-                changeMonth: true,
-                changeYear: true,
-                showButtonPanel: true,
-                dateFormat: 'MM yy',
-                onClose: function (dateText, inst) {
-                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                    $(this).datepicker('setDate', new Date(year, month, 1));
-                }
+                format: "mm/yyyy",
+                todayBtn: "linked",
+                clearBtn: true,
+                autoclose: true,
+                todayHighlight: true
             });
             resaleCheck();
             addBankCheck();
