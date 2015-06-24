@@ -1,4 +1,4 @@
-from crispy_forms.bootstrap import AppendedText, InlineRadios
+from crispy_forms.bootstrap import AppendedText, InlineRadios, PrependedText
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, ButtonHolder, Submit, Field, Div, \
     Fieldset
@@ -191,6 +191,9 @@ class OwnerForm(ModelForm):
         self.fields['name_of_seller'].required = False
         self.fields['contact_number_seller'].required = False
         self.fields['email_seller'].required = False
+        self.fields['loan_from'].required = False
+        self.fields['other_cost_1'].required = False
+        self.fields['other_cost_2'].required = False
         self.helper.layout = Layout(
             Div(
                 Div('name',
@@ -203,7 +206,8 @@ class OwnerForm(ModelForm):
                 Div(
                     'co_owner_name',
                     'co_owner_occupation',
-                    'main_cost_of_purchase',
+                    # Indian rupee sign &#8377;
+                    PrependedText('main_cost_of_purchase', '&#8377;'),
 
                     Field('date_of_purchase', css_class='date-field'),
                     css_class='col-md-6',
