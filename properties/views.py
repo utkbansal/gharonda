@@ -106,7 +106,7 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
         if request.is_ajax():
             property = Property.objects.get(id=property_id)
             property_form = PropertyForm(request.POST, instance=property)
-            owner_form = OwnerForm(request.POST)
+            owner_form = OwnerForm(request.POST, instance=property.owner)
             project_form = ProjectForm(request.POST, instance=property.project)
             permission_form = PermissionForm(request.POST)
             other_details_form = OtherDetailsForm(request.POST,
