@@ -7,6 +7,9 @@
           rel="stylesheet"/>
     <link rel="stylesheet"
           href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="{% static 'ajaximage/css/bootstrap-progress.min.css' %}"
+          rel="stylesheet">
+    <link href="{% static 'ajaximage/css/styles.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block form %}
@@ -29,7 +32,6 @@
         <form method="post" id="project-details">
             {% crispy project_form %}
             {% crispy permission_form %}
-            {{ tower_form.media }}
             {% crispy tower_form tower_helper %}
         </form>
     </div>
@@ -55,6 +57,8 @@
 
 {% block js %}
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript"
+            src={% static 'ajaximage/js/ajaximage.js' %}></script>
     <script src="{% static 'js/form-toggle.js' %}"></script>
     <script src="{% static 'js/navbar.js' %}"></script>
     <script src="{% static 'js/ajax.js' %}"></script>
