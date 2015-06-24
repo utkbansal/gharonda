@@ -220,7 +220,7 @@ class OwnerForm(ModelForm):
                         Div(
                             'other_cost_2',
                             css_class='col-md-6',
-                            style='padding-left:0px'
+                            style='padding-right:0px'
                         ),
                     ),
                     css_class='col-md-12',
