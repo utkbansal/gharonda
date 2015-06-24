@@ -10,39 +10,52 @@
 {% endblock %}
 
 {% block form %}
-    <h2>Property Details</h2>
-    {% crispy property_form %}
+    <div id="property-details-form">
+        <h2>Property Details</h2>
+        {% crispy property_form %}
+    </div>
 
+    <div id="owner-details-form">
+        <h2>Owner Details</h2>
 
-    <h2>Owner Details</h2>
-    <form method="post" id="owner-details">
-        {% crispy owner_form %}
-    </form>
+        <form method="post" id="owner-details">
+            {% crispy owner_form %}
+        </form>
+    </div>
 
+    <div id="project-details-form">
+        <h2>Project Details</h2>
 
-    <h2>Project Details</h2>
-    <form method="post" id="project-details">
-        {% crispy project_form %}
-        {% crispy permission_form %}
-        {{ tower_form.media }}
-        {% crispy tower_form tower_helper %}
-    </form>
+        <form method="post" id="project-details">
+            {% crispy project_form %}
+            {% crispy permission_form %}
+            {{ tower_form.media }}
+            {% crispy tower_form tower_helper %}
+        </form>
+    </div>
 
-    <h2>Builder Detail</h2>
-    <form method="post" id="builder-details">
-        {% crispy builder_form %}
-        {% crispy builder_project_formset developer_project_helper %}
-    </form>
-    
-    <h2>Other Details</h2>
-    <form method="post" id="other-details">
+    <div id="builder-details-form">
+        <h2>Builder Detail</h2>
 
-        {% crispy other_details_form %}
-    </form>
+        <form method="post" id="builder-details">
+            {% crispy builder_form %}
+            {% crispy builder_project_formset developer_project_helper %}
+        </form>
+    </div>
+
+    <div id="other-details-form">
+        <h2>Other Details</h2>
+
+        <form method="post" id="other-details">
+
+            {% crispy other_details_form %}
+        </form>
+    </div>
 {% endblock %}
 
 {% block js %}
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="{% static 'js/form-toggle.js' %}"></script>
     <script src="{% static 'js/ajax.js' %}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 

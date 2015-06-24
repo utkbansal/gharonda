@@ -15,6 +15,11 @@ function propertyAjax() {
             $('#property-details').replaceWith(data['form_html']);
             $('#submit-property-details').click(propertyAjax);
             all();
+
+            if ((data['success'] == 'true')) {
+                    hideAllForms();
+                    $('#owner-details-form').show(500);
+                }
         }
     });
     return false;
@@ -38,6 +43,11 @@ function ownerAjax() {
             $('#owner-details').html(data['form_html']);
             $('#submit-owner-details').click(propertyAjax);
             all();
+
+            if ((data['success'] == 'true')) {
+                    hideAllForms();
+                    $('#project-details-form').show(500);
+                }
         }
     });
     return false;
@@ -62,6 +72,11 @@ function projectAjax() {
             $('#submit-project-details').click(projectAjax);
 
             all();
+
+            if ((data['success'] == 'true')) {
+                    hideAllForms();
+                    $('#builder-details-form').show(500);
+                }
         }
     });
     return false;
@@ -84,6 +99,10 @@ function builderAjax() {
             $('#builder-details').html(data['form_html']);
             $('#submit-builder-details').click(builderAjax);
             all();
+            if ((data['success'] == 'true')) {
+                    hideAllForms();
+                    $('#other-details-form').show(500);
+                }
         }
     });
     return false;
@@ -156,6 +175,8 @@ function addTower() {
             $('#submit-builder-details').click(builderAjax);
             $('#add-tower').click(addTower);
             all();
+
+
         }
     });
     return false;
