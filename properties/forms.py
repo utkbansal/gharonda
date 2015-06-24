@@ -247,7 +247,7 @@ class OwnerForm(ModelForm):
             )
         )
 
-    def save(self, commit=True):
+    def save(self, property_id, commit=True):
         co_owner_name = self.cleaned_data['co_owner_name']
         co_owner_occupation = self.cleaned_data['co_owner_occupation']
 
@@ -258,7 +258,13 @@ class OwnerForm(ModelForm):
 
         self.instance.co_owner = co_owner
 
-        return super(OwnerForm, self).save()
+        property = Property.objects.get(id=property_id)
+
+        owner = super(OwnerForm, self).save()
+
+        property.owner = owner
+        property.save()
+        return owner
 
 
 class PermissionForm(forms.Form):

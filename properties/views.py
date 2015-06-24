@@ -67,8 +67,9 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
     def get(self, request, property_id, *args, **kwargs):
         p = Property.objects.get(id=property_id)
         property_form = PropertyForm(instance=p,
-                                     initial={'developer': p.developer.name})
-        owner_form = OwnerForm()
+                                     initial={'developer': p.developer.name}
+                                     )
+        owner_form = OwnerForm(instance=p.owner)
         # project_form and permission_form are art of a the same form
         project = p.project
         project_form = ProjectForm(instance=project)
@@ -139,7 +140,7 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
 
             if 'owner-details' in request.POST:
                 if owner_form.is_valid():
-                    owner_form.save()
+                    owner_form.save(property_id)
                     return JsonResponse({'success': 'true'})
                 else:
                     form_html = render_crispy_form(owner_form)
