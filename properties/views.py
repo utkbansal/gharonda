@@ -80,8 +80,14 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                     'name': self.request.session.pop('owner_name')
                 }
             )
-        else:
+        elif p.owner is None:
             owner_form = OwnerForm(instance=p.owner)
+        else:
+            owner_form=OwnerForm(instance=p.owner,
+                                 initial={
+                                     'co_owner_name': p.owner.co_owner.name,
+                                     'co_owner_occupation': p.owner.co_owner.occupation,
+                                 })
         # project_form and permission_form are art of a the same form
         project = p.project
         project_form = ProjectForm(instance=project)
