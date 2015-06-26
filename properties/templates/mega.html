@@ -75,8 +75,15 @@
             type="application/javascript"></script>
 
     <script type="text/javascript">
+        $(document).ajaxStart(function () {
+            $('#myModal').modal('show')
+        });
+        $(document).ajaxComplete(function () {
+            $('#myModal').modal('hide')
+        });
         function all() {
-            $('#id_bank').select2({ width:'100%'});
+
+            $('#id_bank').select2({width: '100%'});
             $(".date-field").datepicker({
                 format: "dd/mm/yyyy",
                 todayBtn: "linked",
