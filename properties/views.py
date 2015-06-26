@@ -51,8 +51,8 @@ class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
 
 DeveloperProjectFormset = inlineformset_factory(Developer, DeveloperProject,
                                                 extra=1,
-                                                form=DeveloperProjectForm,
-                                                can_delete=False)
+                                                form=DeveloperProjectForm
+                                                )
 
 TowerFormset = inlineformset_factory(Project, Tower,
                                      form=TowerForm,
@@ -187,7 +187,8 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                                          'form_html': form_html})
 
             if 'project-details' in request.POST:
-                if project_form.is_valid() and permission_form.is_valid() and tower_form.is_valid():
+                if project_form.is_valid() and permission_form.is_valid() and \
+                        tower_form.is_valid():
                     project = project_form.save(property_id)
                     permission_form.save(project=project)
                     tower_form.save()
@@ -220,7 +221,8 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                                      'form_html': form_html})
 
             if 'builder-details' in request.POST:
-                if builder_form.is_valid() and builder_project_formset.is_valid():
+                if builder_form.is_valid() and \
+                        builder_project_formset.is_valid():
                     builder_form.save()
                     builder_project_formset.save()
                     builder_form_html = render_crispy_form(builder_form)

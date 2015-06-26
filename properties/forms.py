@@ -89,6 +89,7 @@ class DeveloperProjectHelper(FormHelper):
             'developer',
 
         )
+        self.layout.extend(['DELETE'])
 
 
 class DeveloperProjectForm(ModelForm):
