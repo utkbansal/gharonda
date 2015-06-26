@@ -5,6 +5,7 @@
 {% block css %}
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css"
           rel="stylesheet"/>
+
     <link href="{% static 'css/bootstrap-datepicker3.standalone.min.css' %}"
           rel="stylesheet">
     <link href="{% static 'ajaximage/css/bootstrap-progress.min.css' %}"
@@ -32,7 +33,9 @@
         <form method="post" id="project-details">
             {% crispy project_form %}
             {% crispy permission_form %}
-            {% crispy tower_form tower_helper %}
+            <div id="tower-part-form">
+                {% crispy tower_form tower_helper %}
+            </div>
         </form>
     </div>
 

@@ -18,8 +18,11 @@ from forms import (PropertyForm,
                    DeveloperProjectForm,
                    TowerHelper,
                    TowerForm)
-from properties.models import Property, Developer, DeveloperProject, Project, \
-    Tower
+from properties.models import (Property,
+                               Developer,
+                               DeveloperProject,
+                               Project,
+                               Tower)
 
 
 class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
@@ -67,6 +70,9 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
 
     def get(self, request, property_id, *args, **kwargs):
         p = Property.objects.get(id=property_id)
+        project = p.project
+        permission = project.projectpermission_set
+
         property_form = PropertyForm(instance=p,
                                      initial={'developer': p.developer.name}
                                      )
@@ -80,21 +86,30 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                     'name': self.request.session.pop('owner_name')
                 }
             )
+
+        # If the project doesn't have an owner, show empty form
         elif p.owner is None:
             owner_form = OwnerForm(instance=p.owner)
+
+        # If the project has an owner, initialise with owner and co-owner
+        # details
         else:
-            owner_form=OwnerForm(instance=p.owner,
-                                 initial={
-                                     'co_owner_name': p.owner.co_owner.name,
-                                     'co_owner_occupation': p.owner.co_owner.occupation,
-                                 })
-        # project_form and permission_form are art of a the same form
-        project = p.project
+            owner_form = OwnerForm(
+                instance=p.owner,
+                initial={
+                    'co_owner_name': p.owner.co_owner.name,
+                    'co_owner_occupation': p.owner.co_owner.occupation,
+                }
+            )
+
+        # project_form, permission_form and tower form comprise a single form
+        # i.e. Project Details
         project_form = ProjectForm(instance=project)
-        permission = project.projectpermission_set
-        # permission_form = PermissionForm(instance=permission)
         permission_form = PermissionForm()
-        other_details_form = OtherDetailsForm(instance=p)
+        tower_form = TowerFormset(instance=project)
+        tower_helper = TowerHelper()
+
+        # builder_form and buider_project_formset comprise a single form
         builder_form = DeveloperForm(
             instance=Property.objects.get(id=property_id).developer
         )
@@ -102,33 +117,40 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
             instance=Property.objects.get(id=property_id).developer
         )
         developer_project_helper = DeveloperProjectHelper()
-        tower_form = TowerFormset(instance=project)
-        tower_helper = TowerHelper()
+
+        other_details_form = OtherDetailsForm(instance=p)
 
         forms = {
             'property_form': property_form,
             'owner_form': owner_form,
             'project_form': project_form,
             'permission_form': permission_form,
-            'other_details_form': other_details_form,
+            'tower_form': tower_form,
+            'tower_helper': tower_helper,
             'builder_form': builder_form,
             'builder_project_formset': builder_project_formset,
             'developer_project_helper': developer_project_helper,
-            'tower_form': tower_form,
-            'tower_helper': tower_helper,
+            'other_details_form': other_details_form,
         }
 
         return render(request, self.template_name, forms)
 
     def post(self, request, property_id, *args, **kwargs):
         if request.is_ajax():
+
             property = Property.objects.get(id=property_id)
+
             property_form = PropertyForm(request.POST, instance=property)
+
             owner_form = OwnerForm(request.POST, instance=property.owner)
+
             project_form = ProjectForm(request.POST, instance=property.project)
             permission_form = PermissionForm(request.POST)
-            other_details_form = OtherDetailsForm(request.POST,
-                                                  instance=property)
+            tower_form = TowerFormset(request.POST,
+                                      files=request.FILES,
+                                      instance=property.project)
+            tower_helper = TowerHelper()
+
             builder_form = DeveloperForm(
                 request.POST,
                 instance=Property.objects.get(id=property_id).developer
@@ -138,10 +160,9 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                 instance=Property.objects.get(id=property_id).developer
             )
             developer_project_helper = DeveloperProjectHelper()
-            tower_form = TowerFormset(request.POST,
-                                      files=request.FILES,
-                                      instance=property.project)
-            tower_helper = TowerHelper()
+
+            other_details_form = OtherDetailsForm(request.POST,
+                                                  instance=property)
 
             if 'property-details' in request.POST:
                 if property_form.is_valid():
@@ -186,20 +207,14 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                 post_data = request.POST.copy()
                 post_data['tower_set-TOTAL_FORMS'] = int(
                     request.POST['tower_set-TOTAL_FORMS']) + 1
-                project_form = ProjectForm(initial=request.POST)
-                permission_form = PermissionForm(initial=request.POST)
 
                 project = Property.objects.get(id=property_id).project
                 tower_form = TowerFormset(post_data, instance=project)
 
                 tower_helper = TowerHelper()
-                project_form_html = render_crispy_form(project_form)
-                permission_form_html = render_crispy_form(permission_form)
                 tower_form_html = render_crispy_form(tower_form, tower_helper)
 
-                form_html = (project_form_html +
-                             permission_form_html +
-                             tower_form_html)
+                form_html = tower_form_html
 
                 return JsonResponse({'succcess': 'true',
                                      'form_html': form_html})
