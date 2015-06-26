@@ -42,6 +42,7 @@ class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         property = form.save()
+        self.request.session['owner_name'] = form.cleaned_data['owner_name']
         return HttpResponseRedirect('/properties/dashboard/' + str(property.id))
 
 
@@ -69,7 +70,18 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
         property_form = PropertyForm(instance=p,
                                      initial={'developer': p.developer.name}
                                      )
-        owner_form = OwnerForm(instance=p.owner)
+
+        # If the user is redirected from the basic details form, then initialise
+        # the owner name from the basic details form
+        if 'owner_name' in self.request.session:
+            owner_form = OwnerForm(
+                instance=p.owner,
+                initial={
+                    'name': self.request.session.pop('owner_name')
+                }
+            )
+        else:
+            owner_form = OwnerForm(instance=p.owner)
         # project_form and permission_form are art of a the same form
         project = p.project
         project_form = ProjectForm(instance=project)
