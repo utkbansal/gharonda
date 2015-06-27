@@ -57,7 +57,6 @@ DeveloperProjectFormset = inlineformset_factory(Developer, DeveloperProject,
 TowerFormset = inlineformset_factory(Project, Tower,
                                      form=TowerForm,
                                      extra=1,
-                                     can_delete=False,
                                      )
 
 
@@ -204,22 +203,6 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                     return JsonResponse({'success': 'false',
                                          'form_html': form_html})
 
-            if 'add-tower' in request.POST:
-                post_data = request.POST.copy()
-                post_data['tower_set-TOTAL_FORMS'] = int(
-                    request.POST['tower_set-TOTAL_FORMS']) + 1
-
-                project = Property.objects.get(id=property_id).project
-                tower_form = TowerFormset(post_data, instance=project)
-
-                tower_helper = TowerHelper()
-                tower_form_html = render_crispy_form(tower_form, tower_helper)
-
-                form_html = tower_form_html
-
-                return JsonResponse({'succcess': 'true',
-                                     'form_html': form_html})
-
             if 'builder-details' in request.POST:
                 if builder_form.is_valid() and \
                         builder_project_formset.is_valid():
@@ -235,6 +218,23 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                     form_html = render_crispy_form(builder_form)
                     return JsonResponse({'success': 'false',
                                          'form_html': form_html})
+
+            if 'add-tower' in request.POST:
+                post_data = request.POST.copy()
+                post_data['tower_set-TOTAL_FORMS'] = int(
+                    request.POST['tower_set-TOTAL_FORMS']) + 1
+
+                project = Property.objects.get(id=property_id).project
+                tower_form = TowerFormset(post_data, instance=project)
+
+                tower_helper = TowerHelper()
+                tower_form_html = render_crispy_form(tower_form, tower_helper)
+                print tower_form.errors
+
+                form_html = tower_form_html
+
+                return JsonResponse({'succcess': 'true',
+                                     'form_html': form_html})
 
             if 'add-project' in request.POST:
                 developer = Developer.objects.all().first()

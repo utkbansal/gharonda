@@ -544,3 +544,4 @@ class TowerHelper(FormHelper):
                     style='padding:0% 0% 5% 0%'
                 ))
         )
+        self.layout.extend(['DELETE'])

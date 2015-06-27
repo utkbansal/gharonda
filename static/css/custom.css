@@ -21,7 +21,6 @@ h4 {
 }
 
 #add-property-button {
-    margin-bottom: 15%;
     margin-top: 15%;
 }
 
@@ -32,4 +31,8 @@ table {
 
 .table tbody > tr > td {
     vertical-align: middle;
+}
+
+footer {
+    padding: 20px;
 }
