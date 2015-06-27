@@ -1,6 +1,7 @@
 hideAllForms();
 $('#property-details-form').show(500);
 
+
 function propertyAjax() {
     var propertyDetailsForm = $('#property-details');
     var post = $(this).attr("name") + "=" + $(this).val();
@@ -42,7 +43,7 @@ function ownerAjax() {
         success: function (data) {
             console.log(data);
             $('#owner-details').html(data['form_html']);
-            $('#submit-owner-details').click(propertyAjax);
+            $('#submit-owner-details').click(ownerAjax);
             all();
 
             if ((data['success'] == 'true')) {
