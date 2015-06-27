@@ -400,6 +400,8 @@ class PropertyBasicDetailsForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_id = 'project-basic-details-form'
         self.fields['address_line_two'].required = False
+        self.fields['state'].required = False
+        self.fields['pin_code'].required = False
         self.helper.layout = Layout(
             'owner_name',
             'project_name',
