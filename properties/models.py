@@ -43,10 +43,10 @@ class Developer(models.Model):
 
 class DeveloperProject(models.Model):
     project_name = models.CharField(max_length=255, null=False)
-    launch_date = models.CharField(max_length=20, default='')
-    possession_date = models.CharField(max_length=20, default='')
-    location = models.CharField(max_length=255, default='')
-    other_status = models.CharField(max_length=255, default='')
+    launch_date = models.CharField(max_length=20, default=None, null=True)
+    possession_date = models.CharField(max_length=20, default=None, null=True)
+    location = models.CharField(max_length=255, default=None, null=True)
+    other_status = models.CharField(max_length=255, default=None, null=True)
     developer = models.ForeignKey('Developer')
 
     def __unicode__(self):
@@ -94,7 +94,7 @@ class ProjectPermission(models.Model):
 
 class Owner(models.Model):
     name = models.CharField(max_length=255, null=False)
-    occupation = models.CharField(max_length=255, null=False)
+    occupation = models.CharField(max_length=255, default=None, null=True)
     pan_number = models.CharField(max_length=20, default=None, null=True)
     date_of_purchase = models.CharField(max_length=20, default=None, null=True)
     # should be in property
@@ -119,7 +119,10 @@ class Owner(models.Model):
 class Tower(models.Model):
     name = models.CharField(max_length=255)
     floors_completed = models.IntegerField(default=0)
-    finishing_status = models.CharField(max_length=255)
-    other_status = models.CharField(max_length=255)
-    image = AjaxImageField(upload_to='pics')
+    finishing_status = models.CharField(max_length=255, default=None, null=True)
+    other_status = models.CharField(max_length=255, default=None, null=True)
+    image = AjaxImageField(upload_to='pics', default=None, null=True)
     project = models.ForeignKey('Project')
+
+    def __unicode__(self):
+        return self.name

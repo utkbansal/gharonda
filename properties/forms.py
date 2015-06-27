@@ -108,6 +108,8 @@ class DeveloperProjectForm(ModelForm):
         self.helper = FormHelper()
         self.helper.disable_csrf = True
         self.helper.form_id = 'builder-details'
+        self.fields['launch_date'].required = False
+        self.fields['possession_date'].required = False
         self.helper.layout = Layout(
             'project_name',
             Div(
@@ -159,8 +161,8 @@ class OtherDetailsForm(ModelForm):
 
 
 class OwnerForm(ModelForm):
-    co_owner_name = forms.CharField()
-    co_owner_occupation = forms.CharField()
+    co_owner_name = forms.CharField(required=False)
+    co_owner_occupation = forms.CharField(required=False)
 
     class Meta:
         model = Owner
@@ -190,9 +192,12 @@ class OwnerForm(ModelForm):
         self.helper.form_id = 'owner-form'
         self.helper.disable_csrf = True
         self.fields['name_of_seller'].required = False
+        self.fields['occupation'].required = False
+        self.fields['pan_number'].required = False
         self.fields['contact_number_seller'].required = False
         self.fields['email_seller'].required = False
         self.fields['loan_from'].required = False
+        self.fields['main_cost_of_purchase'].required = False
         self.fields['other_cost_1'].required = False
         self.fields['other_cost_2'].required = False
         self.helper.layout = Layout(
@@ -458,6 +463,10 @@ class PropertyForm(ModelForm):
         self.helper.disable_csrf = True
         self.helper.form_id = 'property-details'
         self.fields['address_line_two'].required = False
+        self.fields['state'].required = False
+        self.fields['pin_code'].required = False
+        self.fields['built_up_area'].required = False
+        self.fields['total_area'].required = False
         self.helper.layout = Layout(
             Div('property_type', css_class='col-md-6',
                 style='padding-left: 0px'),
@@ -509,6 +518,10 @@ class TowerForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
+        self.fields['floors_completed'].required = False
+        self.fields['finishing_status'].required = False
+        self.fields['other_status'].required = False
+        self.fields['image'].required = False
 
 
 class TowerHelper(FormHelper):
