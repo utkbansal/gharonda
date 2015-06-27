@@ -1,4 +1,5 @@
-from crispy_forms.bootstrap import AppendedText, InlineRadios, PrependedText
+from crispy_forms.bootstrap import AppendedText, InlineRadios, PrependedText, \
+    PrependedAppendedText
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, ButtonHolder, Submit, Field, Div, \
     Fieldset
@@ -171,6 +172,7 @@ class OwnerForm(ModelForm):
             'occupation',
             'pan_number',
             'date_of_purchase',
+            'loan_status',
             'loan_from',
             'main_cost_of_purchase',
             'is_resale',
@@ -179,10 +181,18 @@ class OwnerForm(ModelForm):
             'email_seller',
             'other_cost_1',
             'other_cost_2',
+            'other_cost_3',
         ]
 
         widgets = {
             'is_resale': forms.RadioSelect,
+        }
+
+        labels = {
+            'loan_status': 'Loan',
+            'other_cost_1': 'EDC',
+            'other_cost_2': 'IDC',
+            'other_cost_3': 'Parking',
         }
 
     def __init__(self, *args, **kwargs):
@@ -200,35 +210,49 @@ class OwnerForm(ModelForm):
         self.fields['main_cost_of_purchase'].required = False
         self.fields['other_cost_1'].required = False
         self.fields['other_cost_2'].required = False
+        self.fields['other_cost_3'].required = False
         self.helper.layout = Layout(
             Div(
-                Div('name',
-                    'occupation',
-                    'loan_from',
-                    'pan_number',
-                    css_class='col-md-6',
-                    style='padding-left:0px'),
+                Div(
+                    Div('name',
+                        'occupation',
+                        'pan_number',
+                        Field('date_of_purchase', css_class='date-field'),
+                        css_class='col-md-6',
+                        style='padding-left:0px'),
+
+                    Div(
+                        'co_owner_name',
+                        'co_owner_occupation',
+                        # Indian rupee sign &#8377;
+                        PrependedText('main_cost_of_purchase', '&#8377;'),
+
+                        css_class='col-md-6',
+                        style='padding-right:0px'
+                    ),
+                ),
 
                 Div(
-                    'co_owner_name',
-                    'co_owner_occupation',
-                    # Indian rupee sign &#8377;
-                    PrependedText('main_cost_of_purchase', '&#8377;'),
-
-                    Field('date_of_purchase', css_class='date-field'),
-                    css_class='col-md-6',
-                    style='padding-right:0px'
+                    'loan_status',
+                    'loan_from',
+                    css_class='col-md-12',
+                    style='padding:0px'
                 ),
+
                 Div(
                     Fieldset(
                         'Other Costs',
                         Div(
-                            'other_cost_1',
+                            PrependedAppendedText('other_cost_1', '&#8377;',
+                                                  'per sq ft'),
+                            PrependedAppendedText('other_cost_3', '&#8377;',
+                                                  'per sq ft'),
                             css_class='col-md-6',
                             style='padding-left:0px'
                         ),
                         Div(
-                            'other_cost_2',
+                            PrependedAppendedText('other_cost_2', '&#8377;',
+                                                  'per sq ft'),
                             css_class='col-md-6',
                             style='padding-right:0px'
                         ),
@@ -236,7 +260,12 @@ class OwnerForm(ModelForm):
                     css_class='col-md-12',
                     style='padding:0px',
                 ),
-                InlineRadios('is_resale'),
+                Div(
+                    InlineRadios('is_resale'),
+                    css_class='col-md-12',
+                    style='padding:0px'
+                ),
+
                 Div(
                     'name_of_seller',
                     css_class='col-md-6',
@@ -247,8 +276,11 @@ class OwnerForm(ModelForm):
                     css_class='col-md-6',
                     style='padding-right:0px'
                 ),
-
-                'email_seller',
+                Div(
+                    'email_seller',
+                    css_class='col-md-12',
+                    style='padding:0px',
+                ),
                 ButtonHolder(
                     Submit('owner-details', 'submit', css_class='btn-block',
                            css_id='submit-owner-details')
@@ -304,7 +336,7 @@ class PermissionForm(forms.Form):
             p = ProjectPermission.objects.update_or_create(
                 project=project,
                 permission=permission,
-                defaults={'value':self.cleaned_data[field]})
+                defaults={'value': self.cleaned_data[field]})
         return project
 
 
@@ -325,6 +357,10 @@ class ProjectForm(ModelForm):
             'contractor_name_2',
             'contractor_name_3',
         ]
+
+        labels = {
+            'bank': 'Banks Providing Loans For The Project'
+        }
 
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)
@@ -358,7 +394,7 @@ class ProjectForm(ModelForm):
             'contractor_name_3',
         )
 
-    def save(self,property_id, commit=True):
+    def save(self, property_id, commit=True):
         property = Property.objects.get(id=property_id)
         if 'add_bank' in self.cleaned_data.keys():
             if self.cleaned_data['add_bank'] is True:
@@ -372,11 +408,10 @@ class ProjectForm(ModelForm):
                 property.save()
                 return project
 
-
         project = super(ProjectForm, self).save()
         property.project = project
         property.save()
-        return  project
+        return project
 
 
 class PropertyBasicDetailsForm(ModelForm):

@@ -22,8 +22,7 @@ from properties.models import (Property,
                                Developer,
                                DeveloperProject,
                                Project,
-                               Tower,
-                               ProjectPermission)
+                               Tower)
 
 
 class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
@@ -108,7 +107,7 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
         # Initialise permission form manually beacuse it cannot have an instance
         initial_permissions = {}
         for x in p.project.projectpermission_set.all():
-            initial_permissions[x.permission.name]=x.value
+            initial_permissions[x.permission.name] = x.value
 
         permission_form = PermissionForm(initial=initial_permissions)
         tower_form = TowerFormset(instance=project)
@@ -201,15 +200,15 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
 
                     project_form_html = render_crispy_form(project_form)
                     permission_form_html = render_crispy_form(permission_form)
-                    tower_form_html = render_crispy_form(tower_form, tower_helper)
+                    tower_form_html = render_crispy_form(tower_form,
+                                                         tower_helper)
 
                     form_html = (project_form_html +
                                  permission_form_html +
                                  tower_form_html)
 
-
                     return JsonResponse({'success': 'true',
-                                         'form_html':form_html})
+                                         'form_html': form_html})
                 else:
                     project_form_html = render_crispy_form(project_form)
                     permission_form_html = render_crispy_form(permission_form)
