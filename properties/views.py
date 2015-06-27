@@ -173,13 +173,14 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                 else:
                     form_html = render_crispy_form(property_form)
                     return JsonResponse({'success': 'false',
-                                         'form_html': form_html,
-                                         'errors': property_form.errors})
+                                         'form_html': form_html})
 
             if 'owner-details' in request.POST:
                 if owner_form.is_valid():
                     owner_form.save(property_id)
-                    return JsonResponse({'success': 'true'})
+                    form_html = render_crispy_form(owner_form)
+                    return JsonResponse({'success': 'true',
+                                         'form_html': form_html})
                 else:
                     form_html = render_crispy_form(owner_form)
                     return JsonResponse({'success': 'false',
@@ -191,7 +192,18 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
                     project = project_form.save(property_id)
                     permission_form.save(project=project)
                     tower_form.save()
-                    return JsonResponse({'success': 'true'})
+
+                    project_form_html = render_crispy_form(project_form)
+                    permission_form_html = render_crispy_form(permission_form)
+                    tower_form_html = render_crispy_form(tower_form, tower_helper)
+
+                    form_html = (project_form_html +
+                                 permission_form_html +
+                                 tower_form_html)
+
+
+                    return JsonResponse({'success': 'true',
+                                         'form_html':form_html})
                 else:
                     project_form_html = render_crispy_form(project_form)
                     permission_form_html = render_crispy_form(permission_form)
