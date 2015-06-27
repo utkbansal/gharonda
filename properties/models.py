@@ -91,6 +91,9 @@ class ProjectPermission(models.Model):
     permission = models.ForeignKey('Permissions')
     value = models.CharField(max_length=255)
 
+    def __unicode__(self):
+        return self.project.name
+
 
 class Owner(models.Model):
     name = models.CharField(max_length=255, null=False)

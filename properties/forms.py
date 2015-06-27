@@ -300,12 +300,11 @@ class PermissionForm(forms.Form):
         project = kwargs.pop('project')
         for field in self.fields:
             permission = Permissions.objects.filter(name=field).first()
-            p = ProjectPermission(
+
+            p = ProjectPermission.objects.update_or_create(
                 project=project,
                 permission=permission,
-                value=self.cleaned_data[field]
-            )
-            p.save()
+                defaults={'value':self.cleaned_data[field]})
         return project
 
 

@@ -22,7 +22,8 @@ from properties.models import (Property,
                                Developer,
                                DeveloperProject,
                                Project,
-                               Tower)
+                               Tower,
+                               ProjectPermission)
 
 
 class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
@@ -70,7 +71,6 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
     def get(self, request, property_id, *args, **kwargs):
         p = Property.objects.get(id=property_id)
         project = p.project
-        permission = project.projectpermission_set
 
         property_form = PropertyForm(instance=p,
                                      initial={'developer': p.developer.name}
@@ -104,7 +104,13 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
         # project_form, permission_form and tower form comprise a single form
         # i.e. Project Details
         project_form = ProjectForm(instance=project)
-        permission_form = PermissionForm()
+
+        # Initialise permission form manually beacuse it cannot have an instance
+        initial_permissions = {}
+        for x in p.project.projectpermission_set.all():
+            initial_permissions[x.permission.name]=x.value
+
+        permission_form = PermissionForm(initial=initial_permissions)
         tower_form = TowerFormset(instance=project)
         tower_helper = TowerHelper()
 
