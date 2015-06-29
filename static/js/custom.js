@@ -1,19 +1,21 @@
-function fieldVisiblityCheck() {
+$("#id_type_1").click(function () {
 
-    // If Broker
-    if (document.getElementById('id_type_1').checked) {
-        document.getElementById('common-data').style.display = 'block';
-        document.getElementById('broker-only-data').style.display = 'block';
-    }
-    // If Normal User
-    if (document.getElementById('id_type_2').checked) {
-        document.getElementById('common-data').style.display = 'block';
-        document.getElementById('broker-only-data').style.display = 'none';
-    }
+    $('#common-data').show();
+    $('#broker-only-data').show();
+});
+
+$("#id_type_2").click(function () {
+
+    $('#common-data').show();
+    $('#broker-only-data').hide();
+});
+
+if ($('#id_type_1').is(":checked")) {
+    $('#common-data').show();
+    $('#broker-only-data').show();
 }
-e1 = document.getElementById('id_type_1');
-e2 = document.getElementById('id_type_2');
-e1.addEventListener('click', fieldVisiblityCheck);
-e2.addEventListener('click', fieldVisiblityCheck);
 
-fieldVisiblityCheck();
+if ($('#id_type_2').is(":checked")) {
+    $('#common-data').show();
+    $('#broker-only-data').hide();
+}

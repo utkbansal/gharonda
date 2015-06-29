@@ -42,6 +42,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'custom_user',
     'crispy_forms',
+    'properties',
+    'ajaximage'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -96,7 +98,9 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-LOGIN_URL = 'login/'
+
+# Default Login URL
+LOGIN_URL = '/login/'
 
 TIME_ZONE = 'UTC'
 
@@ -106,6 +110,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+# Media files (User uploaded photos)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
@@ -123,3 +132,5 @@ TEMPLATE_DIRS = (
 )
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+AJAXIMAGE_AUTH_TEST = lambda u: True

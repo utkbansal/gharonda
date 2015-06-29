@@ -1,0 +1,110 @@
+{% extends 'dashboard.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+{% block css %}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css"
+          rel="stylesheet"/>
+
+    <link href="{% static 'css/bootstrap-datepicker3.standalone.min.css' %}"
+          rel="stylesheet">
+    <link href="{% static 'ajaximage/css/bootstrap-progress.min.css' %}"
+          rel="stylesheet">
+    <link href="{% static 'ajaximage/css/styles.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block form %}
+    <div id="property-details-form">
+        <h2>Property Details</h2>
+        {% crispy property_form %}
+    </div>
+
+    <div id="owner-details-form">
+        <h2>Owner Details</h2>
+
+        <form method="post" id="owner-details">
+            {% crispy owner_form %}
+        </form>
+    </div>
+
+    <div id="project-details-form">
+        <h2>Project Details</h2>
+
+        <form method="post" id="project-details">
+            {% crispy project_form %}
+            {% crispy permission_form %}
+            <div id="tower-part-form">
+                {% crispy tower_form tower_helper %}
+            </div>
+        </form>
+    </div>
+
+    <div id="builder-details-form">
+        <h2>Builder Detail</h2>
+
+        <form method="post" id="builder-details">
+            {% crispy builder_form %}
+            {% crispy builder_project_formset developer_project_helper %}
+        </form>
+    </div>
+
+    <div id="other-details-form">
+        <h2>Other Details</h2>
+
+        <form method="post" id="other-details">
+
+            {% crispy other_details_form %}
+        </form>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+    <script type="text/javascript"
+            src={% static 'ajaximage/js/ajaximage.js' %}></script>
+    <script src="{% static 'js/form-toggle.js' %}"></script>
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/ajax.js' %}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+
+
+    <script src="{% static 'js/add-bank.js' %}"
+            type="application/javascript"></script>
+
+    <script src="{% static 'js/resale.js' %}"
+            type="application/javascript"></script>
+
+    <script type="text/javascript">
+        $(document).ajaxStart(function () {
+            $('#myModal').modal('show')
+        });
+        $(document).ajaxComplete(function () {
+            $('#myModal').modal('hide')
+        });
+        function all() {
+
+            $('#id_bank').select2({width: '100%'});
+            $(".date-field").datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                clearBtn: true,
+                autoclose: true,
+                todayHighlight: true
+            });
+            $('.month-year').datepicker({
+                format: "mm/yyyy",
+                todayBtn: "linked",
+                clearBtn: true,
+                autoclose: true,
+                todayHighlight: true
+            });
+            resaleCheck();
+            addBankCheck();
+            loanCheck();
+        }
+
+
+        all();
+    </script>
+
+{% endblock %}
