@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="sidebar-nav-fixed">
+                    <div class="well">
+                        <ul class="nav ">
+                            <li class="nav-header">Please Complete Your
+                                Listing
+                            </li>
+                            <li><a href="#" id="show-property-details">Property
+                                Details</a>
+                            </li>
+                            <li><a href="#" id="show-owner-details">Owner
+                                Details</a>
+                            </li>
+                            <li><a href="#" id="show-project-details">Project
+                                Details</a>
+                            </li>
+                            <li><a href="#" id="show-builder-details">Builder
+                                Details</a>
+                            </li>
+                            <li><a href="#" id="show-other-details">Other
+                                Details</a></li>
+                        </ul>
+                    </div>
+                    <!--/.well -->
+                </div>
+                <!--/sidebar-nav-fixed -->
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-6">
+                <div class="modal fade" data-keyboard="false"
+                     data-backdrop="static" id="myModal" tabindex="-1"
+                     role="dialog"
+                     aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="row">
+
+                                        <div class="col-md-2">
+                                            <img src="{% static 'img/loader.gif' %}">
+                                        </div>
+                                        <div class="col-md-10">
+                                            <h1 style="text-align: center">
+                                                Loading...</h1></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% block form %}{% endblock form %}
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+{% endblock %}

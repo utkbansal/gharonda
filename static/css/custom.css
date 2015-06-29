@@ -1,0 +1,38 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab);
+
+body {
+    font-family: 'Tangerine', serif;
+}
+
+#common-data {
+    display: None;
+}
+
+#broker-only-data {
+    display: None;
+}
+
+.ui-datepicker-calendar {
+    display: none;
+}
+
+h4 {
+    text-align: center;
+}
+
+#add-property-button {
+    margin-top: 15%;
+}
+
+table {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.table tbody > tr > td {
+    vertical-align: middle;
+}
+
+footer {
+    padding: 20px;
+}

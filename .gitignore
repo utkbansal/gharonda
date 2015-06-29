@@ -6,3 +6,5 @@
 *.swo
 #byte-compiled files
 *.pyc
+# Media files
+media/
