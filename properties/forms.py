@@ -87,11 +87,14 @@ class DeveloperProjectHelper(FormHelper):
                 css_class='col-md-6',
                 style='padding-right:0px'
             ),
+
+            Div(
+                'DELETE',
+                css_class='col-md-12',
+                style='padding:0px',
+            ),
             'developer',
-
         )
-        self.layout.extend(['DELETE'])
-
 
 class DeveloperProjectForm(ModelForm):
     developer = forms.CharField()
@@ -375,13 +378,13 @@ class ProjectForm(ModelForm):
         self.helper.layout = Layout(
             'name',
             Div(
-                Field('launch_date', css_class='date-field'),
+                Field('launch_date', css_class='month-year'),
                 css_class='col-md-6',
                 style='padding-left:0px'
             ),
             Div(
                 Field('possession_date',
-                      css_class='date-field',
+                      css_class='month-year',
                       ),
                 css_class='col-md-6',
 
