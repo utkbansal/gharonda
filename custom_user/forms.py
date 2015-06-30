@@ -30,6 +30,10 @@ class CompanyForm(ModelForm):
         model = Company
         fields = ['name', 'address']
 
+        labels = {
+            'name': 'Company Name'
+        }
+
     def __init__(self, *args, **kwargs):
         super(CompanyForm, self).__init__(*args, **kwargs)
         self.fields['name'].required = False
