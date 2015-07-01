@@ -1,4 +1,4 @@
-from crispy_forms.bootstrap import AppendedText, InlineRadios, PrependedText, \
+from crispy_forms.bootstrap import AppendedText, InlineRadios, \
     PrependedAppendedText
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, ButtonHolder, Submit, Field, Div, \
@@ -89,12 +89,18 @@ class DeveloperProjectHelper(FormHelper):
             ),
 
             Div(
+                Field('other_status'),
+                css_class='col-md-12',
+                style='padding:0px',
+            ),
+            Div(
                 'DELETE',
                 css_class='col-md-12',
                 style='padding:0px',
             ),
             'developer',
         )
+
 
 class DeveloperProjectForm(ModelForm):
     developer = forms.CharField()
@@ -105,7 +111,15 @@ class DeveloperProjectForm(ModelForm):
             'project_name',
             'launch_date',
             'possession_date',
+            'other_status'
         ]
+        widgets = {
+            'other_status': forms.Textarea(attrs={'rows': 5}),
+        }
+
+        labels = {
+            'other_status': 'Comment'
+        }
 
     def __init__(self, *args, **kwargs):
         super(DeveloperProjectForm, self).__init__(*args, **kwargs)
@@ -114,6 +128,7 @@ class DeveloperProjectForm(ModelForm):
         self.helper.form_id = 'builder-details'
         self.fields['launch_date'].required = False
         self.fields['possession_date'].required = False
+        self.fields['other_status'].required = False
         self.helper.layout = Layout(
             'project_name',
             Div(
@@ -229,7 +244,8 @@ class OwnerForm(ModelForm):
                         'co_owner_name',
                         'co_owner_occupation',
                         # Indian rupee sign &#8377;
-                        PrependedAppendedText('main_cost_of_purchase', '&#8377;',
+                        PrependedAppendedText('main_cost_of_purchase',
+                                              '&#8377;',
                                               'per sq ft'),
 
                         css_class='col-md-6',
