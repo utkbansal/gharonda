@@ -1,10 +1,12 @@
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import logout, authenticate, login
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView, TemplateView, RedirectView
 from django.http import HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from braces import views
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from forms import (RegistrationForm,
                    LoginForm,
@@ -17,6 +19,10 @@ from models import BrokerProfile, User, Company, ContactNumber
 
 class IndexView(TemplateView):
     template_name = 'index.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(IndexView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         contact_form = ContactNumberForm(instance=ContactNumber())
@@ -68,8 +74,10 @@ class IndexView(TemplateView):
                     user = authenticate(username=user.email,
                                         password=register_form.cleaned_data[
                                             'password'])
+                    print 'logging in'
                     login(self.request, user)
-                    return reverse_lazy('index')
+                    print 'logged in'
+                    return redirect(reverse_lazy('index'))
 
                 if company_form.is_valid():
                     company, created = Company.objects.get_or_create(

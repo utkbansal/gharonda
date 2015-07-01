@@ -22,6 +22,7 @@ class BrokerProfileForm(ModelForm):
         super(BrokerProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.disable_csrf=True
         self.fields['license_no'].required = False
 
 
@@ -40,6 +41,7 @@ class CompanyForm(ModelForm):
         self.fields['address'].required = False
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.disable_csrf = True
         self.helper.layout = Layout(
             'name',
             'address'
@@ -55,6 +57,7 @@ class ContactNumberForm(ModelForm):
         super(ContactNumberForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.disable_csrf = True
         self.helper.layout = Layout(
             'contact_no',
         )
@@ -65,6 +68,7 @@ class LoginForm(AuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.disable_csrf = True
         self.helper.attrs = {'name': 'registration-form'}
         self.helper.layout = Layout(
             'username',
@@ -93,6 +97,7 @@ class RegistrationForm(ModelForm):
         super(RegistrationForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
+        self.helper.disable_csrf = True
         # Removing the enclosing <form> tag
         self.helper.form_tag = False
         self.helper.attrs = {'name': 'registration-form'}
@@ -114,6 +119,7 @@ class UserTypeForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(UserTypeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.disable_csrf = True
         self.helper.form_tag = False
         self.helper.attrs = {
             'name': 'user-type-form',
