@@ -68,7 +68,6 @@ class LoginForm(AuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.helper.disable_csrf = True
         self.helper.attrs = {'name': 'registration-form'}
         self.helper.layout = Layout(
             'username',
