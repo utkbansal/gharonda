@@ -192,6 +192,7 @@ class OwnerForm(ModelForm):
         }
 
         labels = {
+            'main_cost_of_purchase': 'Basic cost of purchase',
             'loan_status': 'Loan',
             'other_cost_1': 'EDC',
             'other_cost_2': 'IDC',
@@ -228,7 +229,8 @@ class OwnerForm(ModelForm):
                         'co_owner_name',
                         'co_owner_occupation',
                         # Indian rupee sign &#8377;
-                        PrependedText('main_cost_of_purchase', '&#8377;'),
+                        PrependedAppendedText('main_cost_of_purchase', '&#8377;',
+                                              'per sq ft'),
 
                         css_class='col-md-6',
                         style='padding-right:0px'
