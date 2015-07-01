@@ -522,7 +522,9 @@ class PropertyForm(ModelForm):
         self.fields['address_line_two'].required = False
         self.fields['state'].required = False
         self.fields['pin_code'].required = False
-        self.fields['built_up_area'].required = False
+        self.fields['number_of_bedrooms'].required = False
+        self.fields['number_of_bathrooms'].required = False
+        self.fields['number_of_parking_spaces'].required = False
         self.fields['total_area'].required = False
         self.helper.layout = Layout(
             Div('property_type', css_class='col-md-6',
