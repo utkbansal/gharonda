@@ -11,6 +11,9 @@ class City(models.Model):
         self.slug = slugify(self.name)
         super(City, self).save(*args, **kwargs)
 
+    def __unicode__(self):
+        return self.name
+
 
 class State(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -20,9 +23,15 @@ class State(models.Model):
         self.slug = slugify(self.name)
         super(State, self).save(*args, **kwargs)
 
+        def __unicode__(self):
+            return self.name
+
 
 class PinCode(models.Model):
     code = models.IntegerField(unique=True)
+
+    def __unicode__(self):
+        return unicode(self.code)
 
 
 class Property(models.Model):
