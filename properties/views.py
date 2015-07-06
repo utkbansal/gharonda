@@ -17,12 +17,13 @@ from forms import (PropertyForm,
                    DeveloperProjectHelper,
                    DeveloperProjectForm,
                    TowerHelper,
-                   TowerForm)
+                   TowerForm,)
 from properties.models import (Property,
                                Developer,
                                DeveloperProject,
                                Project,
                                Tower)
+
 
 
 class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
@@ -72,7 +73,12 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
         project = p.project
 
         property_form = PropertyForm(instance=p,
-                                     initial={'developer': p.developer.name}
+                                     initial={
+                                         'developer': p.developer.name,
+                                         'city':p.city.name,
+                                         'state':p.state.name,
+                                         'pin_code':p.pin_code.code
+                                     }
                                      )
 
         # If the user is redirected from the basic details form, then initialise

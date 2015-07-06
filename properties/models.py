@@ -23,8 +23,8 @@ class State(models.Model):
         self.slug = slugify(self.name)
         super(State, self).save(*args, **kwargs)
 
-        def __unicode__(self):
-            return self.name
+    def __unicode__(self):
+        return self.name
 
 
 class PinCode(models.Model):

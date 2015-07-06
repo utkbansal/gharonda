@@ -2,8 +2,7 @@ from django.conf.urls import url
 
 from views import (
     BasicDetailsFormView,
-    DashboardView,
-)
+    DashboardView,)
 
 urlpatterns = [
     url(r'^basic/$', BasicDetailsFormView.as_view(), name='basic'),

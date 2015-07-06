@@ -13,7 +13,7 @@ from models import (Property,
                     Project, ProjectPermission,
                     Bank,
                     Permissions,
-                    Tower)
+                    Tower, City, State, PinCode)
 
 BEDROOM_CHOICE = []
 for i in range(1, 11):
@@ -439,15 +439,24 @@ class PropertyBasicDetailsForm(ModelForm):
     developer_name = forms.CharField()
     project_name = forms.CharField()
     owner_name = forms.CharField()
+    city = forms.CharField()
+    state = forms.CharField()
+    pin_code = forms.IntegerField()
 
     class Meta:
         model = Property
         fields = [
             'address_line_one',
             'address_line_two',
-            'city',
-            'state',
-            'pin_code']
+
+        ]
+
+        widgets = {
+            'city': forms.TextInput(),
+            'state': forms.TextInput(),
+            'pin_code': forms.TextInput(),
+
+        }
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
@@ -475,16 +484,33 @@ class PropertyBasicDetailsForm(ModelForm):
         developer_name = self.cleaned_data['developer_name']
         dev, created = Developer.objects.get_or_create(name=developer_name)
         self.instance.developer = dev
+
         project_name = self.cleaned_data['project_name']
         project, created = Project.objects.get_or_create(name=project_name)
-
         self.instance.created_by = self.request.user
         self.instance.project = project
+
+        city_name = self.cleaned_data['city'].title()
+        city, created = City.objects.get_or_create(name=city_name)
+        self.instance.city = city
+
+        state_name = self.cleaned_data['state'].title()
+        state, created = State.objects.get_or_create(name=state_name)
+
+        self.instance.state = state
+
+        pin_code = self.cleaned_data['pin_code']
+        pin_code, created = PinCode.objects.get_or_create(code=pin_code)
+        self.instance.pin_code = pin_code
+
         return super(PropertyBasicDetailsForm, self).save()
 
 
 class PropertyForm(ModelForm):
     developer = forms.CharField(label='Builder Name')
+    city = forms.CharField()
+    state = forms.CharField()
+    pin_code = forms.IntegerField()
 
     class Meta:
         model = Property
@@ -498,9 +524,6 @@ class PropertyForm(ModelForm):
             'number_of_parking_spaces',
             'address_line_one',
             'address_line_two',
-            'city',
-            'state',
-            'pin_code',
         ]
         widgets = {
             'number_of_bedrooms': forms.Select(
@@ -532,14 +555,16 @@ class PropertyForm(ModelForm):
             Div('developer', css_class='col-md-6', style='padding-right:0px'),
             'address_line_one',
             'address_line_two',
-            Div('city',
+            Div(
+                'city',
                 'pin_code',
                 'number_of_bathrooms',
                 AppendedText('built_up_area', 'sq ft'),
                 css_class='col-md-6',
                 style='padding-left:0px'
-                ),
-            Div('state',
+            ),
+            Div(
+                'state',
                 'number_of_bedrooms',
                 'number_of_parking_spaces',
                 AppendedText('total_area', 'sq ft'),
@@ -558,6 +583,19 @@ class PropertyForm(ModelForm):
         developer = self.cleaned_data['developer']
         developer, created = Developer.objects.get_or_create(name=developer)
         self.instance.developer = developer
+
+        city_name = self.cleaned_data['city'].title()
+        city, created = City.objects.get_or_create(name=city_name)
+        self.instance.city = city
+
+        state_name = self.cleaned_data['state'].title()
+        state, created = State.objects.get_or_create(name=state_name)
+
+        self.instance.state = state
+
+        pin_code = self.cleaned_data['pin_code']
+        pin_code, created = PinCode.objects.get_or_create(code=pin_code)
+        self.instance.pin_code = pin_code
 
         return super(PropertyForm, self).save()
 
