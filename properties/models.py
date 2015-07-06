@@ -1,5 +1,28 @@
 from ajaximage.fields import AjaxImageField
 from django.db import models
+from django.utils.text import slugify
+
+
+class City(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(City, self).save(*args, **kwargs)
+
+
+class State(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(State, self).save(*args, **kwargs)
+
+
+class PinCode(models.Model):
+    code = models.IntegerField(unique=True)
 
 
 class Property(models.Model):
@@ -12,16 +35,15 @@ class Property(models.Model):
     number_of_parking_spaces = models.CharField(max_length=2, default=0)
     address_line_one = models.CharField(max_length=255, null=False)
     address_line_two = models.CharField(max_length=255, null=True, default=None)
-    city = models.CharField(max_length=255, null=False)
-    state = models.CharField(max_length=255, null=False)
-    pin_code = models.CharField(max_length=20, null=False)
-    developer = models.ForeignKey('Developer', null=True, default=None)
-    owner = models.ForeignKey('Owner', null=True, default=None)
-
     connectivity = models.CharField(max_length=255, default=None, null=True)
     neighborhood_quality = models.CharField(max_length=255, default=None,
                                             null=True)
     comments = models.CharField(max_length=255, default=None, null=True)
+    city = models.ForeignKey('City')
+    state = models.ForeignKey('State')
+    pin_code = models.ForeignKey('PinCode')
+    developer = models.ForeignKey('Developer', null=True, default=None)
+    owner = models.ForeignKey('Owner', null=True, default=None)
     created_by = models.ForeignKey('custom_user.User')
 
     project = models.ForeignKey('Project')
