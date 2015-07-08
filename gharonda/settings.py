@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'custom_user',
     'crispy_forms',
     'properties',
-    'ajaximage'
+    'ajaximage',
+    'import_export'
 )
 
 MIDDLEWARE_CLASSES = (
