@@ -20,13 +20,36 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="panel-info">
-                            <a href="/properties/property/{{ property.id }}">
-                            <p><strong>{{ property.number_of_bedrooms }} BHK {{ property.property_type }}</strong></p></a>
-                            <p>{{ property.address_line_one }},
-                                {{ property.address_line_two }},
-                                {{ property.city.name }},
-                                {{ property.state.name }}
-                            </p>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <a href="/properties/property/{{ property.id }}">
+                                        <img src="{% static 'img/home.png' %}"
+                                             class="img-responsive">
+                                    </a>
+                                </div>
+                                <div class="col-md-10">
+                                    <a href="/properties/property/{{ property.id }}">
+                                        <p>
+                                            <strong>{{ property.number_of_bedrooms }}
+                                                BHK {{ property.property_type }}</strong>
+                                        </p></a>
+
+                                    <p>{{ property.address_line_one }},
+                                        {{ property.address_line_two }},
+                                        {{ property.city.name }},
+                                        {{ property.state.name }}
+                                    </p>
+
+                                    <p>Total Area: {{ property.total_area }}
+                                        sq.ft.</p>
+
+                                    <p>
+                                        Bedrooms: {{ property.number_of_bedrooms }}</p>
+
+                                    <p>
+                                        Bathrooms: {{ property.number_of_bathrooms }}</p>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -39,19 +62,27 @@
 
 
     {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
+
+        <ul class="pager">
+            <li class="previous {% if not page_obj.has_previous %} disabled{% endif %}">
                 {% if page_obj.has_previous %}
-                    <a href="/properties/property/ghaziabad/1?page={{ page_obj.previous_page_number }}">previous</a>
+                    <a href="/properties/property/ghaziabad/1?page={{ page_obj.previous_page_number }}">&larr;
+                        Previous</a>
+                {% else %}
+                    <a href="#">&larr; Previous</a>
                 {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
+            </li>
+
+            <li class="next{% if not page_obj.has_next %} disabled{% endif %}">
                 {% if page_obj.has_next %}
-                    <a href="/properties/property/ghaziabad/1?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="/properties/property/ghaziabad/1?page={{ page_obj.next_page_number }}">&rarr;
+                        Next</a>
+                {% else %}
+                    <a href="#">Next &rarr;</a>
                 {% endif %}
-            </span>
-        </div>
+            </li>
+        </ul>
+
     {% endif %}
 {% endblock %}
 

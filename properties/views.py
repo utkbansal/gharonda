@@ -55,7 +55,7 @@ class PropertyDetailView(DetailView):
 class PropertyListView(ListView):
     template_name = 'result.html'
     context_object_name = 'properties'
-    paginate_by = 30
+    paginate_by = 2
 
     def get_context_data(self, **kwargs):
         context = super(PropertyListView, self).get_context_data(**kwargs)
