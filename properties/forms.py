@@ -53,6 +53,23 @@ MONTHS = (
 OWNER_CHOICES = ((True, 'Re-Sale'), (False, 'Direct Builder'))
 
 
+class SearchForm(forms.Form):
+    city = forms.ModelChoiceField(queryset=City.objects.all())
+    project = forms.IntegerField(widget=forms.Select)
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.disable_csrf = True
+        self.helper.layout = Layout(
+            'city',
+            'project',
+            ButtonHolder(
+                Submit('submit', 'Search', css_class='btn-primary btn-block')
+            )
+        )
+
+
 class DeveloperForm(ModelForm):
     class Meta:
         model = Developer

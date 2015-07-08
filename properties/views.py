@@ -1,9 +1,10 @@
 from crispy_forms.utils import render_crispy_form
 from django.forms import inlineformset_factory
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.template import Template, Context
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView, TemplateView, DetailView, ListView
 from braces import views
 from django.http import HttpResponseRedirect, JsonResponse
 
@@ -17,13 +18,79 @@ from forms import (PropertyForm,
                    DeveloperProjectHelper,
                    DeveloperProjectForm,
                    TowerHelper,
-                   TowerForm,)
+                   TowerForm,
+                   SearchForm)
 from properties.models import (Property,
                                Developer,
                                DeveloperProject,
                                Project,
-                               Tower)
+                               Tower, City)
 
+
+@csrf_exempt
+def city_filter(request):
+    if request.is_ajax():
+        city = request.POST['city']
+        city = City.objects.get(id=city)
+
+        projects = set([property.project for property in
+                        Property.objects.filter(city=city)])
+        context = Context({'projects': projects})
+        t = Template("""
+        {% for project in projects %}
+        <option value="{{project.id}}">{{project.name}}</option>
+        {% endfor %}
+        """)
+
+        project_options_html = t.render(context)
+        return JsonResponse({'projects': project_options_html})
+
+
+class PropertyDetailView(DetailView):
+    model = Property
+    template_name = 'details.html'
+    context_object_name = 'property'
+
+
+class PropertyListView(ListView):
+    template_name = 'result.html'
+    context_object_name = 'properties'
+    paginate_by = 30
+
+    def get_context_data(self, **kwargs):
+        context = super(PropertyListView, self).get_context_data(**kwargs)
+
+        city_slug = self.kwargs['city_slug']
+        context['city_name'] = City.objects.filter(slug=city_slug).first().name
+        project_id = self.kwargs['project_id']
+        context['project_name'] = Project.objects.get(id=project_id).name
+        return context
+
+    def get_queryset(self):
+        city_slug = self.kwargs['city_slug']
+
+        city = City.objects.filter(slug=city_slug)
+        project_id = self.kwargs['project_id']
+        queryset = Project.objects.get(id=project_id).property_set.filter(
+            city=city)
+        return queryset
+
+
+class SearchView(FormView):
+    form_class = SearchForm
+    template_name = 'search.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(SearchView, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        city_name = form.cleaned_data['city']
+        project_id = form.cleaned_data['project']
+        city_slug = City.objects.get(name=city_name).slug
+
+        return redirect(
+            '/properties/property/' + city_slug + '/' + str(project_id))
 
 
 class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
@@ -75,9 +142,9 @@ class DashboardView(views.LoginRequiredMixin, TemplateView):
         property_form = PropertyForm(instance=p,
                                      initial={
                                          'developer': p.developer.name,
-                                         'city':p.city.name,
-                                         'state':p.state.name,
-                                         'pin_code':p.pin_code.code
+                                         'city': p.city.name,
+                                         'state': p.state.name,
+                                         'pin_code': p.pin_code.code
                                      }
                                      )
 

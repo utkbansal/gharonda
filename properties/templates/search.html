@@ -1,0 +1,33 @@
+{% extends 'dashboard.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        {% crispy form %}
+    </div>
+    <div class="col-md-3"></div>
+
+{% endblock content %}
+
+{% block js %}
+    <script type="application/javascript">
+        $("#id_project").prop("selectedIndex", -1);
+        $("#id_city").change(function () {
+            var selectedVal = $(this).find(':selected').val();
+            $.ajax({
+                data: {"city": selectedVal},
+                type: 'POST',
+                url: '/properties/dashboard/property_filter/',
+                success: function (data) {
+                    console.log(data);
+                    $('#id_project').html(data['projects']);
+                    $("#id_project").prop("selectedIndex", -1);
+                    console.log('done');
+                }
+            })
+
+        });
+    </script>
+
+{% endblock %}
