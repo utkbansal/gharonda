@@ -20,8 +20,8 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="panel-info">
-                            <p><strong>{{ property.number_of_bedrooms }} BHK {{ property.property_type }}</strong></p>
-
+                            <a href="/properties/property/{{ property.id }}">
+                            <p><strong>{{ property.number_of_bedrooms }} BHK {{ property.property_type }}</strong></p></a>
                             <p>{{ property.address_line_one }},
                                 {{ property.address_line_two }},
                                 {{ property.city.name }},
