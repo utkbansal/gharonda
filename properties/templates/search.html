@@ -13,8 +13,13 @@
 {% block js %}
     <script type="application/javascript">
         $("#id_project").prop("selectedIndex", -1);
-        $("#id_city").change(function () {
-            var selectedVal = $(this).find(':selected').val();
+        $("#id_city").change(projectFilterAjax);
+
+        function projectFilterAjax() {
+            var selectedVal = $("#id_city").find(':selected').val();
+            if (selectedVal == ''){
+                return 0;
+            }
             $.ajax({
                 data: {"city": selectedVal},
                 type: 'POST',
@@ -27,7 +32,7 @@
                 }
             })
 
-        });
+        }
     </script>
 
 {% endblock %}
