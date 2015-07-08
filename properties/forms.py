@@ -56,14 +56,21 @@ OWNER_CHOICES = ((True, 'Re-Sale'), (False, 'Direct Builder'))
 class SearchForm(forms.Form):
     city = forms.ModelChoiceField(queryset=City.objects.all())
     project = forms.IntegerField(widget=forms.Select)
+    rent_or_sale = forms.ChoiceField(
+        widget=forms.RadioSelect,
+        choices=(('rent', 'For Rent'), ('sale', 'For Sale')),
+        label=''
+    )
 
     def __init__(self, *args, **kwargs):
         super(SearchForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.disable_csrf = True
+
         self.helper.layout = Layout(
             'city',
             'project',
+            InlineRadios('rent_or_sale'),
             ButtonHolder(
                 Submit('submit', 'Search', css_class='btn-primary btn-block')
             )
