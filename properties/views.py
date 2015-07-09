@@ -61,7 +61,9 @@ class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
     def form_valid(self, form):
         property = form.save()
         self.request.session['owner_name'] = form.cleaned_data['owner_name']
-        return HttpResponseRedirect('/properties/dashboard/' + str(property.id))
+        return redirect(reverse_lazy('dashboard', kwargs = {
+            'property_id':str(property.id)
+        }))
 
 
 @login_required
