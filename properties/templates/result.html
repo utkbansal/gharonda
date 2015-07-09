@@ -9,7 +9,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-9"></div>
-        <div class="col-md-3">{{ city_name }} > {{ project_name }}</div>
+        <div class="col-md-3 pointer">{{ city_name }} > {{ project_name }}</div>
     </div>
 
     <h2>Homes For Sale</h2>
@@ -22,13 +22,13 @@
                         <div class="panel-info">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <a href="/properties/property/{{ property.id }}">
+                                    <a href="{% url 'property-detail' pk=property.id %}">
                                         <img src="{% static 'img/home.png' %}"
                                              class="img-responsive">
                                     </a>
                                 </div>
                                 <div class="col-md-10">
-                                    <a href="/properties/property/{{ property.id }}">
+                                    <a href="{% url 'property-detail' pk=property.id %}">
                                         <p>
                                             <strong>{{ property.number_of_bedrooms }}
                                                 BHK {{ property.property_type }}</strong>
@@ -66,7 +66,7 @@
         <ul class="pager">
             <li class="previous {% if not page_obj.has_previous %} disabled{% endif %}">
                 {% if page_obj.has_previous %}
-                    <a href="/properties/property/ghaziabad/1?page={{ page_obj.previous_page_number }}">&larr;
+                    <a href="?page={{ page_obj.previous_page_number }}">&larr;
                         Previous</a>
                 {% else %}
                     <a href="#">&larr; Previous</a>
@@ -75,8 +75,8 @@
 
             <li class="next{% if not page_obj.has_next %} disabled{% endif %}">
                 {% if page_obj.has_next %}
-                    <a href="/properties/property/ghaziabad/1?page={{ page_obj.next_page_number }}">&rarr;
-                        Next</a>
+                    <a href="?page={{ page_obj.next_page_number }}">
+                        Next &rarr;</a>
                 {% else %}
                     <a href="#">Next &rarr;</a>
                 {% endif %}

@@ -30,7 +30,7 @@
             $.ajax({
                 data: {"city": selectedVal},
                 type: 'POST',
-                url: '/properties/dashboard/property_filter/',
+                url: '{% url 'city-filter' %}',
                 success: function (data) {
                     console.log(data);
                     $('#id_project').html(data['projects']);
