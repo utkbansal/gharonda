@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView, TemplateView, DetailView, ListView
 from braces import views
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 
 from forms import (PropertyForm,
                    OwnerForm,
@@ -61,8 +61,8 @@ class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
     def form_valid(self, form):
         property = form.save()
         self.request.session['owner_name'] = form.cleaned_data['owner_name']
-        return redirect(reverse_lazy('dashboard', kwargs = {
-            'property_id':str(property.id)
+        return redirect(reverse_lazy('property-edit', kwargs={
+            'property_id': str(property.id)
         }))
 
 
@@ -86,12 +86,12 @@ def city_filter(request):
         return JsonResponse({'projects': project_options_html})
 
 
-class DashboardView(views.LoginRequiredMixin, TemplateView):
+class PropertyEditView(views.LoginRequiredMixin, TemplateView):
     template_name = 'mega.html'
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        return super(DashboardView, self).dispatch(request, *args, **kwargs)
+        return super(PropertyEditView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, property_id, *args, **kwargs):
         p = Property.objects.get(id=property_id)
