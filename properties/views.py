@@ -1,5 +1,6 @@
 from crispy_forms.utils import render_crispy_form
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse_lazy
 from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect
 from django.template import Template, Context
@@ -360,5 +361,8 @@ class SearchView(views.LoginRequiredMixin, FormView):
         project_id = form.cleaned_data['project']
         city_slug = City.objects.get(name=city_name).slug
 
-        return redirect(
-            '/properties/property/' + city_slug + '/' + str(project_id))
+        return redirect(reverse_lazy('property-list',
+                                     kwargs={
+                                         'city_slug': city_slug,
+                                         'project_id': str(project_id),
+                                     }))
