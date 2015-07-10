@@ -31,9 +31,8 @@ class IndexView(TemplateView):
         broker_profile_form = BrokerProfileForm(instance=BrokerProfile())
         user_type_form = UserTypeForm()
 
-        properties = None
         if self.request.user.is_authenticated():
-            properties = self.request.user.property_set.all()
+            return redirect(reverse_lazy('search'))
 
         return render(request, self.template_name,
                       {'user_type_form': user_type_form,
@@ -41,7 +40,6 @@ class IndexView(TemplateView):
                        'broker_profile_form': broker_profile_form,
                        'company_form': company_form,
                        'contact_form': contact_form,
-                       'properties': properties,
                       }
         )
 

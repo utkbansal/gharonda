@@ -1,8 +1,8 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto+Slab);
+/*@import url(http://fonts.googleapis.com/css?family=Roboto+Slab);*/
 
-body {
-    font-family: 'Tangerine', serif;
-}
+/*body {*/
+/*font-family: 'Tangerine', serif;*/
+/*}*/
 
 #common-data {
     display: None;
@@ -35,4 +35,12 @@ table {
 
 footer {
     padding: 20px;
+}
+
+.form-control {
+    border-radius: 0px;
+}
+
+a:hover {
+    text-decoration: none;
 }
