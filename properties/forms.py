@@ -85,9 +85,9 @@ class DeveloperForm(ModelForm):
                   ]
 
         widgets = {
-            'developer_report': forms.Select(choices=(('great', 'Great'),
-                                                      ('ok', 'OK'),
-                                                      ('bad', 'Bad')))
+            'developer_report': forms.Select(choices=(('Great', 'Great'),
+                                                      ('OK', 'OK'),
+                                                      ('Bad', 'Bad')))
         }
 
     def __init__(self, *args, **kwargs):
@@ -422,16 +422,16 @@ class ProjectForm(ModelForm):
         widgets = {
             'status': forms.Select(
                 choices=(
-                    ('on track', 'On Track'),
-                    ('lagging', 'Lagging'),
-                    ('stay away', 'Stay Away')
+                    ('On Track', 'On Track'),
+                    ('Lagging', 'Lagging'),
+                    ('Stay Away', 'Stay Away')
                 )
             ),
             'permit_report': forms.Select(
                 choices=(
-                    ('meets', 'Meets'),
-                    ('on track', 'On Track'),
-                    ('does not', 'Does Not')
+                    ('Meets', 'Meets'),
+                    ('On Track', 'On Track'),
+                    ('Does Not', 'Does Not')
                 )
             )
         }
