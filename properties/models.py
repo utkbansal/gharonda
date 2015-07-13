@@ -67,6 +67,7 @@ class Property(models.Model):
 class Developer(models.Model):
     name = models.CharField(max_length=255, null=False)
     number_of_projects = models.IntegerField(default=0)
+    developer_report = models.CharField(max_length=255, null=True, default=None)
 
     def __unicode__(self):
         return self.name
@@ -102,6 +103,10 @@ class Project(models.Model):
     contractor_name_3 = models.CharField(max_length=255, null=True,
                                          default=None)
     bank = models.ManyToManyField('Bank')
+    status = models.CharField(max_length=255,null=True,
+                                      default=None)
+    permit_report = models.CharField(max_length=255, default=None,
+                                     null=True)
 
     def __unicode__(self):
         return self.name
