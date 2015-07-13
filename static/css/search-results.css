@@ -1,7 +1,20 @@
-ul{
-    list-style-type: none;
-}
 
 .pointer{
     text-align: right;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    list-style-type: none;
+}
+
+.panel-body {
+    width: 40%;
+    /*border: none;*/
+    /*float: left;*/
+    margin: 0px;
+
 }
