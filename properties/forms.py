@@ -80,7 +80,15 @@ class SearchForm(forms.Form):
 class DeveloperForm(ModelForm):
     class Meta:
         model = Developer
-        fields = ['number_of_projects']
+        fields = ['number_of_projects',
+                  'developer_report'
+                  ]
+
+        widgets = {
+            'developer_report': forms.Select(choices=(('great', 'Great'),
+                                                      ('ok', 'OK'),
+                                                      ('bad', 'Bad')))
+        }
 
     def __init__(self, *args, **kwargs):
         super(DeveloperForm, self).__init__(*args, **kwargs)
@@ -401,10 +409,31 @@ class ProjectForm(ModelForm):
             'contractor_name_1',
             'contractor_name_2',
             'contractor_name_3',
+            'status',
+            'permit_report'
         ]
 
         labels = {
-            'bank': 'Banks Providing Loans For The Project'
+            'bank': 'Banks Providing Loans For The Project',
+            'status': 'Project Status',
+            'permit_report': 'Permit Status'
+        }
+
+        widgets = {
+            'status': forms.Select(
+                choices=(
+                    ('on track', 'On Track'),
+                    ('lagging', 'Lagging'),
+                    ('stay away', 'Stay Away')
+                )
+            ),
+            'permit_report': forms.Select(
+                choices=(
+                    ('meets', 'Meets'),
+                    ('on track', 'On Track'),
+                    ('does not', 'Does Not')
+                )
+            )
         }
 
     def __init__(self, *args, **kwargs):
@@ -437,6 +466,7 @@ class ProjectForm(ModelForm):
             'contractor_name_1',
             'contractor_name_2',
             'contractor_name_3',
+            'status'
         )
 
     def save(self, property_id, commit=True):
