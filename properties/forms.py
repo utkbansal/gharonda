@@ -549,13 +549,15 @@ class PropertyBasicDetailsForm(ModelForm):
         self.instance.city = city
 
         state_name = self.cleaned_data['state'].title()
-        state, created = State.objects.get_or_create(name=state_name)
-
-        self.instance.state = state
+        if state_name != '':
+            state, created = State.objects.get_or_create(name=state_name)
+            self.instance.state = state
 
         pin_code = self.cleaned_data['pin_code']
-        pin_code, created = PinCode.objects.get_or_create(code=pin_code)
-        self.instance.pin_code = pin_code
+        if pin_code != None:
+            pin_code, created = PinCode.objects.get_or_create(code=pin_code)
+
+            self.instance.pin_code = pin_code
 
         return super(PropertyBasicDetailsForm, self).save()
 

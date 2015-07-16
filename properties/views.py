@@ -109,9 +109,9 @@ class PropertyEditView(views.LoginRequiredMixin, TemplateView):
         property_form = PropertyForm(instance=p,
                                      initial={
                                          'developer': p.developer.name,
-                                         'city': p.city.name,
-                                         'state': p.state.name,
-                                         'pin_code': p.pin_code.code
+                                         'city': p.city,
+                                         'state': p.state,
+                                         'pin_code': p.pin_code
                                      }
                                      )
 
