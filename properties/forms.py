@@ -222,6 +222,7 @@ class OwnerForm(ModelForm):
             'occupation',
             'pan_number',
             'date_of_purchase',
+            'date_of_sale',
             'loan_status',
             'loan_from',
             'main_cost_of_purchase',
@@ -259,6 +260,7 @@ class OwnerForm(ModelForm):
         self.fields['email_seller'].required = False
         self.fields['loan_from'].required = False
         self.fields['main_cost_of_purchase'].required = False
+        self.fields['date_of_sale'].required = False
         self.fields['other_cost_1'].required = False
         self.fields['other_cost_2'].required = False
         self.fields['other_cost_3'].required = False
@@ -268,7 +270,7 @@ class OwnerForm(ModelForm):
                     Div('name',
                         'occupation',
                         'pan_number',
-                        Field('date_of_purchase', css_class='date-field'),
+                        Field('date_of_purchase', css_class='month-year'),
                         css_class='col-md-6',
                         style='padding-left:0px'),
 
@@ -279,6 +281,7 @@ class OwnerForm(ModelForm):
                         PrependedAppendedText('main_cost_of_purchase',
                                               '&#8377;',
                                               'per sq ft'),
+                        Field('date_of_sale', css_class='month-year'),
 
                         css_class='col-md-6',
                         style='padding-right:0px'

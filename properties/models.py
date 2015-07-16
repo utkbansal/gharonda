@@ -136,6 +136,7 @@ class Owner(models.Model):
     occupation = models.CharField(max_length=255, default=None, null=True)
     pan_number = models.CharField(max_length=20, default=None, null=True)
     date_of_purchase = models.CharField(max_length=20, default=None, null=True)
+    date_of_sale = models.CharField(max_length=20, default=None, null=True)
     # should be in property
     loan_status = models.BooleanField(default=False)
     loan_from = models.CharField(max_length=20, default=None, null=True)
