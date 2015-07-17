@@ -676,11 +676,16 @@ class TowerForm(ModelForm):
                   'image'
                   ]
 
+        widgets = {
+            'floors_completed': forms.NumberInput(attrs={'min':0})
+        }
+
     def __init__(self, *args, **kwargs):
         super(TowerForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
+        self.fields['name'].required = False
         self.fields['floors_completed'].required = False
         self.fields['finishing_status'].required = False
         self.fields['other_status'].required = False
