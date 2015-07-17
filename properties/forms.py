@@ -87,7 +87,8 @@ class DeveloperForm(ModelForm):
         widgets = {
             'developer_report': forms.Select(choices=(('Great', 'Great'),
                                                       ('OK', 'OK'),
-                                                      ('Bad', 'Bad')))
+                                                      ('Bad', 'Bad'))),
+            'number_of_projects': forms.NumberInput(attrs={'min':0})
         }
 
     def __init__(self, *args, **kwargs):
@@ -95,6 +96,8 @@ class DeveloperForm(ModelForm):
         self.helper = FormHelper()
         self.helper.disable_csrf = True
         self.helper.form_tag = False
+        self.fields['developer_report'].required = False
+        self.fields['number_of_projects'].required = False
 
 
 class DeveloperProjectHelper(FormHelper):
@@ -158,6 +161,7 @@ class DeveloperProjectForm(ModelForm):
         self.helper = FormHelper()
         self.helper.disable_csrf = True
         self.helper.form_id = 'builder-details'
+        self.fields['project_name'].required = False
         self.fields['launch_date'].required = False
         self.fields['possession_date'].required = False
         self.fields['other_status'].required = False
