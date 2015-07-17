@@ -593,7 +593,9 @@ class PropertyForm(ModelForm):
                 choices=((1, 1,), (2, 2), ('3+', '3+')), ),
             'developer': forms.TextInput(),
             'property_type': forms.Select(choices=PROPERTY_TYPE_CHOICE),
-            'specifications': forms.Select(choices=SPECIFICATION_CHOICE)
+            'specifications': forms.Select(choices=SPECIFICATION_CHOICE),
+            'built_up_area': forms.NumberInput(attrs={'min': 0}),
+            'total_area': forms.NumberInput(attrs={'min': 0}),
         }
 
     def __init__(self, *args, **kwargs):
