@@ -240,8 +240,9 @@ class OwnerForm(ModelForm):
         }
 
         labels = {
+            'is_resale': 'Property for resale',
             'main_cost_of_purchase': 'Basic cost of purchase',
-            'loan_status': 'Loan',
+            'loan_status': 'Loan on property',
             'other_cost_1': 'EDC',
             'other_cost_2': 'IDC',
             'other_cost_3': 'Parking',

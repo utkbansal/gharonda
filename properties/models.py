@@ -150,7 +150,7 @@ class Owner(models.Model):
     name_of_seller = models.CharField(max_length=255, default=None, null=True)
     contact_number_seller = models.CharField(max_length=30, default=None,
                                              null=True)
-    email_seller = models.CharField(max_length=255, default=None, null=True)
+    email_seller = models.EmailField(default=None, null=True)
 
     co_owner = models.ForeignKey('Owner', null=True, default=None)
 
