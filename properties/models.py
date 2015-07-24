@@ -79,6 +79,8 @@ class DeveloperProject(models.Model):
     possession_date = models.CharField(max_length=20, default=None, null=True)
     location = models.CharField(max_length=255, default=None, null=True)
     other_status = models.CharField(max_length=255, default=None, null=True)
+    status = models.CharField(max_length=255, default=None, null=True)
+    address = models.TextField(default=None, null=True)
     developer = models.ForeignKey('Developer')
 
     def __unicode__(self):

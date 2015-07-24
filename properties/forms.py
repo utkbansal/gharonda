@@ -88,7 +88,7 @@ class DeveloperForm(ModelForm):
             'developer_report': forms.Select(choices=(('Great', 'Great'),
                                                       ('OK', 'OK'),
                                                       ('Bad', 'Bad'))),
-            'number_of_projects': forms.NumberInput(attrs={'min':0})
+            'number_of_projects': forms.NumberInput(attrs={'min': 0})
         }
 
     def __init__(self, *args, **kwargs):
@@ -129,6 +129,17 @@ class DeveloperProjectHelper(FormHelper):
                 style='padding:0px',
             ),
             Div(
+                Field('status'),
+                css_class='col-md-12',
+                style='padding:0px',
+            ),
+            Div(
+                Field('address'),
+                css_class='col-md-12',
+                style='padding:0px',
+            ),
+
+            Div(
                 'DELETE',
                 css_class='col-md-12',
                 style='padding:0px',
@@ -146,10 +157,21 @@ class DeveloperProjectForm(ModelForm):
             'project_name',
             'launch_date',
             'possession_date',
+            'address',
+            'status',
             'other_status'
         ]
         widgets = {
+            'address': forms.Textarea(attrs={'rows': 5}),
             'other_status': forms.Textarea(attrs={'rows': 5}),
+            'status': forms.Select(choices=(
+                # Blank field so that DeveloperProject isn't saved when the
+                #  status isn't changed
+                ('', '--------'),
+                ('Completed', 'Completed'),
+                ('Under Construction', 'Under Construction'),
+                ('Project Announced', 'Project Announced'),
+            ))
         }
 
         labels = {
@@ -165,6 +187,8 @@ class DeveloperProjectForm(ModelForm):
         self.fields['launch_date'].required = False
         self.fields['possession_date'].required = False
         self.fields['other_status'].required = False
+        self.fields['status'].required = False
+        self.fields['address'].required = False
         self.helper.layout = Layout(
             'project_name',
             Div(
@@ -177,6 +201,8 @@ class DeveloperProjectForm(ModelForm):
                 css_class='col-md-6',
                 style='padding-right:0px'
             ),
+            'status',
+            'address',
             'developer',
         )
 
@@ -677,7 +703,7 @@ class TowerForm(ModelForm):
                   ]
 
         widgets = {
-            'floors_completed': forms.NumberInput(attrs={'min':0})
+            'floors_completed': forms.NumberInput(attrs={'min': 0})
         }
 
     def __init__(self, *args, **kwargs):
