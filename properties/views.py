@@ -66,7 +66,6 @@ class BasicDetailsFormView(views.LoginRequiredMixin, FormView):
         }))
 
 
-@login_required
 @csrf_exempt
 def city_filter(request):
     if request.is_ajax():
@@ -329,13 +328,13 @@ class PropertyEditView(views.LoginRequiredMixin, TemplateView):
                                          'form_html': form_html})
 
 
-class PropertyDetailView(views.LoginRequiredMixin, DetailView):
+class PropertyDetailView(DetailView):
     model = Property
     template_name = 'details.html'
     context_object_name = 'property'
 
 
-class PropertyListView(views.LoginRequiredMixin, ListView):
+class PropertyListView(ListView):
     template_name = 'result.html'
     context_object_name = 'properties'
     paginate_by = 2
@@ -359,13 +358,21 @@ class PropertyListView(views.LoginRequiredMixin, ListView):
         return queryset
 
 
-class SearchView(views.LoginRequiredMixin, FormView):
+class SearchView(FormView):
     form_class = SearchForm
     template_name = 'search.html'
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super(SearchView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated():
+
+            context['user_properties'] = self.request.user.property_set.all()
+
+        return context
 
     def form_valid(self, form):
         city_name = form.cleaned_data['city']
