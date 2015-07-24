@@ -6,11 +6,10 @@ from views import (
     SearchView,
     city_filter,
     PropertyDetailView,
-    PropertyListView, DashboardView)
+    PropertyListView)
 
 urlpatterns = [
     url(r'^property/add/$', BasicDetailsFormView.as_view(), name='basic'),
-    url(r'^dashboard/$', DashboardView.as_view(), name='dashboard'),
     url(r'^search/$', SearchView.as_view(), name='search'),
     url(r'^property/edit/(?P<property_id>[0-9]+)/$', PropertyEditView.as_view(),
         name='property-edit'),

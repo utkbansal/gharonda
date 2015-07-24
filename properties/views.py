@@ -85,15 +85,6 @@ def city_filter(request):
         return JsonResponse({'projects': project_options_html})
 
 
-class DashboardView(views.LoginRequiredMixin, ListView):
-    template_name = 'dash.html'
-    context_object_name = 'properties'
-
-    def get_queryset(self):
-        properties = self.request.user.property_set.all()
-        return properties
-
-
 class PropertyEditView(views.LoginRequiredMixin, TemplateView):
     template_name = 'mega.html'
 
