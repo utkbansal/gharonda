@@ -128,6 +128,7 @@ class ProjectPermission(models.Model):
     project = models.ForeignKey('Project')
     permission = models.ForeignKey('Permissions')
     value = models.CharField(max_length=255)
+    comment = models.TextField(default=None, null=True)
 
     def __unicode__(self):
         return self.project.name

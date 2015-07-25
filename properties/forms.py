@@ -409,6 +409,7 @@ class PermissionForm(forms.Form):
                     ('Not Applied', 'Not Applied'),
                     ('Denied', 'Denied'),
                 )))
+            self.fields[permission.name + '_comment'] = forms.CharField()
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -420,10 +421,18 @@ class PermissionForm(forms.Form):
         for field in self.fields:
             permission = Permissions.objects.filter(name=field).first()
 
-            p = ProjectPermission.objects.update_or_create(
-                project=project,
-                permission=permission,
-                defaults={'value': self.cleaned_data[field]})
+            if permission is not None:
+
+                print self.cleaned_data[field + '_comment']
+
+                p = ProjectPermission.objects.update_or_create(
+                    project=project,
+                    permission=permission,
+                    defaults={
+                        'value': self.cleaned_data[field],
+                        'comment': self.cleaned_data[field + '_comment']
+
+                    })
         return project
 
 

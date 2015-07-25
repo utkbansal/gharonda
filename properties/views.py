@@ -1,5 +1,4 @@
 from crispy_forms.utils import render_crispy_form
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect
@@ -138,6 +137,7 @@ class PropertyEditView(views.LoginRequiredMixin, TemplateView):
         initial_permissions = {}
         for x in p.project.projectpermission_set.all():
             initial_permissions[x.permission.name] = x.value
+            initial_permissions[x.permission.name+'_comment'] = x.comment
 
         permission_form = PermissionForm(initial=initial_permissions)
         tower_form = TowerFormset(instance=project)
@@ -360,7 +360,6 @@ class SearchView(FormView):
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data(**kwargs)
         if self.request.user.is_authenticated():
-
             context['user_properties'] = self.request.user.property_set.all()
 
         return context
