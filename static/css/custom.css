@@ -20,10 +20,6 @@ h4 {
     text-align: center;
 }
 
-#add-property-button {
-    margin-top: 15%;
-}
-
 table {
     margin-top: 5%;
     margin-bottom: 5%;
@@ -43,4 +39,8 @@ footer {
 
 a:hover {
     text-decoration: none;
+}
+
+.btn {
+    border-radius: 0px;
 }

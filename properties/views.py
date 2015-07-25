@@ -137,7 +137,7 @@ class PropertyEditView(views.LoginRequiredMixin, TemplateView):
         initial_permissions = {}
         for x in p.project.projectpermission_set.all():
             initial_permissions[x.permission.name] = x.value
-            initial_permissions[x.permission.name+'_comment'] = x.comment
+            initial_permissions[x.permission.name + '_comment'] = x.comment
 
         permission_form = PermissionForm(initial=initial_permissions)
         tower_form = TowerFormset(instance=project)
