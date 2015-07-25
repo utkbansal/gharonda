@@ -251,7 +251,8 @@ class OwnerForm(ModelForm):
             'name',
             'occupation',
             'pan_number',
-            'date_of_purchase',
+            'estimted_posession_date',
+            'original_date',
             'date_of_sale',
             'loan_status',
             'loan_from',
@@ -276,6 +277,7 @@ class OwnerForm(ModelForm):
             'other_cost_1': 'EDC',
             'other_cost_2': 'IDC',
             'other_cost_3': 'Parking',
+            'original_date': 'Original Posession Date'
         }
 
     def __init__(self, *args, **kwargs):
@@ -292,6 +294,7 @@ class OwnerForm(ModelForm):
         self.fields['loan_from'].required = False
         self.fields['main_cost_of_purchase'].required = False
         self.fields['date_of_sale'].required = False
+        self.fields['original_date'].required = False
         self.fields['other_cost_1'].required = False
         self.fields['other_cost_2'].required = False
         self.fields['other_cost_3'].required = False
@@ -301,7 +304,8 @@ class OwnerForm(ModelForm):
                     Div('name',
                         'occupation',
                         'pan_number',
-                        Field('date_of_purchase', css_class='month-year'),
+                        Field('estimted_posession_date', css_class='month-year'),
+                        Field('original_date', css_class='month-year'),
                         css_class='col-md-6',
                         style='padding-left:0px'),
 
