@@ -618,7 +618,7 @@ class PropertyForm(ModelForm):
         fields = [
             'property_type',
             'specifications',
-            'built_up_area',
+            'plot_area',
             'total_area',
             'number_of_bedrooms',
             'number_of_bathrooms',
@@ -636,7 +636,7 @@ class PropertyForm(ModelForm):
             'developer': forms.TextInput(),
             'property_type': forms.Select(choices=PROPERTY_TYPE_CHOICE),
             'specifications': forms.Select(choices=SPECIFICATION_CHOICE),
-            'built_up_area': forms.NumberInput(attrs={'min': 0}),
+            'plot_area': forms.NumberInput(attrs={'min': 0}),
             'total_area': forms.NumberInput(attrs={'min': 0}),
         }
 
@@ -662,7 +662,7 @@ class PropertyForm(ModelForm):
                 'city',
                 'pin_code',
                 'number_of_bathrooms',
-                AppendedText('built_up_area', 'sq ft'),
+                AppendedText('plot_area', 'sq ft'),
                 css_class='col-md-6',
                 style='padding-left:0px'
             ),

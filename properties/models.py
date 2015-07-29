@@ -37,7 +37,7 @@ class PinCode(models.Model):
 class Property(models.Model):
     property_type = models.CharField(max_length=255, default='Apartment')
     specifications = models.CharField(max_length=255, default='Basic')
-    built_up_area = models.FloatField(max_length=6, null=False, default=0)
+    plot_area = models.FloatField(max_length=6, null=False, default=0)
     total_area = models.FloatField(null=False, default=0)
     number_of_bedrooms = models.CharField(max_length=3, default=1)
     number_of_bathrooms = models.CharField(max_length=3, default=1)
