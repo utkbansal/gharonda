@@ -9,11 +9,8 @@ admin.site.register(Property)
 admin.site.register(Developer)
 admin.site.register(DeveloperProject)
 admin.site.register(Owner)
-# admin.site.register(Bank)
 admin.site.register(Permissions)
-# admin.site.register(Project)
 admin.site.register(Tower)
-# admin.site.register(ProjectPermission)
 admin.site.register(State)
 admin.site.register(City)
 admin.site.register(PinCode)
@@ -26,6 +23,7 @@ class BankResource(resources.ModelResource):
 
 class BankAdmin(ImportExportModelAdmin):
     resource_class = BankResource
+    ordering = ['name', ]
 
 
 admin.site.register(Bank, BankAdmin)
