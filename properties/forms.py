@@ -50,8 +50,6 @@ MONTHS = (
     ('December', 'December')
 )
 
-OWNER_CHOICES = ((True, 'Re-Sale'), (False, 'Direct Builder'))
-
 
 class SearchForm(forms.Form):
     city = forms.ModelChoiceField(queryset=City.objects.all())
@@ -304,7 +302,8 @@ class OwnerForm(ModelForm):
                     Div('name',
                         'occupation',
                         'pan_number',
-                        Field('estimted_posession_date', css_class='month-year'),
+                        Field('estimted_posession_date',
+                              css_class='month-year'),
                         Field('original_date', css_class='month-year'),
                         css_class='col-md-6',
                         style='padding-left:0px'),
@@ -426,7 +425,6 @@ class PermissionForm(forms.Form):
             permission = Permissions.objects.filter(name=field).first()
 
             if permission is not None:
-
                 print self.cleaned_data[field + '_comment']
 
                 p = ProjectPermission.objects.update_or_create(

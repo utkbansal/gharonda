@@ -105,8 +105,8 @@ class Project(models.Model):
     contractor_name_3 = models.CharField(max_length=255, null=True,
                                          default=None)
     bank = models.ManyToManyField('Bank')
-    status = models.CharField(max_length=255,null=True,
-                                      default=None)
+    status = models.CharField(max_length=255, null=True,
+                              default=None)
     permit_report = models.CharField(max_length=255, default=None,
                                      null=True)
 
@@ -114,7 +114,7 @@ class Project(models.Model):
         return self.name
 
 
-OWNER_CHOICES = ((True, 'Re-Sale'), (False, 'Direct Builder'))
+OWNER_CHOICES = ((False, 'Direct Builder'), (True, 'Re-Sale'),)
 
 
 class Permissions(models.Model):
@@ -138,7 +138,8 @@ class Owner(models.Model):
     name = models.CharField(max_length=255, null=False)
     occupation = models.CharField(max_length=255, default=None, null=True)
     pan_number = models.CharField(max_length=20, default=None, null=True)
-    estimted_posession_date = models.CharField(max_length=20, default=None, null=True)
+    estimted_posession_date = models.CharField(max_length=20, default=None,
+                                               null=True)
     original_date = models.CharField(max_length=20, default=None, null=True)
     date_of_sale = models.CharField(max_length=20, default=None, null=True)
     # should be in property
