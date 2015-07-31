@@ -442,7 +442,8 @@ class ProjectForm(ModelForm):
         fields = [
             'name',
             'launch_date',
-            'possession_date',
+            'estimated_possession_date',
+            'original_possession_date',
             'bank',
             'add_bank',
             'new_bank',
@@ -490,16 +491,21 @@ class ProjectForm(ModelForm):
             'name',
             Div(
                 Field('launch_date', css_class='month-year'),
+                # Field('original_possession_date', css_class='month-year'),
                 css_class='col-md-6',
                 style='padding-left:0px'
             ),
             Div(
-                Field('possession_date',
+                Field('estimated_possession_date',
                       css_class='month-year',
                       ),
                 css_class='col-md-6',
 
                 style='padding-right:0px'),
+            Field(
+                'original_possession_date',
+                css_class='month-year'
+            ),
             'bank',
             'add_bank',
             'new_bank',
