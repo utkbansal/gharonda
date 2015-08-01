@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+
 {% block css %}
     <link type="text/css" rel="stylesheet" href="{% static 'css/detail.css' %}">
 {% endblock %}
@@ -64,15 +65,51 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion"
-                               href="#collapse2">Project Status: {{ property.project.status }}</a>
+                               href="#collapse2">Project
+                                Status: {{ property.project.status }}</a>
                         </h4>
                     </div>
                     <div id="collapse2" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-4">No. Of Bedrooms</div>
-                                <div class="col-md-8">{{ property.number_of_bedrooms }}</div>
+                            {#                            <div class="row">#}
+                            {#                                <div class="col-md-4">Est. Posession Date</div>#}
+                            {#                                <div class="col-md-8">{{ property.project.estimated_possession_date }}</div>#}
+                            {#                            </div>#}
+                            {#                            <div class="row"></div>#}
+                            <div class="wide">
+                                <div class="text">Status</div>
+                                <div class="value">{{ property.project.status }}</div>
                             </div>
+                            <div class="wide">
+                                <div class="text">Est. Posession Date</div>
+                                <div class="value">{{ property.project.estimated_possession_date }}</div>
+                            </div>
+
+                            <div class="row">
+                                {% for tower in property.project.tower_set.all %}
+                                    <div class="col-md-3">{{ tower.name }}</div>
+                                    <div class="col-md-3"><img src="{{ MEDIA_URL }}{{ tower.image  }}" class="img-thumbnail"> </div>
+                                    <div class="col-md-3">{{ tower.floors_completed }}</div>
+                                    <div class="col-md-3">{{ tower.other_status }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="wide">
+                                <div class="text">Banks providing loan</div>
+                                <div class="value">
+                                    {% for bank in property.project.bank.all %}
+                                        {{ bank.name }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Contractors</div>
+                                <div class="value">
+                                    {{ property.project.contractor_name_1 }}
+                                    {{ property.project.contractor_name_2}}
+                                    {{ property.project.contractor_name_3}}
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -80,12 +117,23 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion"
-                               href="#collapse3">Builder Report: {{ property.developer.developer_report }}</a>
+                               href="#collapse3">Builder
+                                Report: {{ property.developer.developer_report }}</a>
                         </h4>
                     </div>
                     <div id="collapse3" class="panel-collapse collapse">
                         <div class="panel-body">
-                            blah
+                            {% for project in property.developer.developerproject_set.all %}
+                                <div class="wide">
+                                    <div class="text">{{ project.project_name }}</div>
+                                    <div class="value">{{ project.address }}
+                                        <br>
+                                        {{ project.status }}
+                                        {{ project.launch_date }}
+                                        {{ project.possession_date }}
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -93,12 +141,19 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion"
-                               href="#collapse4">Permit Report: {{ property.project.permit_report }}</a>
+                               href="#collapse4">Permit
+                                Report: {{ property.project.permit_report }}</a>
                         </h4>
                     </div>
                     <div id="collapse4" class="panel-collapse collapse">
                         <div class="panel-body">
-                            blah
+                            {% for permission in property.project.projectpermission_set.all %}
+                                <div class="wide">
+                                    <div class="text">{{ permission.permission }}</div>
+                                    <div class="value">{{ permission.value }} {{ permission.comment }}</div>
+                                    {#                                <div class="value">What to add here?</div>#}
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
