@@ -6,6 +6,8 @@
     <link type="text/css" rel="stylesheet" href="{% static 'css/detail.css' %}">
 {% endblock %}
 
+
+
 {% block content %}
     <div class="row">
         <div class="col-md-1"></div>
@@ -88,7 +90,11 @@
                             <div class="row">
                                 {% for tower in property.project.tower_set.all %}
                                     <div class="col-md-3">{{ tower.name }}</div>
-                                    <div class="col-md-3"><img src="{{ MEDIA_URL }}{{ tower.image  }}" class="img-thumbnail"> </div>
+                                    <div class="col-md-3">
+                                        <a href="{{ MEDIA_URL }}{{ tower.image }}" target="_blank">
+                                            <img src="{{ MEDIA_URL }}{{ tower.image }}" class="img-thumbnail">
+                                            </a>
+                                    </div>
                                     <div class="col-md-3">{{ tower.floors_completed }}</div>
                                     <div class="col-md-3">{{ tower.other_status }}</div>
                                 {% endfor %}
@@ -105,8 +111,8 @@
                                 <div class="text">Contractors</div>
                                 <div class="value">
                                     {{ property.project.contractor_name_1 }}
-                                    {{ property.project.contractor_name_2}}
-                                    {{ property.project.contractor_name_3}}
+                                    {{ property.project.contractor_name_2 }}
+                                    {{ property.project.contractor_name_3 }}
                                 </div>
                             </div>
 
