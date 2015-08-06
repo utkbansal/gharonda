@@ -5,6 +5,11 @@
     padding: 8px 0;
     margin-right: 3%;
 }
+.full-wide{
+    border-bottom: 1px solid #e2e6ec;
+    padding: 8px 0;
+    width: 100%;
+}
 
 .address{
     padding-left: 2%;
@@ -26,4 +31,9 @@
 
 h1{
     margin-bottom: 0px;
+}
+
+.table{
+    border:  0px;
+    margin:  0%;
 }

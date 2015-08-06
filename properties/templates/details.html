@@ -7,14 +7,13 @@
 {% endblock %}
 
 
-
 {% block content %}
     <div class="row">
-        <div class="col-md-1"></div>
+        {#        <div class="col-md-1"></div>#}
         <div class="col-md-1"><img src="{% static 'img/home.png' %}"
                                    class="img-responsive"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-6">
+        {#        <div class="col-md-1"></div>#}
+        <div class="col-md-10">
             <h1>{{ property.number_of_bedrooms }} BHK</h1>
 
             <div class="address">{{ property.address_line_one }}, {{ property.address_line_two }}
@@ -73,11 +72,6 @@
                     </div>
                     <div id="collapse2" class="panel-collapse collapse">
                         <div class="panel-body">
-                            {#                            <div class="row">#}
-                            {#                                <div class="col-md-4">Est. Posession Date</div>#}
-                            {#                                <div class="col-md-8">{{ property.project.estimated_possession_date }}</div>#}
-                            {#                            </div>#}
-                            {#                            <div class="row"></div>#}
                             <div class="wide">
                                 <div class="text">Status</div>
                                 <div class="value">{{ property.project.status }}</div>
@@ -86,36 +80,34 @@
                                 <div class="text">Est. Posession Date</div>
                                 <div class="value">{{ property.project.estimated_possession_date }}</div>
                             </div>
-
-                            <div class="row">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Tower Name</th>
+                                    <th>Floors Completed</th>
+                                    <th>Photo</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
                                 {% for tower in property.project.tower_set.all %}
-                                    <div class="col-md-3">{{ tower.name }}</div>
-                                    <div class="col-md-3">
-                                        <a href="{{ MEDIA_URL }}{{ tower.image }}" target="_blank">
-                                            <img src="{{ MEDIA_URL }}{{ tower.image }}" class="img-thumbnail">
-                                            </a>
-                                    </div>
-                                    <div class="col-md-3">{{ tower.floors_completed }}</div>
-                                    <div class="col-md-3">{{ tower.other_status }}</div>
-                                {% endfor %}
-                            </div>
-                            <div class="wide">
-                                <div class="text">Banks providing loan</div>
-                                <div class="value">
-                                    {% for bank in property.project.bank.all %}
-                                        {{ bank.name }}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <div class="wide">
-                                <div class="text">Contractors</div>
-                                <div class="value">
-                                    {{ property.project.contractor_name_1 }}
-                                    {{ property.project.contractor_name_2 }}
-                                    {{ property.project.contractor_name_3 }}
-                                </div>
-                            </div>
+                                    <tr>
 
+                                        <td>{{ tower.name }}</td>
+                                        <td>{{ tower.floors_completed }}</td>
+                                        <td>
+                                            <a href= "{{ MEDIA_URL }}{{ tower.image }}" target="_blank">
+                                                <img src="{{ MEDIA_URL }}{{ tower.image }}"
+                                                     class="img-responsive"
+                                                     width="100px">
+                                            </a>
+                                        </td>
+
+                                        <td>{{ tower.other_status }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -129,17 +121,29 @@
                     </div>
                     <div id="collapse3" class="panel-collapse collapse">
                         <div class="panel-body">
-                            {% for project in property.developer.developerproject_set.all %}
-                                <div class="wide">
-                                    <div class="text">{{ project.project_name }}</div>
-                                    <div class="value">{{ project.address }}
-                                        <br>
-                                        {{ project.status }}
-                                        {{ project.launch_date }}
-                                        {{ project.possession_date }}
-                                    </div>
-                                </div>
-                            {% endfor %}
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Address</th>
+                                    <th>Status</th>
+                                    <th>Launch Date</th>
+                                    <th>Posession Date</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for project in property.developer.developerproject_set.all %}
+                                    <tr>
+                                        <td>{{ project.project_name }}</td>
+                                        <td>{{ project.address }}</td>
+                                        <td>{{ project.status }}</td>
+                                        <td>{{ project.launch_date }}</td>
+                                        <td>{{ project.possession_date }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
                 </div>
@@ -153,20 +157,31 @@
                     </div>
                     <div id="collapse4" class="panel-collapse collapse">
                         <div class="panel-body">
-                            {% for permission in property.project.projectpermission_set.all %}
-                                <div class="wide">
-                                    <div class="text">{{ permission.permission }}</div>
-                                    <div class="value">{{ permission.value }} {{ permission.comment }}</div>
-                                    {#                                <div class="value">What to add here?</div>#}
-                                </div>
-                            {% endfor %}
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Permit Name</th>
+                                    <th>Status</th>
+                                    <th>Comment</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for permission in property.project.projectpermission_set.all %}
+                                    <tr>
+                                        <td>{{ permission.permission }}</td>
+                                        <td>{{ permission.value }}</td>
+                                        <td>{{ permission.comment }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3"></div>
+    <div class="col-md-1"></div>
 
 
 {% endblock %}
