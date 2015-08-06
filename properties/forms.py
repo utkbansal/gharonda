@@ -408,11 +408,16 @@ class PermissionForm(forms.Form):
                     ('Denied', 'Denied'),
                 )))
             self.fields[permission.name + '_comment'] = forms.CharField()
-
+            self.fields[permission.name].widget.attrs['class'] = 'permission'
+            self.fields[permission.name + '_comment'].widget.attrs['class'] = 'permission-comment'
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
         self.helper.form_id = 'permission-form'
+        # self.helper.layout = Layout(
+        #     self.fields
+        # )
+        # self.helper[:-1].wrap(Field, css_class="span6")
 
     def save(self, *args, **kwargs):
         project = kwargs.pop('project')
@@ -420,7 +425,7 @@ class PermissionForm(forms.Form):
             permission = Permissions.objects.filter(name=field).first()
 
             if permission is not None:
-                print self.cleaned_data[field + '_comment']
+                # print self.cleaned_data[field + '_comment']
 
                 p = ProjectPermission.objects.update_or_create(
                     project=project,
