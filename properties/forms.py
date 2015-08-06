@@ -2,7 +2,7 @@ from crispy_forms.bootstrap import AppendedText, InlineRadios, \
     PrependedAppendedText
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, ButtonHolder, Submit, Field, Div, \
-    Fieldset
+    Fieldset, Row
 from django.forms import ModelForm
 from django import forms
 
@@ -66,11 +66,17 @@ class SearchForm(forms.Form):
         self.helper.disable_csrf = True
 
         self.helper.layout = Layout(
-            'city',
-            'project',
-            InlineRadios('rent_or_sale'),
-            ButtonHolder(
-                Submit('submit', 'Search', css_class='btn-primary btn-block')
+            Row(
+                Div('city', css_class='col-md-6'),
+                Div('project', css_class='col-md-6'),
+                Div(InlineRadios('rent_or_sale'), css_class='col-md-12'),
+                Div(
+                    ButtonHolder(
+                        Submit('submit', 'Search',
+                               css_class='btn-primary btn-block')
+                    ),
+                    css_class='col-md-12'
+                )
             )
         )
 
@@ -409,7 +415,8 @@ class PermissionForm(forms.Form):
                 )))
             self.fields[permission.name + '_comment'] = forms.CharField()
             self.fields[permission.name].widget.attrs['class'] = 'permission'
-            self.fields[permission.name + '_comment'].widget.attrs['class'] = 'permission-comment'
+            self.fields[permission.name + '_comment'].widget.attrs[
+                'class'] = 'permission-comment'
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
