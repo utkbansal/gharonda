@@ -89,6 +89,7 @@ class DeveloperProject(models.Model):
 
 class Bank(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    by_admin = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.name

@@ -531,7 +531,10 @@ class ProjectForm(ModelForm):
         property = Property.objects.get(id=property_id)
         if 'add_bank' in self.cleaned_data.keys():
             if self.cleaned_data['add_bank'] is True:
-                bank = Bank(name=self.cleaned_data['new_bank'])
+                bank = Bank(
+                    name=self.cleaned_data['new_bank'],
+                    by_admin = False,
+                )
 
                 project = super(ProjectForm, self).save()
                 bank.save()
