@@ -51,6 +51,12 @@
                                 </div>
                             </div>
                             <div class="wide">
+                                <div class="text">Plot Area:</div>
+                                <div class="value">{{ property.plot_area }}
+                                    sq.ft.
+                                </div>
+                            </div>
+                            <div class="wide">
                                 <div class="text">Added on Gharonda:</div>
                                 <div class="value">{{ property.added_on|date:"D d M Y" }}</div>
                             </div>
@@ -79,6 +85,26 @@
                             <div class="wide">
                                 <div class="text">Est. Posession Date</div>
                                 <div class="value">{{ property.project.estimated_possession_date }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Bank Providing Loan</div>
+                                <div class="value">{{ property.project.bank.all|unordered_list }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Contractors</div>
+                                <div class="value">
+                                <ul>
+                                    {% if property.project.contractor_name_1 %}
+                                        <li>{{ property.project.contractor_name_1 }}</li>
+                                    {% endif %}
+                                    {% if property.project.contractor_name_2 %}
+                                        <li>{{ property.project.contractor_name_2 }}</li>
+                                    {% endif %}
+                                    {% if property.project.contractor_name_3 %}
+                                        <li>{{ property.project.contractor_name_3 }}</li>
+                                    {% endif %}
+                                </ul>
+                                </div>
                             </div>
                             <table class="table">
                                 <thead>
