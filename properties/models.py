@@ -35,6 +35,7 @@ class PinCode(models.Model):
 
 
 class Property(models.Model):
+    added_on = models.DateTimeField(auto_now_add=True)
     property_type = models.CharField(max_length=255, default='Apartment')
     specifications = models.CharField(max_length=255, default='Basic')
     plot_area = models.FloatField(max_length=6, null=False, default=0)
