@@ -171,6 +171,7 @@ class Tower(models.Model):
     other_status = models.CharField(max_length=255, default=None, null=True)
     image = AjaxImageField(upload_to='pics', default=None, null=True)
     project = models.ForeignKey('Project')
+    added_on = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.name

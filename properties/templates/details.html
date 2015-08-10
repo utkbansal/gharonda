@@ -126,7 +126,8 @@
                                                 <img src="{{ MEDIA_URL }}{{ tower.image }}"
                                                      class="img-responsive"
                                                      width="100px">
-                                            </a>
+                                            </a><br>
+                                            Added on {{ tower.added_on|date:"d M Y"}}
                                         </td>
 
                                         <td>{{ tower.other_status }}</td>
