@@ -484,7 +484,8 @@ class ProjectForm(ModelForm):
                 choices=(
                     ('Meets', 'Meets'),
                     ('On Track', 'On Track'),
-                    ('Does Not', 'Does Not')
+                    ('Does Not', 'Does Not'),
+                    ('Unknown', 'Unknown')
                 )
             )
         }
