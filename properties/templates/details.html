@@ -91,19 +91,23 @@
                                 <div class="value">{{ property.project.bank.all|unordered_list }}</div>
                             </div>
                             <div class="wide">
+                                <div class="text">Other Status</div>
+                                <div class="value">{{ property.project.other_status }}</div>
+                            </div>
+                            <div class="wide">
                                 <div class="text">Contractors</div>
                                 <div class="value">
-                                <ul>
-                                    {% if property.project.contractor_name_1 %}
-                                        <li>{{ property.project.contractor_name_1 }}</li>
-                                    {% endif %}
-                                    {% if property.project.contractor_name_2 %}
-                                        <li>{{ property.project.contractor_name_2 }}</li>
-                                    {% endif %}
-                                    {% if property.project.contractor_name_3 %}
-                                        <li>{{ property.project.contractor_name_3 }}</li>
-                                    {% endif %}
-                                </ul>
+                                    <ul>
+                                        {% if property.project.contractor_name_1 %}
+                                            <li>{{ property.project.contractor_name_1 }}</li>
+                                        {% endif %}
+                                        {% if property.project.contractor_name_2 %}
+                                            <li>{{ property.project.contractor_name_2 }}</li>
+                                        {% endif %}
+                                        {% if property.project.contractor_name_3 %}
+                                            <li>{{ property.project.contractor_name_3 }}</li>
+                                        {% endif %}
+                                    </ul>
                                 </div>
                             </div>
                             <table class="table">
@@ -122,12 +126,16 @@
                                         <td>{{ tower.name }}</td>
                                         <td>{{ tower.floors_completed }}</td>
                                         <td>
-                                            <a href= "{{ MEDIA_URL }}{{ tower.image }}" target="_blank">
-                                                <img src="{{ MEDIA_URL }}{{ tower.image }}"
+                                            <a href="
+                                                    {{ MEDIA_URL }}{{ tower.image }}"
+                                               target="_blank">
+                                                <img src="
+                                                        {{ MEDIA_URL }}{{ tower.image }}"
                                                      class="img-responsive"
                                                      width="100px">
                                             </a><br>
-                                            Added on {{ tower.added_on|date:"d M Y"}}
+                                            Added
+                                            on {{ tower.added_on|date:"d M Y" }}
                                         </td>
 
                                         <td>{{ tower.other_status }}</td>

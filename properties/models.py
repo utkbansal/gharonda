@@ -110,6 +110,7 @@ class Project(models.Model):
     bank = models.ManyToManyField('Bank')
     status = models.CharField(max_length=255, null=True,
                               default=None)
+    other_status = models.CharField(max_length=255, null=True, default=None)
     permit_report = models.CharField(max_length=255, default=None,
                                      null=True)
 

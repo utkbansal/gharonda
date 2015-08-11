@@ -463,6 +463,7 @@ class ProjectForm(ModelForm):
             'contractor_name_2',
             'contractor_name_3',
             'status',
+            'other_status',
             'permit_report'
         ]
 
@@ -500,6 +501,7 @@ class ProjectForm(ModelForm):
         self.fields['contractor_name_1'].required = False
         self.fields['contractor_name_2'].required = False
         self.fields['contractor_name_3'].required = False
+        self.fields['other_status'].required = False
         self.helper.layout = Layout(
             'name',
             Div(
@@ -525,7 +527,8 @@ class ProjectForm(ModelForm):
             'contractor_name_1',
             'contractor_name_2',
             'contractor_name_3',
-            'status'
+            'status',
+            'other_status',
         )
 
     def save(self, property_id, commit=True):
