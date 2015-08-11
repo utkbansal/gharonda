@@ -10,7 +10,7 @@ from views import (
 
 urlpatterns = [
     url(r'^property/add/$', BasicDetailsFormView.as_view(), name='basic'),
-    url(r'^search/$', SearchView.as_view(), name='search'),
+    url(r'^$', SearchView.as_view(), name='search'),
     url(r'^property/edit/(?P<property_id>[0-9]+)/$', PropertyEditView.as_view(),
         name='property-edit'),
     url(r'^property/(?P<city_slug>[\w-]+)/(?P<project_id>[0-9]+)/$',

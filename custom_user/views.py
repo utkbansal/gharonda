@@ -17,12 +17,12 @@ from forms import (RegistrationForm,
 from models import BrokerProfile, User, Company, ContactNumber
 
 
-class IndexView(TemplateView):
+class RegisterView(TemplateView):
     template_name = 'index.html'
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        return super(IndexView, self).dispatch(request, *args, **kwargs)
+        return super(RegisterView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         contact_form = ContactNumberForm(instance=ContactNumber())
@@ -75,7 +75,7 @@ class IndexView(TemplateView):
                     print 'logging in'
                     login(self.request, user)
                     print 'logged in'
-                    return redirect(reverse_lazy('index'))
+                    return redirect(reverse_lazy('register'))
 
                 if company_form.is_valid():
                     company, created = Company.objects.get_or_create(
@@ -117,8 +117,8 @@ class IndexView(TemplateView):
 
 
 class LogOutView(views.LoginRequiredMixin, RedirectView):
-    url = reverse_lazy('index')
-
+    # url = reverse_lazy('index')
+    url = '/'
     def get(self, request, *args, **kwargs):
         logout(request)
         return super(LogOutView, self).get(request, *args, **kwargs)
@@ -127,7 +127,7 @@ class LogOutView(views.LoginRequiredMixin, RedirectView):
 class LoginView(views.AnonymousRequiredMixin, FormView):
     form_class = LoginForm
     template_name = 'login.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('login')
 
     def form_valid(self, form):
         username = form.cleaned_data['username']
