@@ -23,7 +23,10 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion"
-                               href="#collapse1">Basic Details</a>
+                               href="#collapse1">Basic Details: Total Area - {{ property.total_area }} sq.ft.,
+                                Bedrooms - {{ property.number_of_bedrooms }},
+                                Bathrooms - {{ property.number_of_bathrooms }}
+                            </a>
                         </h4>
                     </div>
                     <div id="collapse1" class="panel-collapse collapse in">
@@ -88,7 +91,7 @@
                             </div>
                             <div class="wide">
                                 <div class="text">Bank Providing Loan</div>
-                                <div class="value">{{ property.project.bank.all|unordered_list }}</div>
+                                <div class="value">{{ property.project.bank.all|join:", "  }}</div>
                             </div>
                             <div class="wide">
                                 <div class="text">Other Status</div>
@@ -97,34 +100,30 @@
                             <div class="wide">
                                 <div class="text">Contractors</div>
                                 <div class="value">
-                                    <ul>
                                         {% if property.project.contractor_name_1 %}
-                                            <li>{{ property.project.contractor_name_1 }}</li>
+                                            {{ property.project.contractor_name_1 }}
                                         {% endif %}
                                         {% if property.project.contractor_name_2 %}
-                                            <li>{{ property.project.contractor_name_2 }}</li>
+                                            , {{ property.project.contractor_name_2 }}
                                         {% endif %}
                                         {% if property.project.contractor_name_3 %}
-                                            <li>{{ property.project.contractor_name_3 }}</li>
+                                            , {{ property.project.contractor_name_3 }}
                                         {% endif %}
-                                    </ul>
                                 </div>
                             </div>
                             <table class="table">
                                 <thead>
                                 <tr>
+                                    <th>Photo</th>
                                     <th>Tower Name</th>
                                     <th>Floors Completed</th>
-                                    <th>Photo</th>
+
                                     <th>Status</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for tower in property.project.tower_set.all %}
                                     <tr>
-
-                                        <td>{{ tower.name }}</td>
-                                        <td>{{ tower.floors_completed }}</td>
                                         <td>
                                             <a href="
                                                     {{ MEDIA_URL }}{{ tower.image }}"
@@ -137,6 +136,8 @@
                                             Added
                                             on {{ tower.added_on|date:"d M Y" }}
                                         </td>
+                                        <td>{{ tower.name }}</td>
+                                        <td>{{ tower.floors_completed }}</td>
 
                                         <td>{{ tower.other_status }}</td>
                                     </tr>
