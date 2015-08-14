@@ -413,7 +413,7 @@ class PermissionForm(forms.Form):
                     ('Not Applied', 'Not Applied'),
                     ('Denied', 'Denied'),
                 )))
-            self.fields[permission.name + '_comment'] = forms.CharField()
+            self.fields[permission.name + '_comment'] = forms.CharField(label='Comment')
             self.fields[permission.name].widget.attrs['class'] = 'permission'
             self.fields[permission.name + '_comment'].widget.attrs[
                 'class'] = 'permission-comment'
