@@ -73,7 +73,7 @@ class SearchForm(forms.Form):
                 Div(
                     ButtonHolder(
                         Submit('submit', 'Search',
-                               css_class='btn-primary btn-block')
+                               css_class='btn-primary ')
                     ),
                     css_class='col-md-12'
                 )
