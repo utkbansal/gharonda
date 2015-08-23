@@ -56,6 +56,7 @@ class Property(models.Model):
     pin_code = models.ForeignKey('PinCode', null=True, default=None)
     developer = models.ForeignKey('Developer', null=True, default=None)
     owner = models.ForeignKey('Owner', null=True, default=None)
+    for_sale = models.BooleanField(default=False)
     created_by = models.ForeignKey('custom_user.User')
 
     project = models.ForeignKey('Project')
@@ -130,7 +131,7 @@ class Project(models.Model):
         delta = today - posession_date
 
         # Approximation - one month has 30 days
-        return (delta.days)/30
+        return (delta.days) / 30
 
 
 OWNER_CHOICES = ((False, 'Direct Builder'), (True, 'Re-Sale'),)

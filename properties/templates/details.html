@@ -61,6 +61,30 @@
                                 </div>
                             </div>
                             <div class="wide">
+                                <div class="text">Basic Cost of purchase:</div>
+                                <div class="value">{{ property.owner.main_cost_of_purchase }}
+                                    ₹/sq.ft.
+                                </div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">EDC:</div>
+                                <div class="value">{{ property.owner.other_cost_1}}
+                                    ₹/sq.ft.
+                                </div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">IDC:</div>
+                                <div class="value">{{ property.owner.other_cost_2}}
+                                    ₹/sq.ft.
+                                </div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Parking:</div>
+                                <div class="value">{{ property.owner.other_cost_3}}
+                                    ₹/sq.ft.
+                                </div>
+                            </div>
+                            <div class="wide">
                                 <div class="text">Added on Gharonda:</div>
                                 <div class="value">{{ property.added_on|date:"D d M Y" }}</div>
                             </div>
@@ -139,9 +163,17 @@
                                             <a href="
 
 
+
+
+
+
                                                     {{ MEDIA_URL }}{{ tower.image }}"
                                                target="_blank">
                                                 <img src="
+
+
+
+
 
 
                                                         {{ MEDIA_URL }}{{ tower.image }}"

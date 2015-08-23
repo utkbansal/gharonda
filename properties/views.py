@@ -100,7 +100,8 @@ class PropertyEditView(views.LoginRequiredMixin, TemplateView):
                                          'developer': p.developer.name,
                                          'city': p.city,
                                          'state': p.state,
-                                         'pin_code': p.pin_code
+                                         'pin_code': p.pin_code,
+                                         'for_sale': p.for_sale,
                                      }
                                      )
 

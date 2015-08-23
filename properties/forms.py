@@ -567,6 +567,7 @@ class PropertyBasicDetailsForm(ModelForm):
         fields = [
             'address_line_one',
             'address_line_two',
+            'for_sale',
 
         ]
 
@@ -594,6 +595,7 @@ class PropertyBasicDetailsForm(ModelForm):
             'city',
             'state',
             'pin_code',
+            'for_sale',
             ButtonHolder(
                 Submit('Submit', 'submit', css_class='btn-block')
             )
@@ -645,6 +647,7 @@ class PropertyForm(ModelForm):
             'number_of_parking_spaces',
             'address_line_one',
             'address_line_two',
+            'for_sale'
         ]
         widgets = {
             'number_of_bedrooms': forms.Select(
@@ -695,6 +698,7 @@ class PropertyForm(ModelForm):
                 style='padding-right:0px'),
 
             'specifications',
+            'for_sale',
 
             ButtonHolder(
                 Submit('property-details', 'submit', css_class='btn-block',
