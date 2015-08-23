@@ -23,7 +23,8 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion"
-                               href="#collapse1">Basic Details: Total Area - {{ property.total_area }} sq.ft.,
+                               href="#collapse1">Basic Details: Total Area
+                                - {{ property.total_area }} sq.ft.,
                                 Bedrooms - {{ property.number_of_bedrooms }},
                                 Bathrooms - {{ property.number_of_bathrooms }}
                             </a>
@@ -76,7 +77,15 @@
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion"
                                href="#collapse2">Project
-                                Status: {{ property.project.status }}</a>
+                                Status:
+                                {% if  property.project.get_project_status > 0 %}
+                                    Lagging by
+                                    {{ property.project.get_project_status }}
+                                    months
+                                {% else %}
+                                    On Track
+                                {% endif %}
+                            </a>
                         </h4>
                     </div>
                     <div id="collapse2" class="panel-collapse collapse">
@@ -91,7 +100,7 @@
                             </div>
                             <div class="wide">
                                 <div class="text">Bank Providing Loan</div>
-                                <div class="value">{{ property.project.bank.all|join:", "  }}</div>
+                                <div class="value">{{ property.project.bank.all|join:", " }}</div>
                             </div>
                             <div class="wide">
                                 <div class="text">Other Status</div>
@@ -100,15 +109,17 @@
                             <div class="wide">
                                 <div class="text">Contractors</div>
                                 <div class="value">
-                                        {% if property.project.contractor_name_1 %}
-                                            {{ property.project.contractor_name_1 }}
-                                        {% endif %}
-                                        {% if property.project.contractor_name_2 %}
-                                            , {{ property.project.contractor_name_2 }}
-                                        {% endif %}
-                                        {% if property.project.contractor_name_3 %}
-                                            , {{ property.project.contractor_name_3 }}
-                                        {% endif %}
+                                    {% if property.project.contractor_name_1 %}
+                                        {{ property.project.contractor_name_1 }}
+                                    {% endif %}
+                                    {% if property.project.contractor_name_2 %}
+                                        ,
+                                        {{ property.project.contractor_name_2 }}
+                                    {% endif %}
+                                    {% if property.project.contractor_name_3 %}
+                                        ,
+                                        {{ property.project.contractor_name_3 }}
+                                    {% endif %}
                                 </div>
                             </div>
                             <table class="table">
@@ -126,9 +137,13 @@
                                     <tr>
                                         <td>
                                             <a href="
+
+
                                                     {{ MEDIA_URL }}{{ tower.image }}"
                                                target="_blank">
                                                 <img src="
+
+
                                                         {{ MEDIA_URL }}{{ tower.image }}"
                                                      class="img-responsive"
                                                      width="100px">

@@ -1,3 +1,5 @@
+import datetime
+
 from ajaximage.fields import AjaxImageField
 from django.db import models
 from django.utils.text import slugify
@@ -116,6 +118,19 @@ class Project(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_project_status(self):
+        posession_date = self.original_possession_date
+        month = int(posession_date.split('/')[0])
+        year = int(posession_date.split('/')[1])
+
+        posession_date = datetime.date(year, month, 1)
+        today = datetime.date.today()
+
+        delta = today - posession_date
+
+        # Approximation - one month has 30 days
+        return (delta.days)/30
 
 
 OWNER_CHOICES = ((False, 'Direct Builder'), (True, 'Re-Sale'),)
