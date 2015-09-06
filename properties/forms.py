@@ -54,11 +54,11 @@ MONTHS = (
 class SearchForm(forms.Form):
     city = forms.ModelChoiceField(queryset=City.objects.all())
     project = forms.IntegerField(widget=forms.Select)
-    rent_or_sale = forms.ChoiceField(
-        widget=forms.RadioSelect,
-        choices=(('rent', 'For Rent'), ('sale', 'For Sale')),
-        label=''
-    )
+    # rent_or_sale = forms.ChoiceField(
+    #     widget=forms.RadioSelect,
+    #     choices=(('rent', 'For Rent'), ('sale', 'For Sale')),
+    #     label=''
+    # )
 
     def __init__(self, *args, **kwargs):
         super(SearchForm, self).__init__(*args, **kwargs)
@@ -69,7 +69,7 @@ class SearchForm(forms.Form):
             Row(
                 Div('city', css_class='col-md-6'),
                 Div('project', css_class='col-md-6'),
-                Div(InlineRadios('rent_or_sale'), css_class='col-md-12'),
+                # Div(InlineRadios('rent_or_sale'), css_class='col-md-12'),
                 Div(
                     ButtonHolder(
                         Submit('submit', 'Search',
