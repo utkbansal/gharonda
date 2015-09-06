@@ -12,56 +12,100 @@
         <div class="col-md-3 pointer">{{ city_name }} > {{ project_name }}</div>
     </div>
 
-    <h2>Homes For Sale</h2>
-    <ul class="list-group">
-        {% for property in properties %}
+    {#if property for sale#}
+    <div class="panel panel-default">
+        <div class="panel-heading">For Sale</div>
+        <div class="panel-body">
+            {% for property in properties %}
+                {% if property.for_sale %}
 
-            <li>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="panel-info">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <a href="{% url 'property-detail' pk=property.id %}">
-                                        <img src="{% static 'img/home.png' %}"
-                                             class="img-responsive">
-                                    </a>
-                                </div>
-                                <div class="col-md-10">
-                                    <a href="{% url 'property-detail' pk=property.id %}">
-                                        <p>
-                                            <strong>{{ property.number_of_bedrooms }}
-                                                BHK {{ property.property_type }}</strong>
-                                        </p></a>
-
-                                    <p>{{ property.address_line_one }},
-                                        {{ property.address_line_two }},
-                                        {{ property.city.name }},
-                                        {{ property.state.name }}
-                                    </p>
-
-                                    <p>Total Area: {{ property.total_area }}
-                                        sq.ft.</p>
-
-                                    <p>
-                                        Bedrooms: {{ property.number_of_bedrooms }}</p>
-
-                                    <p>
-                                        Bathrooms: {{ property.number_of_bathrooms }}</p>
-
-                                    <p>Last sale
-                                        date: {{ property.owner.date_of_sale }}</p>
-                                </div>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <a href="{% url 'property-detail' pk=property.id %}">
+                                <img src="{% static 'img/home.png' %}"
+                                     class="img-responsive">
+                            </a>
                         </div>
+                        <div class="col-md-10">
+                            <a href="{% url 'property-detail' pk=property.id %}">
+                                <p>
+                                    <strong>{{ property.number_of_bedrooms }}
+                                        BHK {{ property.property_type }}</strong>
+                                </p></a>
 
+                            <p>{{ property.address_line_one }},
+                                {{ property.address_line_two }},
+                                {{ property.city.name }},
+                                {{ property.state.name }}
+                            </p>
 
+                            <p>Total
+                                Area: {{ property.total_area }}
+                                sq.ft.</p>
+
+                            <p>
+                                Bedrooms: {{ property.number_of_bedrooms }}</p>
+
+                            <p>
+                                Bathrooms: {{ property.number_of_bathrooms }}</p>
+
+                            <p>Last sale
+                                date: {{ property.owner.date_of_sale }}</p>
+                        </div>
                     </div>
-                </div>
-            </li>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 
-        {% endfor %}
-    </ul>
+
+    {#  if property not for sale #}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Other Properties</div>
+        <div class="panel-body">
+            {% for property in properties %}
+                {% if not property.for_sale %}
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <a href="{% url 'property-detail' pk=property.id %}">
+                                <img src="{% static 'img/home.png' %}"
+                                     class="img-responsive">
+                            </a>
+                        </div>
+                        <div class="col-md-10">
+                            <a href="{% url 'property-detail' pk=property.id %}">
+                                <p>
+                                    <strong>{{ property.number_of_bedrooms }}
+                                        BHK {{ property.property_type }}</strong>
+                                </p></a>
+
+                            <p>{{ property.address_line_one }},
+                                {{ property.address_line_two }},
+                                {{ property.city.name }},
+                                {{ property.state.name }}
+                            </p>
+
+                            <p>Total
+                                Area: {{ property.total_area }}
+                                sq.ft.</p>
+
+                            <p>
+                                Bedrooms: {{ property.number_of_bedrooms }}</p>
+
+                            <p>
+                                Bathrooms: {{ property.number_of_bathrooms }}</p>
+
+                            <p>Last sale
+                                date: {{ property.owner.date_of_sale }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
 
 
     {% if is_paginated %}
