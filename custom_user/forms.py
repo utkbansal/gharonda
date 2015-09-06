@@ -108,7 +108,7 @@ class RegistrationForm(ModelForm):
         )
 
 
-CHOICES = (('broker', 'Broker',), ('normal-user', 'Buyer/Seller',))
+CHOICES = (('broker', 'Broker',), ('normal-user', 'Consumer',))
 
 
 class UserTypeForm(forms.Form):
