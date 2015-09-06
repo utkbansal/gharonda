@@ -89,7 +89,11 @@
                                 <div class="value">{{ property.added_on|date:"D d M Y" }}</div>
                             </div>
                             <div class="wide">
-                                <div class="text">Last sale date:</div>
+                                <div class="text">Last transaction date 1:</div>
+                                <div class="value">{{ property.owner.date_of_purchase }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Last transaction date 2:</div>
                                 <div class="value">{{ property.owner.date_of_sale }}</div>
                             </div>
 
