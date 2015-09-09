@@ -413,7 +413,8 @@ class PermissionForm(forms.Form):
                     ('Not Applied', 'Not Applied'),
                     ('Denied', 'Denied'),
                 )))
-            self.fields[permission.name + '_comment'] = forms.CharField(label='Comment')
+            self.fields[permission.name + '_comment'] = forms.CharField(
+                label='Comment')
             self.fields[permission.name].widget.attrs['class'] = 'permission'
             self.fields[permission.name + '_comment'].widget.attrs[
                 'class'] = 'permission-comment'
@@ -537,7 +538,7 @@ class ProjectForm(ModelForm):
             if self.cleaned_data['add_bank'] is True:
                 bank = Bank(
                     name=self.cleaned_data['new_bank'],
-                    by_admin = False,
+                    by_admin=False,
                 )
 
                 project = super(ProjectForm, self).save()
@@ -661,6 +662,10 @@ class PropertyForm(ModelForm):
             'specifications': forms.Select(choices=SPECIFICATION_CHOICE),
             'plot_area': forms.NumberInput(attrs={'min': 0}),
             'total_area': forms.NumberInput(attrs={'min': 0}),
+        }
+
+        labels = {
+            'address_line_one': 'House No.',
         }
 
     def __init__(self, *args, **kwargs):
