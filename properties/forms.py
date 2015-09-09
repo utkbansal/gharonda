@@ -775,16 +775,18 @@ class TowerHelper(FormHelper):
                 'Tower Info',
                 Div(
                     'name',
+                    'finishing_status',
                     css_class='col-md-6',
                     style='padding-left:0px'),
                 Div(
                     'floors_completed',
+                    'other_status',
                     css_class='col-md-6',
                     style='padding-right:0px'),
-                Div('finishing_status',
-                    'other_status',
-                    css_class='col-md-12',
-                    style='padding:0px'),
+                # Div('finishing_status',
+                #     'other_status',
+                #     css_class='col-md-12',
+                #     style='padding:0px'),
                 Div(
                     'image',
                     css_class='col-md-12',
