@@ -30,7 +30,7 @@ class State(models.Model):
 
 
 class PinCode(models.Model):
-    code = models.IntegerField(unique=True)
+    code = models.IntegerField(unique=True, default=None, null=True)
 
     def __unicode__(self):
         return unicode(self.code)
