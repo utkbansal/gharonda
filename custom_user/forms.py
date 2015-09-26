@@ -22,6 +22,7 @@ class BrokerProfileForm(ModelForm):
         super(BrokerProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.disable_csrf=True
         self.fields['license_no'].required = False
 
 
@@ -30,12 +31,17 @@ class CompanyForm(ModelForm):
         model = Company
         fields = ['name', 'address']
 
+        labels = {
+            'name': 'Company Name'
+        }
+
     def __init__(self, *args, **kwargs):
         super(CompanyForm, self).__init__(*args, **kwargs)
         self.fields['name'].required = False
         self.fields['address'].required = False
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.disable_csrf = True
         self.helper.layout = Layout(
             'name',
             'address'
@@ -51,6 +57,7 @@ class ContactNumberForm(ModelForm):
         super(ContactNumberForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.disable_csrf = True
         self.helper.layout = Layout(
             'contact_no',
         )
@@ -89,6 +96,7 @@ class RegistrationForm(ModelForm):
         super(RegistrationForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
+        self.helper.disable_csrf = True
         # Removing the enclosing <form> tag
         self.helper.form_tag = False
         self.helper.attrs = {'name': 'registration-form'}
@@ -100,7 +108,7 @@ class RegistrationForm(ModelForm):
         )
 
 
-CHOICES = (('broker', 'Broker',), ('normal-user', 'Buyer/Seller',))
+CHOICES = (('broker', 'Broker',), ('normal-user', 'Consumer',))
 
 
 class UserTypeForm(forms.Form):
@@ -110,6 +118,7 @@ class UserTypeForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(UserTypeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.disable_csrf = True
         self.helper.form_tag = False
         self.helper.attrs = {
             'name': 'user-type-form',

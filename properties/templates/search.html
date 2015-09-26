@@ -1,0 +1,111 @@
+{% extends 'dashboard.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block css %}
+    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div class="row search">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            {% crispy form %}
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+
+    {% if user.is_authenticated %}
+        <div class="row property-table">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <h3>Your Properties</h3>
+                <table class="table ">
+                    <thead>
+                    <tr>
+                        <th>Property Type</th>
+                        <th>Total Area</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for property in user_properties %}
+                        <tr>
+                            <td>{{ property.property_type }}</td>
+                            <td>{{ property.total_area }} sq ft</td>
+                            <td>
+                                {{ property.address_line_one }}
+                                {% if property.address_line_two %}
+                                    {{ property.address_line_two }}
+                                {% endif %}
+                            </td>
+                            <td>{{ property.city }}</td>
+                            <td>
+                                <a href="{% url 'property-edit'  property.id %}">
+                                    <button class="btn btn-primary"
+                                            id="edit-button">
+                                    <span class="glyphicon glyphicon-pencil"
+                                          style="vertical-align:middle"></span>
+                                        Edit
+                                    </button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="buttonHolder">
+                            <a href="{% url 'basic' %}">
+                                <button type="button"
+                                        class="btn btn-success "
+                                        id="add-property-button">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    Add Property
+                                </button>
+                            </a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    {% endif %}
+
+{% endblock content %}
+
+{% block js %}
+    <script type="application/javascript">
+
+        $(document).ready(function () {
+            if ($("#id_city").find(':selected').val() != '') {
+                projectFilterAjax();
+            }
+        });
+
+        $("#id_project").prop("selectedIndex", -1);
+        $("#id_city").change(projectFilterAjax);
+
+        function projectFilterAjax() {
+            var selectedVal = $("#id_city").find(':selected').val();
+            if (selectedVal == '') {
+                return 0;
+            }
+            $.ajax({
+                data: {"city": selectedVal},
+                type: 'POST',
+                url: '{% url 'city-filter' %}',
+                success: function (data) {
+                    console.log(data);
+                    $('#id_project').html(data['projects']);
+                    $("#id_project").prop("selectedIndex", -1);
+                    console.log('done');
+                }
+            })
+
+        }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="{% static 'css/detail.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        {#        <div class="col-md-1"></div>#}
+        <div class="col-md-1"><img src="{% static 'img/home.png' %}"
+                                   class="img-responsive"></div>
+        {#        <div class="col-md-1"></div>#}
+        <div class="col-md-10">
+            <h1>{{ property.number_of_bedrooms }} BHK</h1>
+
+            <div class="address">{{ property.address_line_one }}, {{ property.address_line_two }}
+                , {{ property.city.name }}, {{ property.state.name }}</div>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#collapse1">Basic Details: Total Area
+                                - {{ property.total_area }} sq.ft.,
+                                Bedrooms - {{ property.number_of_bedrooms }},
+                                Bathrooms - {{ property.number_of_bathrooms }}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="wide">
+                                <div class="text">Status:</div>
+                                <div class="value">What to add here?</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Type:</div>
+                                <div class="value">{{ property.property_type }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Bedrooms:</div>
+                                <div class="value">{{ property.number_of_bedrooms }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Bathrooms:</div>
+                                <div class="value">{{ property.number_of_bathrooms }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Total Area:</div>
+                                <div class="value">{{ property.total_area }}
+                                    sq.ft.
+                                </div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Plot Area:</div>
+                                <div class="value">{{ property.plot_area }}
+                                    sq.ft.
+                                </div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Basic Cost of purchase:</div>
+                                <div class="value">{{ property.owner.main_cost_of_purchase }}
+                                    ₹/sq.ft.
+                                </div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">EDC:</div>
+                                <div class="value">{{ property.owner.other_cost_1}}
+                                    ₹/sq.ft.
+                                </div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">IDC:</div>
+                                <div class="value">{{ property.owner.other_cost_2}}
+                                    ₹/sq.ft.
+                                </div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Parking:</div>
+                                <div class="value">{{ property.owner.other_cost_3}}
+                                    ₹/sq.ft.
+                                </div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Added on Gharonda:</div>
+                                <div class="value">{{ property.added_on|date:"D d M Y" }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Last transaction date 1:</div>
+                                <div class="value">{{ property.owner.date_of_purchase }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Last transaction date 2:</div>
+                                <div class="value">{{ property.owner.date_of_sale }}</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#collapse2">Project
+                                Status:
+                                {% if  property.project.get_project_status > 0 %}
+                                    Lagging by
+                                    {{ property.project.get_project_status }}
+                                    months
+                                {% else %}
+                                    On Track
+                                {% endif %}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="wide">
+                                <div class="text">Status</div>
+                                <div class="value">{{ property.project.status }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Est. Posession Date</div>
+                                <div class="value">{{ property.project.estimated_possession_date }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Bank Providing Loan</div>
+                                <div class="value">{{ property.project.bank.all|join:", " }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Other Status</div>
+                                <div class="value">{{ property.project.other_status }}</div>
+                            </div>
+                            <div class="wide">
+                                <div class="text">Contractors</div>
+                                <div class="value">
+                                    {% if property.project.contractor_name_1 %}
+                                        {{ property.project.contractor_name_1 }}
+                                    {% endif %}
+                                    {% if property.project.contractor_name_2 %}
+                                        ,
+                                        {{ property.project.contractor_name_2 }}
+                                    {% endif %}
+                                    {% if property.project.contractor_name_3 %}
+                                        ,
+                                        {{ property.project.contractor_name_3 }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Photo</th>
+                                    <th>Tower Name</th>
+                                    <th>Floors Completed</th>
+
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for tower in property.project.tower_set.all %}
+                                    <tr>
+                                        <td>
+                                            <a href="
+
+
+
+
+
+
+                                                    {{ MEDIA_URL }}{{ tower.image }}"
+                                               target="_blank">
+                                                <img src="
+
+
+
+
+
+
+                                                        {{ MEDIA_URL }}{{ tower.image }}"
+                                                     class="img-responsive"
+                                                     width="100px">
+                                            </a><br>
+                                            Added
+                                            on {{ tower.added_on|date:"d M Y" }}
+                                        </td>
+                                        <td>{{ tower.name }}</td>
+                                        <td>{{ tower.floors_completed }}</td>
+
+                                        <td>{{ tower.other_status }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#collapse3">Builder
+                                Report: {{ property.developer.developer_report }}</a>
+                        </h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Address</th>
+                                    <th>Status</th>
+                                    <th>Launch Date</th>
+                                    <th>Posession Date</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for project in property.developer.developerproject_set.all %}
+                                    <tr>
+                                        <td>{{ project.project_name }}</td>
+                                        <td>{{ project.address }}</td>
+                                        <td>{{ project.status }}</td>
+                                        <td>{{ project.launch_date }}</td>
+                                        <td>{{ project.possession_date }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#collapse4">Permit
+                                Report: {{ property.project.permit_report }}</a>
+                        </h4>
+                    </div>
+                    <div id="collapse4" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Permit Name</th>
+                                    <th>Status</th>
+                                    <th>Comment</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for permission in property.project.projectpermission_set.all %}
+                                    <tr>
+                                        <td>{{ permission.permission }}</td>
+                                        <td>{{ permission.value }}</td>
+                                        <td>{{ permission.comment }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+
+
+{% endblock %}

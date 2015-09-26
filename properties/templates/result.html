@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet"
+          href="{% static 'css/search-results.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-3 pointer">{{ city_name }} > {{ project_name }}</div>
+    </div>
+
+    {#if property for sale#}
+    <div class="panel panel-default">
+        <div class="panel-heading">For Sale</div>
+        <div class="panel-body">
+            {% for property in properties %}
+                {% if property.for_sale %}
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <a href="{% url 'property-detail' pk=property.id %}">
+                                <img src="{% static 'img/home.png' %}"
+                                     class="img-responsive">
+                            </a>
+                        </div>
+                        <div class="col-md-10">
+                            <a href="{% url 'property-detail' pk=property.id %}">
+                                <p>
+                                    <strong>{{ property.number_of_bedrooms }}
+                                        BHK {{ property.property_type }}</strong>
+                                </p></a>
+
+                            <p>{{ property.address_line_one }},
+                                {{ property.address_line_two }},
+                                {{ property.city.name }},
+                                {{ property.state.name }}
+                            </p>
+
+                            <p>Total
+                                Area: {{ property.total_area }}
+                                sq.ft.</p>
+
+                            <p>
+                                Bedrooms: {{ property.number_of_bedrooms }}</p>
+
+                            <p>
+                                Bathrooms: {{ property.number_of_bathrooms }}</p>
+
+                            <p>Last sale
+                                date: {{ property.owner.date_of_sale }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+
+    {#  if property not for sale #}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Other Properties</div>
+        <div class="panel-body">
+            {% for property in properties %}
+                {% if not property.for_sale %}
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <a href="{% url 'property-detail' pk=property.id %}">
+                                <img src="{% static 'img/home.png' %}"
+                                     class="img-responsive">
+                            </a>
+                        </div>
+                        <div class="col-md-10">
+                            <a href="{% url 'property-detail' pk=property.id %}">
+                                <p>
+                                    <strong>{{ property.number_of_bedrooms }}
+                                        BHK {{ property.property_type }}</strong>
+                                </p></a>
+
+                            <p>{{ property.address_line_one }},
+                                {{ property.address_line_two }},
+                                {{ property.city.name }},
+                                {{ property.state.name }}
+                            </p>
+
+                            <p>Total
+                                Area: {{ property.total_area }}
+                                sq.ft.</p>
+
+                            <p>
+                                Bedrooms: {{ property.number_of_bedrooms }}</p>
+
+                            <p>
+                                Bathrooms: {{ property.number_of_bathrooms }}</p>
+
+                            <p>Last sale
+                                date: {{ property.owner.date_of_sale }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+    {% if is_paginated %}
+
+        <ul class="pager">
+            <li class="previous {% if not page_obj.has_previous %} disabled{% endif %}">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">&larr;
+                        Previous</a>
+                {% else %}
+                    <a href="#">&larr; Previous</a>
+                {% endif %}
+            </li>
+
+            <li class="next{% if not page_obj.has_next %} disabled{% endif %}">
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">
+                        Next &rarr;</a>
+                {% else %}
+                    <a href="#">Next &rarr;</a>
+                {% endif %}
+            </li>
+        </ul>
+
+    {% endif %}
+{% endblock %}
+

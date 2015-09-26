@@ -11,15 +11,16 @@
     <link href="{% static 'ajaximage/css/bootstrap-progress.min.css' %}"
           rel="stylesheet">
     <link href="{% static 'ajaximage/css/styles.css' %}" rel="stylesheet">
+        <link href="{% static 'css/permission.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block form %}
-    <div id="property-details-form">
+    <div id="property-details-form" class="row">
         <h2>Property Details</h2>
         {% crispy property_form %}
     </div>
 
-    <div id="owner-details-form">
+    <div id="owner-details-form" class="row">
         <h2>Owner Details</h2>
 
         <form method="post" id="owner-details">
@@ -27,19 +28,25 @@
         </form>
     </div>
 
-    <div id="project-details-form">
+    <div id="project-details-form" class="row">
         <h2>Project Details</h2>
 
         <form method="post" id="project-details">
-            {% crispy project_form %}
-            {% crispy permission_form %}
-            <div id="tower-part-form">
-                {% crispy tower_form tower_helper %}
+            <div class="row">
+                {% crispy project_form %}
+            </div>
+            <div class="row">
+                {% crispy permission_form %}
+            </div>
+            <div class="row">
+                <div id="tower-part-form">
+                    {% crispy tower_form tower_helper %}
+                </div>
             </div>
         </form>
     </div>
 
-    <div id="builder-details-form">
+    <div id="builder-details-form" class="row">
         <h2>Builder Detail</h2>
 
         <form method="post" id="builder-details">
@@ -48,7 +55,7 @@
         </form>
     </div>
 
-    <div id="other-details-form">
+    <div id="other-details-form" class="row">
         <h2>Other Details</h2>
 
         <form method="post" id="other-details">
@@ -74,6 +81,8 @@
     <script src="{% static 'js/resale.js' %}"
             type="application/javascript"></script>
 
+    <script src="{% static 'js/permission-style.js' %}" type="text/javascript"></script>
+
     <script type="text/javascript">
         $(document).ajaxStart(function () {
             $('#myModal').modal('show')
@@ -84,13 +93,6 @@
         function all() {
 
             $('#id_bank').select2({width: '100%'});
-            $(".date-field").datepicker({
-                format: "dd/mm/yyyy",
-                todayBtn: "linked",
-                clearBtn: true,
-                autoclose: true,
-                todayHighlight: true
-            });
             $('.month-year').datepicker({
                 format: "mm/yyyy",
                 todayBtn: "linked",

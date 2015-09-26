@@ -42,6 +42,7 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'search' %}">Dashboard</a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'logout' %}">Logout</a>
                             </li>
 
@@ -50,11 +51,12 @@
 
                 {% else %}
                     <li role="presentation" class="active"><a href="{% url 'login' %}">Login</a></li>
+                    <li role="presentation" class="active"><a href="{% url 'register' %}">Register</a></li>
                 {% endif %}
 
             </ul>
         </nav>
-        <h3 class="text-muted"><a href="{% url 'index' %}">Gharonda</a></h3>
+        <h3 class="text-muted"><a href="{% url 'search' %}">Gharonda</a></h3>
         <hr>
     </div>
 

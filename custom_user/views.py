@@ -1,10 +1,12 @@
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import logout, authenticate, login
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView, TemplateView, RedirectView
 from django.http import HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from braces import views
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from forms import (RegistrationForm,
                    LoginForm,
@@ -15,8 +17,12 @@ from forms import (RegistrationForm,
 from models import BrokerProfile, User, Company, ContactNumber
 
 
-class IndexView(TemplateView):
+class RegisterView(TemplateView):
     template_name = 'index.html'
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(RegisterView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         contact_form = ContactNumberForm(instance=ContactNumber())
@@ -25,9 +31,8 @@ class IndexView(TemplateView):
         broker_profile_form = BrokerProfileForm(instance=BrokerProfile())
         user_type_form = UserTypeForm()
 
-        properties = None
         if self.request.user.is_authenticated():
-            properties = self.request.user.property_set.all()
+            return redirect(reverse_lazy('search'))
 
         return render(request, self.template_name,
                       {'user_type_form': user_type_form,
@@ -35,7 +40,6 @@ class IndexView(TemplateView):
                        'broker_profile_form': broker_profile_form,
                        'company_form': company_form,
                        'contact_form': contact_form,
-                       'properties': properties,
                       }
         )
 
@@ -68,8 +72,10 @@ class IndexView(TemplateView):
                     user = authenticate(username=user.email,
                                         password=register_form.cleaned_data[
                                             'password'])
+                    print 'logging in'
                     login(self.request, user)
-                    return reverse_lazy('index')
+                    print 'logged in'
+                    return redirect(reverse_lazy('register'))
 
                 if company_form.is_valid():
                     company, created = Company.objects.get_or_create(
@@ -111,8 +117,8 @@ class IndexView(TemplateView):
 
 
 class LogOutView(views.LoginRequiredMixin, RedirectView):
-    url = reverse_lazy('index')
-
+    # url = reverse_lazy('index')
+    url = '/'
     def get(self, request, *args, **kwargs):
         logout(request)
         return super(LogOutView, self).get(request, *args, **kwargs)
@@ -121,7 +127,7 @@ class LogOutView(views.LoginRequiredMixin, RedirectView):
 class LoginView(views.AnonymousRequiredMixin, FormView):
     form_class = LoginForm
     template_name = 'login.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('login')
 
     def form_valid(self, form):
         username = form.cleaned_data['username']
